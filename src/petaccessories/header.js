@@ -1,22 +1,37 @@
 import './css/header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faHome, faCat, faDog, faKiwiBird, faGift, faCheese} from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart, faHome, faCat, faDog, faKiwiBird, faGift, faCheese, faBars, faGlobe} from '@fortawesome/free-solid-svg-icons';
 import { FaGooglePlay } from '@react-icons/all-files/fa/FaGooglePlay'
+import { useEffect } from 'react';
 // Header component
 var Header = ()=>{
+    // Running code after component gets rendered
+    useEffect(()=>{
+        var menuToggler = document.getElementById('menu-toggler');
+        var menu = document.getElementById("bottom-menu");
+
+        menuToggler.onclick = ()=>{
+            menu.classList.toggle('hide')
+        };
+    }, []);
     return (
         <header>
             <div className="top-nav-container">
                 {/* Top row with language and signin btn  */}
                 <div className="top-row">
-                    <div className="language">English</div>
+                    <div className="language">
+                    <FontAwesomeIcon icon={faGlobe}/>
+                        <select name="language" id="language">
+                            <option value="english" selected> English</option>
+                        </select>
+                    </div>
                     <a className="signin-btn">Sign in</a>
                 </div>
                 {/* Top row with language and signin btn ends  */}
                 {/* Middle row */}
                 <div className="middle-row">
                     <div className="middle-row-left">
-                    <div className="logo">PETBIOS</div>
+                    <div className="logo"><FontAwesomeIcon icon={faBars} id="menu-toggler" className="menu-toggler"/> PETBIOS</div>
                     <div className="search">
                         <select name="search-categories" id="search-categories" className="search-categories">
                             <option value="all">All Categories</option>
@@ -37,7 +52,7 @@ var Header = ()=>{
                 </div>
                 {/* Middle row ends */}
                 {/* Bottom row with categories */}
-                <div className="bottom-row">
+                <div id="bottom-menu" className="bottom-row">
                     <div className="bottom-row-links">
                         <a href="#" className="home"><FontAwesomeIcon icon={faHome} className="top-nav-icons"/>Home</a>
                         <a href="#" className="cats"><FontAwesomeIcon icon={faCat} className="top-nav-icons"/>Cats</a>
@@ -51,6 +66,7 @@ var Header = ()=>{
                 {/* Bottom row with categories ends */}
             </div>
         </header>
+        
     );
 }
 
