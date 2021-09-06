@@ -532,3 +532,14 @@ Error: Debug Failure. Did not expect JsxElement to have an Identifier in its tri
 	at Pipe.onStreamRead (internal/stream_base_commons.js:188:23)
 [2021-09-06 11:39:09.180] [exthost] [info] ExtensionService#_doActivateExtension vscode.image-preview {"startup":false,"extensionId":{"value":"vscode.image-preview","_lower":"vscode.image-preview"},"activationEvent":"onCustomEditor:imagePreview.previewEditor"}
 [2021-09-06 11:39:09.182] [exthost] [info] ExtensionService#loadCommonJSModule file:///Applications/Visual Studio Code.app/Contents/Resources/app/extensions/image-preview/dist/extension
+[2021-09-06 11:50:35.712] [exthost] [info] ExtensionService#_doActivateExtension cirlorm.mobileview {"startup":false,"extensionId":{"value":"cirlorm.mobileview","_lower":"cirlorm.mobileview"},"activationEvent":"onCommand:mobileview.start"}
+[2021-09-06 11:50:35.713] [exthost] [info] ExtensionService#loadCommonJSModule file:///Users/yobahbertrandyonkou/.vscode/extensions/cirlorm.mobileview-0.0.7/extension.js
+[2021-09-06 11:50:39.376] [exthost] [error] TypeError: Cannot read property 'substring' of undefined
+	at /Users/yobahbertrandyonkou/.vscode/extensions/cirlorm.mobileview-0.0.7/extension.js:227:28
+	at runMicrotasks (<anonymous>)
+	at processTicksAndRejections (internal/process/task_queues.js:93:5)
+	at async _executeContributedCommand (/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:94:110871) mobileview.start
+[2021-09-06 11:53:16.680] [exthost] [error] TypeError: Cannot read property 'substring' of undefined
+	at /Users/yobahbertrandyonkou/.vscode/extensions/cirlorm.mobileview-0.0.7/extension.js:227:28
+	at processTicksAndRejections (internal/process/task_queues.js:93:5)
+	at async _executeContributedCommand (/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:94:110871) mobileview.start

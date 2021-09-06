@@ -35,7 +35,6 @@ body{
 }
 
 .add-to-cart-btn{
-    width: 100%;
     border: 1px solid var(--primary-color);
     padding: 2px;
     text-align: center;

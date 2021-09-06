@@ -294,3 +294,10 @@ Error: Debug Failure. Did not expect JsxElement to have an Identifier in its tri
 	at readableAddChunk (internal/streams/readable.js:284:9)
 	at Socket.Readable.push (internal/streams/readable.js:223:10)
 	at Pipe.onStreamRead (internal/stream_base_commons.js:188:23)
+[2021-09-06 11:50:39.380] [renderer3] [error] Running the contributed command: 'mobileview.start' failed.: Error: Running the contributed command: 'mobileview.start' failed.
+	at _executeContributedCommand (/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:94:111039)
+	at runMicrotasks (<anonymous>)
+	at processTicksAndRejections (internal/process/task_queues.js:93:5)
+[2021-09-06 11:53:16.684] [renderer3] [error] Running the contributed command: 'mobileview.start' failed.: Error: Running the contributed command: 'mobileview.start' failed.
+	at _executeContributedCommand (/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:94:111039)
+	at processTicksAndRejections (internal/process/task_queues.js:93:5)

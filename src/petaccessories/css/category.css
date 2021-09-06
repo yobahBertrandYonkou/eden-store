@@ -1,0 +1,29 @@
+:root{
+    --primary-color: #2F2F5F;
+    --bg-color: #ffffff;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Futura';
+    background-color: white;
+}
+
+.category-container{
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.category-image{
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.category-title{
+    padding: 5px;
+}
