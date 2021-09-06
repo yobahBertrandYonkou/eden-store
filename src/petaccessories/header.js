@@ -10,8 +10,12 @@ var Header = ()=>{
         var menuToggler = document.getElementById('menu-toggler');
         var menu = document.getElementById("bottom-menu");
 
+        if(window.innerWidth <= 704){
+            menu.classList.toggle('hide');
+        }
+
         menuToggler.onclick = ()=>{
-            menu.classList.toggle('hide')
+            menu.classList.toggle('hide');
         };
     }, []);
     return (

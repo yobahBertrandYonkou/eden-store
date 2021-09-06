@@ -1,0 +1,9 @@
+[2021-09-06 08:45:27.132] [renderer3] [error] net::ERR_CERT_AUTHORITY_INVALID: Error: net::ERR_CERT_AUTHORITY_INVALID
+    at SimpleURLLoaderWrapper.<anonymous> (electron/js2c/browser_init.js:109:7068)
+    at SimpleURLLoaderWrapper.emit (events.js:315:20)
+[2021-09-06 08:52:57.692] [renderer3] [info] Setting search error: XHR failed
+[2021-09-06 08:52:57.727] [renderer3] [info] Setting search error: XHR failed
+[2021-09-06 08:53:00.247] [renderer3] [info] Setting search error: XHR failed
+[2021-09-06 08:53:00.367] [renderer3] [info] Setting search error: XHR failed
+[2021-09-06 08:56:22.328] [renderer3] [info] Setting search error: XHR failed
+[2021-09-06 08:56:22.350] [renderer3] [info] Setting search error: XHR failed
