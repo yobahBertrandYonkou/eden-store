@@ -43,3 +43,8 @@ a:hover{
     justify-content: space-between;
     margin-top: 20px;
 }
+
+.copy-write, .back-to-top{
+    font-size: 12px;
+    font-style: italic;
+}
