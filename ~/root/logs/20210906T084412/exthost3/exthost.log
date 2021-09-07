@@ -543,3 +543,5 @@ Error: Debug Failure. Did not expect JsxElement to have an Identifier in its tri
 	at /Users/yobahbertrandyonkou/.vscode/extensions/cirlorm.mobileview-0.0.7/extension.js:227:28
 	at processTicksAndRejections (internal/process/task_queues.js:93:5)
 	at async _executeContributedCommand (/Applications/Visual Studio Code.app/Contents/Resources/app/out/vs/workbench/services/extensions/node/extensionHostProcess.js:94:110871) mobileview.start
+[2021-09-07 02:59:26.170] [exthost] [info] extension host terminating: renderer closed the socket
+[2021-09-07 02:59:27.305] [exthost] [info] exiting with code 0

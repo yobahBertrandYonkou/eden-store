@@ -18,8 +18,8 @@ body{
 }
 
 .category-image{
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 70%;
     border-radius: 10px;
     overflow: hidden;
 }
@@ -27,3 +27,4 @@ body{
 .category-title{
     padding: 5px;
 }
+

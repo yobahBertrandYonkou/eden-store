@@ -1,5 +1,5 @@
 import './css/category.css'
-import CategoryPhoto from './images/cat1.png'
+import CategoryPhoto from './images/product1.jpg'
 var CategoryCard = ()=>{
     return (
         <div style={{ boxShadow: "none"}} className="category-container">

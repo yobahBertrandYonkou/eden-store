@@ -27,15 +27,15 @@ body{
 }
 
 a{
-    color: white; 
-    text-decoration: none;
-    padding-top: 5px;
+    color: white !important; 
+    text-decoration: none !important;
+    padding-top: 5px !important;
 }
 
 a:hover{
-    cursor: pointer;
-    text-decoration: underline;
-    color: white;
+    cursor: pointer !important;
+    text-decoration: underline !important;
+    color: white !important;
 }
 
 .extra-info{

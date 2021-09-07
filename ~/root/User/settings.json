@@ -3,5 +3,5 @@
     "emmet.includeLanguages": {
         "javascript": "javascriptreact"
     },
-    "editor.accessibilitySupport": "on"
+    "editor.accessibilitySupport": "off"
 }
