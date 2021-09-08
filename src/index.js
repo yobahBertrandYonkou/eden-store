@@ -6,5 +6,6 @@ import ProductCard from "./petaccessories/productcard";
 import CategoryCard from "./petaccessories/category";
 import HomePage from "./petaccessories/home";
 import OneAnimal from "./petaccessories/oneanimal";
+import ProdudctPage from "./petaccessories/productpage";
 
-ReactDOM.render(<OneAnimal />, document.getElementById('root'))
+ReactDOM.render(<ProdudctPage />, document.getElementById('root'))
