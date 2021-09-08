@@ -7,5 +7,6 @@ import CategoryCard from "./petaccessories/category";
 import HomePage from "./petaccessories/home";
 import OneAnimal from "./petaccessories/oneanimal";
 import ProdudctPage from "./petaccessories/productpage";
+import ShoppingCart from "./petaccessories/shoppingcart";
 
-ReactDOM.render(<ProdudctPage />, document.getElementById('root'))
+ReactDOM.render(<ShoppingCart />, document.getElementById('root'))
