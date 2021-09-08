@@ -26,13 +26,13 @@ body{
     flex-direction: column;
 }
 
-a{
+.footer-links{
     color: white !important; 
     text-decoration: none !important;
     padding-top: 5px !important;
 }
 
-a:hover{
+.footer-links:hover{
     cursor: pointer !important;
     text-decoration: underline !important;
     color: white !important;

@@ -162,9 +162,10 @@ body{
     box-shadow: none;
 }
 
-.contacts{
+.contacts, .contacts:hover{
     color: white  !important;
 }
+
 
 .gplay-btn{
     border: 1px solid var(--primary-color);
@@ -284,10 +285,6 @@ body{
         border-radius: 0 50px 50px 0 !important;
     }
 
-    .bottom-row-links > a:hover{
-        background-color: white !important;
-        color: var(--primary-color) !important;
-    }
     .top-nav-icons{
         font-size: 14px;
         margin-right: 5px;
@@ -364,4 +361,9 @@ body{
         margin: 0;
         margin-top: 10px;
     }
+}
+
+.bottom-row-links > a:hover{
+    text-decoration: underline !important;
+    color: white !important;
 }

@@ -11,20 +11,20 @@ var Footer = ()=>{
                     </div>
                     <div className="footer-section col-lg-4">
                         <div className="section-title">Quick Links</div>
-                        <a href="#" className="home">Home</a>
-                        <a href="#" className="cats">Cats</a>
-                        <a href="#" className="dogs">Dogs</a>
-                        <a href="#" className="birds">Birds</a>
-                        <a href="#" className="hamsters">Hamsters</a>
+                        <a href="#" className="home footer-links">Home</a>
+                        <a href="#" className="cats footer-links">Cats</a>
+                        <a href="#" className="dogs footer-links">Dogs</a>
+                        <a href="#" className="birds footer-links">Birds</a>
+                        <a href="#" className="hamsters footer-links">Hamsters</a>
                     </div>
                     <div className="footer-section col-lg-4">
                         <div className="section-title">Legal</div>
-                        <a href="#">Terms and Conditions</a>
-                        <a href="#">Privacy Policy</a>
+                        <a className="footer-links" href="#">Terms and Conditions</a>
+                        <a className="footer-links" href="#">Privacy Policy</a>
                     </div>
                     <div className="col-sm-12 extra-info">
                         <div className="copy-write">© 2021 PETBIOS. All rights reserved.</div>
-                        <a href="#" className="back-to-top">Back to top</a>
+                        <a href="#" className="back-to-top footer-links">Back to top</a>
                     </div>
                 </div>
             </div>
