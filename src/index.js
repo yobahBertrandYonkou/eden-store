@@ -8,5 +8,6 @@ import HomePage from "./petaccessories/home";
 import OneAnimal from "./petaccessories/oneanimal";
 import ProdudctPage from "./petaccessories/productpage";
 import ShoppingCart from "./petaccessories/shoppingcart";
+import CheckOut from "./petaccessories/checkout";
 
-ReactDOM.render(<ShoppingCart />, document.getElementById('root'))
+ReactDOM.render(<CheckOut />, document.getElementById('root'))
