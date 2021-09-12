@@ -42,17 +42,17 @@ var CheckOut = ()=>{
                                 <div className="section-payments">
                                     <div className="payment-method-card">
                                         <label htmlFor="">
-                                            <input type="checkbox" name="" id="" /> PAYTM
+                                            <input type="radio" name="payment-option" id="" /> PAYTM
                                         </label>
                                     </div>
                                     <div className="payment-method-card">
                                         <label htmlFor="">
-                                            <input type="checkbox" name="" id="" /> PAYTM
+                                            <input type="radio" name="payment-option" id="" /> PAYTM
                                         </label>
                                     </div>
                                     <div className="payment-method-card">
                                         <label htmlFor="">
-                                            <input type="checkbox" name="" id="" /> PAYTM
+                                            <input type="radio" name="payment-option" id="" /> PAYTM
                                         </label>
                                     </div>
                                 </div>
@@ -132,7 +132,7 @@ var CheckOut = ()=>{
                                 </div>
                                 <div className="add-to-cart-btn proceed-to-check-out">Place your order</div>
                                 <div className="agreement-text">
-                                By placing this order, you have read, understood and accepted PETBIOS’s <span className="important-text">Terms and Conditions</span> of use and <span className="important-text">Privacy Policy</span>.
+                                    By placing this order, you have read, understood and accepted PETBIOS’s <span className="important-text">Terms and Conditions</span> of use and <span className="important-text">Privacy Policy</span>.
                                 </div>
                             </div>
                         </div>

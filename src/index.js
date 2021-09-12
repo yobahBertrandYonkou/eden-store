@@ -9,5 +9,12 @@ import OneAnimal from "./petaccessories/oneanimal";
 import ProdudctPage from "./petaccessories/productpage";
 import ShoppingCart from "./petaccessories/shoppingcart";
 import CheckOut from "./petaccessories/checkout";
+import Dasboard from './sellers/dashboard'
+import Stocks from "./sellers/stocks";
 
-ReactDOM.render(<CheckOut />, document.getElementById('root'))
+ReactDOM.render(<Stocks/>, document.getElementById('root'))
+
+// TODO: delete/add quantity at checkout page
+
+// TODO: Purchases made
+
