@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './css/dashboard.css'
-var Stocks= ()=>{
+var Offers= ()=>{
 
     useEffect(()=>{
         var switcher = document.getElementById("drawer-switch");
@@ -8,20 +8,6 @@ var Stocks= ()=>{
         var sideNav = document.getElementById("sidenav-id");
         var bodyContainer = document.getElementById("body-container");
         var actionBar = document.getElementById('action-bar-id');
-        var addItemContainer = document.getElementById("add-item-main-container");
-        var addItemBtn = document.getElementById("add-item-btn");
-        var cancelEntry = document.getElementById("add-item-cancel-btn");
-
-        // Add item
-        addItemBtn.onclick = ()=>{
-            addItemContainer.style.display = "flex";
-        }
-
-        cancelEntry.onclick = ()=>{
-            if(window.confirm("Your progress will not be saved.\nContinue?")){
-                addItemContainer.style.display = "none";
-            }
-        }
 
         var showSideNav = ()=>{
             closeDrawer.style.display = "block";
@@ -88,8 +74,8 @@ var Stocks= ()=>{
                 <div className="side-nav-link seller-name">Seller's Name</div>
                 <hr />
                 <div className="side-nav-link dashboard"><a href="/">  <i className="fa fa-tachometer-alt"></i> Dashboard</a></div>
-                <div className="side-nav-link stocks"><a className="active-side-link"  href="/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
-                <div className="side-nav-link orders"><a href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
+                <div className="side-nav-link stocks"><a href="/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
+                <div className="side-nav-link orders"><a className="active-side-link" href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
                 <div className="side-nav-link offers"><a href=""> <i className="fa fa-truck"></i> Orders</a></div>
                 <div className="side-nav-link reports"><a href=""> <i className="fa fa-chart-line"></i> Reports</a></div>
             </div>
@@ -98,7 +84,7 @@ var Stocks= ()=>{
             <div id="action-bar-id" className="action-bar">
                 <div id="drawer-switch" style={{width: "fit-content"}}><i className="fa fa-bars"></i></div>
                 <div className="title-profile">
-                    <div className="page-title">Stocks </div>
+                    <div className="page-title">Offers </div>
                     <div className="profile-photo">
                         <img width="100%"  src="" alt="" />
                     </div>
@@ -120,10 +106,10 @@ var Stocks= ()=>{
                         <input type="date" className="from-date" /> to {' '}
                         <input type="date" className="to-date" />
                     </div>
-                    <div id="add-item-btn" className="new-item-btn">New Stock</div>
+                    <div className="new-item-btn">New Offer</div>
                 </div>
 
-                {/* stock table */}
+                {/* Offer table */}
                 <div className="stock-table-container">
                     <table className="stock-table table">
                         <thead>
@@ -172,75 +158,9 @@ var Stocks= ()=>{
                 </div>
             </div>
         </div>
-        {/* Add new item */}
-        <div id="add-item-main-container" className="add-item-dark-container">
-                <div className="add-item-container">
-                    <div className="add-item-header">New Stock</div>
-                    <div className="container">
-                        <div className="row">
-                            <div className="add-item-left-container col-md-6">
-                                <div style={{margin: 0}} className="form-group col-12 add-item-labels">
-                                    <label htmlFor="name">Product Name</label>
-                                    <input name="name" type="text" className="form-control" />
-                                </div>
-                                <div className="row">
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="price">Price</label>
-                                        <input name="price" type="number" min="1" className="form-control" />
-                                    </div>
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="color">Color</label>
-                                        <select name="color" id="color" className="form-control">
-                                            <option value="0" selected disabled>-- Select a color --</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="quantity">Quantity</label>
-                                        <input name="quantity" type="number" min="1" className="form-control" />
-                                    </div>
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="unit">Unit</label>
-                                        <select name="unit" id="unit" className="form-control">
-                                            <option value="0" selected disabled>-- Select a unit --</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="category">Category</label>
-                                        <select name="category" id="category" className="form-control">
-                                            <option value="0" selected disabled>-- Select a category --</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="brand">Brand</label>
-                                        <select name="brand" id="brand" className="form-control">
-                                            <option value="0" selected disabled>-- Select a brand --</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="form-group col-12 add-item-labels">
-                                    <label htmlFor="description">Description</label>
-                                    <textarea name="description" rows="7" className="form-control"></textarea>
-                                </div>
-                            </div>
-                            <div className="add-item-right-container col-md-6">
-                                <div className="item-photos-top">
-                                    <div className="title">Photos</div>
-                                    <div className="add-photo">Add Photo</div>
-                                </div>
-                                <div className="item-photos-container"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="add-item-buttons">
-                        <div id="add-item-cancel-btn" className="add-item-cancel">Cancel</div>
-                        <div className="add-item-save">Save</div>
-                    </div>
-                </div>
-            </div>
-       
         </div>
     );
 }
 
 
-export default Stocks;
+export default Offers;

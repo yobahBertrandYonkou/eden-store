@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './css/dashboard.css'
-var Dasboard= ()=>{
+var Dashboard= ()=>{
 
     useEffect(()=>{
         var switcher = document.getElementById("drawer-switch");
@@ -67,207 +67,208 @@ var Dasboard= ()=>{
     },[]);
     return (
         <div className="main-container">
-            <div id="sidenav-id" className="side-nav">
-            <div className="title-sec">PETBIOS <i id="close-drawer" className="fa fa-times"></i></div>
-            <hr />
-            <div className="side-nav-links">
-                <div className="side-nav-link seller-name">Seller's Name</div>
+                <div id="sidenav-id" className="side-nav">
+                <div className="title-sec">PETBIOS <i id="close-drawer" className="fa fa-times"></i></div>
                 <hr />
-                <div className="side-nav-link dashboard"><a className="active-side-link" href="">  <i className="fa fa-tachometer-alt"></i> Dashboard</a></div>
-                <div className="side-nav-link stocks"><a href=""> <i className="fa fa-layer-group"></i> Stocks</a></div>
-                <div className="side-nav-link orders"><a href=""> <i className="far fa-gifts"></i> Offers</a></div>
-                <div className="side-nav-link offers"><a href=""> <i className="fa fa-truck"></i> Orders</a></div>
-                <div className="side-nav-link reports"><a href=""> <i className="fa fa-chart-line"></i> Reports</a></div>
-            </div>
-        </div>
-        <div id="body-container">
-            <div id="action-bar-id" className="action-bar">
-                <div id="drawer-switch" style={{width: "fit-content"}}><i className="fa fa-bars"></i></div>
-                <div className="title-profile">
-                    <div className="page-title">Dashoard </div>
-                    <div className="profile-photo">
-                        <img width="100%"  src="" alt="" />
-                    </div>
+                <div className="side-nav-links">
+                    <div className="side-nav-link seller-name">Seller's Name</div>
+                    <hr />
+                    <div className="side-nav-link dashboard"><a className="active-side-link" href="/">  <i className="fa fa-tachometer-alt"></i> Dashboard</a></div>
+                    <div className="side-nav-link stocks"><a href="/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
+                    <div className="side-nav-link orders"><a href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
+                    <div className="side-nav-link offers"><a href=""> <i className="fa fa-truck"></i> Orders</a></div>
+                    <div className="side-nav-link reports"><a href=""> <i className="fa fa-chart-line"></i> Reports</a></div>
                 </div>
             </div>
-            <hr style={{border: "0", borderTop: "1px solid #6F62FC"}} />
-            <div className="content-container">
-                
-                <div className="top-stats-bar">
-                    {/* Stats card */}
-                    <div className="stats-card">
-                        <div className="stats-icon"></div>
-                        <div className="stats-values">
-                            <div className="stats-value">4</div>
-                            <div className="stats-name">Total Stock</div>
-                        </div>
-                    </div>
-                    {/* Stats ends */}
-                    {/* Stats card */}
-                    <div className="stats-card">
-                        <div className="stats-icon"></div>
-                        <div className="stats-values">
-                            <div className="stats-value">4</div>
-                            <div className="stats-name">Total Stock</div>
-                        </div>
-                    </div>
-                    {/* Stats ends */}
-                    {/* Stats card */}
-                    <div className="stats-card">
-                        <div className="stats-icon"></div>
-                        <div className="stats-values">
-                            <div className="stats-value">4</div>
-                            <div className="stats-name">Total Stock</div>
-                        </div>
-                    </div>
-                    {/* Stats ends */}
-                    {/* Stats card */}
-                    <div className="stats-card">
-                        <div className="stats-icon"></div>
-                        <div className="stats-values">
-                            <div className="stats-value">4</div>
-                            <div className="stats-name">Total Stock</div>
-                        </div>
-                    </div>
-                    {/* Stats ends */}
-                    {/* Stats card */}
-                    <div className="stats-card">
-                        <div className="stats-icon"></div>
-                        <div className="stats-values">
-                            <div className="stats-value">4</div>
-                            <div className="stats-name">Total Stock</div>
-                        </div>
-                    </div>
-                    {/* Stats ends */}
-                    {/* Stats card */}
-                    <div className="stats-card">
-                        <div className="stats-icon"></div>
-                        <div className="stats-values">
-                            <div className="stats-value">4</div>
-                            <div className="stats-name">Total Stock</div>
-                        </div>
-                    </div>
-                    {/* Stats ends */}
-                    {/* Stats card */}
-                    <div className="stats-card">
-                        <div className="stats-icon"></div>
-                        <div className="stats-values">
-                            <div className="stats-value">4</div>
-                            <div className="stats-name">Total Stock</div>
-                        </div>
-                    </div>
-                    {/* Stats ends */}
-                    {/* Stats card */}
-                    <div className="stats-card">
-                        <div className="stats-icon"></div>
-                        <div className="stats-values">
-                            <div className="stats-value">4</div>
-                            <div className="stats-name">Total Stock</div>
-                        </div>
-                    </div>
-                    {/* Stats ends */}
-                    {/* Stats card */}
-                    <div className="stats-card">
-                        <div className="stats-icon"></div>
-                        <div className="stats-values">
-                            <div className="stats-value">4</div>
-                            <div className="stats-name">Total Stock</div>
-                        </div>
-                    </div>
-                    {/* Stats ends */}
-                    {/* Stats card */}
-                    <div className="stats-card">
-                        <div className="stats-icon"></div>
-                        <div className="stats-values">
-                            <div className="stats-value">4</div>
-                            <div className="stats-name">Total Stock</div>
-                        </div>
-                    </div>
-                    {/* Stats ends */}
-                </div>
-                {/* graph section */}
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-lg-8 left-side row">
-                            <div className="daily-stats">
-                                <div className="daily-stats-header">
-                                    <div className="daily-stats-title">Daily Statistics</div>
-                                    <div className="daily-stats-title">12-09-2021</div>
-                                </div>
-                                <div className="stats-content">
-                                    {/* today stats card */}
-                                    <div className="stats-card today-stats-card">
-                                        <div className="stats-name today-stats-name">Total sales for today</div>
-                                        <div className="stats-value today-stats-value">4</div>
-                                    </div>
-                                    {/* today stats card */}
-                                    <div className="stats-card today-stats-card">
-                                        <div className="stats-name today-stats-name">Total sales for today</div>
-                                        <div className="stats-value today-stats-value">4</div>
-                                    </div>
-                                    {/* today stats card */}
-                                    <div className="stats-card today-stats-card">
-                                        <div className="stats-name today-stats-name">Total sales for today</div>
-                                        <div className="stats-value today-stats-value">4</div>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* sales graph */}
-                            <div className="daily-stats">
-                                <div className="daily-stats-header">
-                                    <div className="daily-stats-title">Sales graphs</div>
-                                    <div className="daily-stats-title">
-                                        <select className="select-duration" name="sales" id="">
-                                            <option value="">Monthly</option>
-                                            <option value="">Weekly</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="stats-content sales-graph">
-                                    
-                                </div>
-                            </div>
-                            {/* top selling categeries */}
-                            <div className="daily-stats">
-                                <div className="daily-stats-header">
-                                    <div className="daily-stats-title">Top selling categories</div>
-                                    <div className="daily-stats-title">
-                                        <select className="select-duration" name="sales" id="">
-                                            <option value="">Monthly</option>
-                                            <option value="">Weekly</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="stats-content sales-graph">
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-4 right-side row">
-                            <div className="recent-card" >
-                                <div className="recent-title">Recent Orders</div>
-                                <div className="recent-content">
-                                    <div className="recent-item"></div>
-                                    <div className="recent-item"></div>
-                                    <div className="recent-item"></div>
-                                </div>
-                            </div>
-                            <div className="top-selling recent-card" >
-                                <div className="recent-title">Recent Orders</div>
-                                <div className="recent-content">
-                                    <div className="ts-item"></div>
-                                    <div className="ts-item"></div>
-                                    <div className="ts-item"></div>
-                                </div>
-                            </div>
+            <div id="body-container">
+                <div id="action-bar-id" className="action-bar">
+                    <div id="drawer-switch" style={{width: "fit-content"}}><i className="fa fa-bars"></i></div>
+                    <div className="title-profile">
+                        <div className="page-title">Dashboard </div>
+                        <div className="profile-photo">
+                            <img width="100%"  src="" alt="" />
                         </div>
                     </div>
                 </div>
+                <hr style={{border: "0", borderTop: "1px solid #6F62FC"}} />
+                <div className="content-container dashboard-content-container">
+                    
+                    <div className="top-stats-bar">
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Stock</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Stock</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Stock</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Stock</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Stock</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Stock</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Stock</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Stock</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Stock</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Stock</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                    </div>
+                    {/* graph section */}
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-lg-8 left-side row">
+                                <div className="daily-stats">
+                                    <div className="daily-stats-header">
+                                        <div className="daily-stats-title">Daily Statistics</div>
+                                        <div className="daily-stats-title">12-09-2021</div>
+                                    </div>
+                                    <div className="stats-content">
+                                        {/* today stats card */}
+                                        <div className="stats-card today-stats-card">
+                                            <div className="stats-name today-stats-name">Total sales for today</div>
+                                            <div className="stats-value today-stats-value">4</div>
+                                        </div>
+                                        {/* today stats card */}
+                                        <div className="stats-card today-stats-card">
+                                            <div className="stats-name today-stats-name">Total sales for today</div>
+                                            <div className="stats-value today-stats-value">4</div>
+                                        </div>
+                                        {/* today stats card */}
+                                        <div className="stats-card today-stats-card">
+                                            <div className="stats-name today-stats-name">Total sales for today</div>
+                                            <div className="stats-value today-stats-value">4</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* sales graph */}
+                                <div className="daily-stats">
+                                    <div className="daily-stats-header">
+                                        <div className="daily-stats-title">Sales graphs</div>
+                                        <div className="daily-stats-title">
+                                            <select className="select-duration" name="sales" id="">
+                                                <option value="">Monthly</option>
+                                                <option value="">Weekly</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="stats-content sales-graph">
+                                        
+                                    </div>
+                                </div>
+                                {/* top selling categeries */}
+                                <div className="daily-stats">
+                                    <div className="daily-stats-header">
+                                        <div className="daily-stats-title">Top selling categories</div>
+                                        <div className="daily-stats-title">
+                                            <select className="select-duration" name="sales" id="">
+                                                <option value="">Monthly</option>
+                                                <option value="">Weekly</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="stats-content sales-graph">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-lg-4 right-side row">
+                                <div className="recent-card" >
+                                    <div className="recent-title">Recent Orders</div>
+                                    <div className="recent-content">
+                                        <div className="recent-item"></div>
+                                        <div className="recent-item"></div>
+                                        <div className="recent-item"></div>
+                                    </div>
+                                </div>
+                                <div className="top-selling recent-card" >
+                                    <div className="recent-title">Recent Orders</div>
+                                    <div className="recent-content">
+                                        <div className="ts-item"></div>
+                                        <div className="ts-item"></div>
+                                        <div className="ts-item"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        </div>
+
+         </div>
     );
 }
 
 
-export default Dasboard;
+export default Dashboard;
