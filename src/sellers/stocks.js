@@ -12,34 +12,125 @@ var Stocks= ()=>{
         var addItemBtn = document.getElementById("add-item-btn");
         var cancelEntry = document.getElementById("add-item-cancel-btn");
         var saveEntry = document.getElementById("add-item-save-btn");
-        var form = document.getElementById("stock-form");
+        var tableBody = document.getElementById("table-body");
+
+        /*
+           Using a websocket here to get realtime updates after
+           adding new stocks to the database  
+        */
+        
+        // establishing a connection
+        var socket = new WebSocket("ws:localhost:9000/stocks");
+
+        // sending data to retrive data
+        socket.onopen = (event)=>{
+            console.log(socket.readyState);
+            socket.send("Connected");
+        }
+        
+        // receives data each time the database is updated
+        socket.onmessage = (dataString)=>{
+            /**
+             * data is sent in string format
+             * so it has to be converted to json using JSON.parse(str)
+             */
+            var data = JSON.parse(dataString.data);
+            console.log(data)
+            // reseting table body content
+            tableBody.innerHTML = "";
+
+                // publising data to table body
+                data.data.forEach( doc => {
+                    console.log(doc);
+
+                    // updating table
+                    tableBody.insertAdjacentHTML('afterbegin', 
+                        `
+                            <tr id="${doc.id}">
+                                <td>${doc.name}</td>
+                                <td>${doc.price}</td>
+                                <td>${doc.quantity} ${doc.unit}</td>
+                                <td>${doc.brand}</td>
+                                <td>${doc.category.toString().toUpperCase()}</td>
+                                <td>${doc.color}</td>
+                                <td>${new Date(doc.updatedOn._seconds * 1000).toDateString()}</td>
+                                <td>${new Date(doc.createdOn._seconds * 1000).toDateString()}</td>
+                            </tr>
+                        `
+                    );
+                });
+        };
+
+        // closing socket connection when user leaves page
+        document.onclose = () =>{
+            socket.close();
+        }        
 
         // Add item
         addItemBtn.onclick = ()=>{
             addItemContainer.style.display = "flex";
         }
 
-        saveEntry.onclick = (event)=>{
-            event.preventDefault();
+        // save item
+        saveEntry.onclick = async (event)=>{
 
-            var selectBoxes = [
-                document.getElementById("color").value, 
-                document.getElementById("unit").value, 
-                document.getElementById("category").value, 
-                document.getElementById("brand").value, 
+            //validation
+            var temp = [
+                document.getElementById("name").value.trim(),
+                document.getElementById("price").value.trim(),
+                document.getElementById("quantity").value.trim(),
+                document.getElementById("description").value.trim()
             ]
 
-            if(selectBoxes.includes("0")){
-                alert("All fields are required");
-            }else{
-                form.submit();
+            if (temp.includes("")){
+                alert("All fields required");
+                return
             }
+
+            // data to be sent
+            var data = {
+                "id": null,
+                "sellerId": "DSErqrq545dsDh",
+                "name": document.getElementById("name").value.trim(),
+                "quantity": parseFloat(document.getElementById("quantity").value.trim()),
+                "price": parseFloat(document.getElementById("price").value.trim()),
+                "description": document.getElementById("description").value.trim(),
+                "color": document.getElementById("color").value.trim(),
+                "unit": document.getElementById("unit").value.trim(),
+                "category": document.getElementById("category").value.trim(),
+                "brand": document.getElementById("brand").value.trim(),
+                "createdOn": null,
+                "updatedOn": null,
+                "rating": null
+            }
+
+            // endpoint
+            var url = "http://localhost:9000/stocks"
+            var method = "POST"
+
+            // posting data
+            await fetch(url,{
+                method: method,
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                console.log(data);
+                // LoadData();
+            })
+            .catch(error=>console.log(error));
+
         }
 
         cancelEntry.onclick = ()=>{
-            if(window.confirm("Your progress will not be saved.\nContinue?")){
-                addItemContainer.style.display = "none";
-            }
+            // if(window.confirm("Your progress will not be saved.\nContinue?")){
+            //     addItemContainer.style.display = "none";
+            // }
+            addItemContainer.style.display = "none";
         }
 
         var showSideNav = ()=>{
@@ -61,6 +152,7 @@ var Stocks= ()=>{
             actionBar.style.backgroundColor = "white";
             localStorage.setItem("side-bar-state", "false");
         }
+
         switcher.onclick = ()=>{
             if(sideNav.style.left == "-320px"){
                 showSideNav();
@@ -96,6 +188,7 @@ var Stocks= ()=>{
                 closeDrawer.style.display = "block";
             }
         }
+
         initSideNav();
     },[]);
     return (
@@ -108,9 +201,9 @@ var Stocks= ()=>{
                 <hr />
                 <div className="side-nav-link dashboard"><a href="/">  <i className="fa fa-tachometer-alt"></i> Dashboard</a></div>
                 <div className="side-nav-link stocks"><a className="active-side-link"  href="/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
-                <div className="side-nav-link orders"><a href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
-                <div className="side-nav-link offers"><a href=""> <i className="fa fa-truck"></i> Orders</a></div>
-                <div className="side-nav-link reports"><a href=""> <i className="fa fa-chart-line"></i> Reports</a></div>
+                <div className="side-nav-link offers"><a href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
+                <div className="side-nav-link orders"><a href="/orders"> <i className="fa fa-truck"></i> Orders</a></div>
+                <div className="side-nav-link reports"><a href="/reports"> <i className="fa fa-chart-line"></i> Reports</a></div>
             </div>
         </div>
         <div id="body-container">
@@ -155,7 +248,7 @@ var Stocks= ()=>{
                             <th>Last Update</th>
                             <th>Created On</th>
                         </thead>
-                        <tbody>
+                        <tbody id="table-body">
                             <tr>
                                 <td>Rice</td>
                                 <td>Rs. 40</td>
@@ -193,7 +286,7 @@ var Stocks= ()=>{
         </div>
         {/* Add new item */}
         <div id="add-item-main-container" className="add-item-dark-container">
-                <form id="stock-form" action="" method="POST">
+                <form id="stock-form" method="POST">
                     <div className="add-item-container">
                         <div className="add-item-header">New Stock</div>
                         <div className="container">
@@ -201,45 +294,53 @@ var Stocks= ()=>{
                                 <div className="add-item-left-container col-md-6">
                                     <div style={{margin: 0}} className="form-group col-12 add-item-labels">
                                         <label htmlFor="name">Product Name</label>
-                                        <input name="name" type="text" className="form-control" required/>
+                                        <input id="name" type="text" className="form-control" required/>
                                     </div>
                                     <div className="row">
                                         <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="price">Price</label>
-                                            <input name="price" type="number" min="1" className="form-control" required/>
+                                            <label htmlFor="price">Price  (₹)</label>
+                                            <input id="price" type="number" min="1" className="form-control" required/>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="color">Color</label>
                                             <select name="color" id="color" className="form-control" required>
-                                                <option value="0" selected disabled>-- Select a color --</option>
+                                                <option value="red" selected>Red</option>
+                                                <option value="white">White</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="quantity">Quantity</label>
-                                            <input name="quantity" type="number" min="1" className="form-control" required/>
+                                            <input id="quantity" type="number" min="1" className="form-control" required/>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="unit">Unit</label>
                                             <select name="unit" id="unit" className="form-control" required>
-                                                <option value="0" selected disabled>-- Select a unit --</option>
+                                                <option value="kg" selected>kg</option>
+                                                <option value="pounds">Pounds</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="category">Category</label>
                                             <select name="category" id="category" className="form-control" required>
-                                                <option value="0" selected disabled>-- Select a category --</option>
+                                                <option value="all" selected>All Categories</option>
+                                                <option value="cats">Cats</option>
+                                                <option value="dogs">Dogs</option>
+                                                <option value="birds">Birds</option>
+                                                <option value="hamsters">Hamsters</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="brand">Brand</label>
                                             <select name="brand" id="brand" className="form-control" required>
-                                                <option value="0" selected disabled>-- Select a brand --</option>
+                                                <option value="eukanuba">Eukanuba</option>
+                                                <option value="purina">Purina</option>
+                                                <option value="hillspet">Hill's Pet Nutrition</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div className="form-group col-12 add-item-labels">
                                         <label htmlFor="description">Description</label>
-                                        <textarea name="description" rows="7" className="form-control" required></textarea>
+                                        <textarea id="description" rows="7" className="form-control" required></textarea>
                                     </div>
                                 </div>
                                 <div className="add-item-right-container col-md-6">
@@ -253,7 +354,7 @@ var Stocks= ()=>{
                         </div>
                         <div className="add-item-buttons">
                             <button type="button" id="add-item-cancel-btn" className="add-item-cancel">Cancel</button>
-                            <button type="submit" id="add-item-save-btn" className="add-item-save">Save</button>
+                            <button type="button" id="add-item-save-btn" className="add-item-save">Save</button>
                         </div>
                     </div>
                 </form>
