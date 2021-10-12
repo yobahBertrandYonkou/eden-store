@@ -13,15 +13,31 @@ var Stocks= ()=>{
         var cancelEntry = document.getElementById("add-item-cancel-btn");
         var saveEntry = document.getElementById("add-item-save-btn");
         var tableBody = document.getElementById("table-body");
-
         /**
          * Handling context menu for stock item
          */
         
-        tableBody.oncontextmenu = (event) => {
+        tableBody.oncontextmenu = (itemEvent) => {
             // checking whether user has made a right click on the mouse
-            if(event.button == 2){
-                event.preventDefault();
+            if(itemEvent.button == 2){
+                itemEvent.preventDefault();
+                
+                // clear selected item 
+                for (var index = 0; index < tableBody.childElementCount; index++ ){
+                    tableBody.children[index].style.backgroundColor = "white";
+                }
+
+                // making sure a table data was clicked
+                if (itemEvent.target.nodeName.toString() != "TD"){
+                    return
+                }
+
+                // gets item id
+                console.log(itemEvent.path[1])
+                var selectedItem = itemEvent.path[1];
+                
+                selectedItem.style.backgroundColor = "rgba(106,121,183, 0.3)";
+                
                 // ref to c-menu
                 var cMenu = document.getElementById('c-menu');
 
@@ -29,8 +45,8 @@ var Stocks= ()=>{
                 cMenu.style.display = "none";
 
                 // onclick record
-                var clientX = event.clientX;
-                var clientY = event.clientY;
+                var clientX = itemEvent.clientX;
+                var clientY = itemEvent.clientY;
 
                 // positioning c-menu
                 cMenu.style.transform = `translate(${clientX}px, ${clientY}px)`;
@@ -39,13 +55,36 @@ var Stocks= ()=>{
                 cMenu.style.display = "block";
 
                 // close menu on left click or wheel click
-                document.onmouseup = (event) => {
+                window.onmouseup = (event) => {
                     if (event.button != 2){
                         cMenu.style.display = "none";
                     }
                 }
+                
+                // listeners for each menu item
+                cMenu.onclick = async (cEvent) => {
+                    console.log(cEvent.target.id)
+                    var cMenuOptionId = cEvent.target.id;
 
-                console.log(event);
+                    if(cMenuOptionId == "cm-delete"){
+                        // deleting item
+                        await fetch("http://localhost:9000/stocks",{
+                            method: "DELETE",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({id: selectedItem.id.toString()})
+                        })
+                        .then(response => response.json())
+                        .then(response => console.log(response))
+                        .catch(error => console.log(error));
+                    }else if(cMenuOptionId == "cm-edit"){
+
+                    }else if(cMenuOptionId == "cm-details"){
+
+                    }
+                }
+
                 return false
             }
         }
@@ -75,9 +114,13 @@ var Stocks= ()=>{
             // reseting table body content
             tableBody.innerHTML = "";
 
+            if(data.data.length == 0){
+                console.log("No data");
+                tableBody.innerHTML = `<tr style="border: none;"><td colspan="8" style="border: none; padding-top: 30px; text-align: center">No stocks</td></tr>`;
+            }
+
                 // publising data to table body
                 data.data.forEach( doc => {
-                    console.log(doc);
 
                     // updating table
                     tableBody.insertAdjacentHTML('afterbegin', 
@@ -368,9 +411,9 @@ var Stocks= ()=>{
 
             {/* Context menu */}
             <div id="c-menu" className="context-menu-container">
-                <div className="cm-option"><i style={{color: "white"}} className="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Delete</div>
-                <div className="cm-option"><i style={{color: "white"}} className="fas fa-pen-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Update</div>
-                <div className="cm-option"><i style={{color: "white"}} className="fas fa-ellipsis-h"></i>&nbsp;&nbsp;&nbsp;&nbsp; Details</div>
+                <div id="cm-delete" className="cm-option"><i style={{color: "white"}} className="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Delete</div>
+                <div id="cm-edit" className="cm-option"><i style={{color: "white"}} className="fas fa-pen-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Edit</div>
+                <div id="cm-details" className="cm-option"><i style={{color: "white"}} className="fas fa-ellipsis-h"></i>&nbsp;&nbsp;&nbsp;&nbsp; Details</div>
             </div>
         </div>
     );

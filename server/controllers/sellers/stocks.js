@@ -20,7 +20,7 @@ router.use((req, res, next)=>{
 router.ws('/', async (ws, req) => {
     console.log("New Socket created");
     // fetching all stocks
-    await firestore.collection("products").orderBy("updatedOn").onSnapshot((docs)=>{
+    await firestore.collection("products").orderBy("updatedOn", "desc").onSnapshot((docs)=>{
         console.log(docs.docs);
         var data = [];
         docs.docs.forEach(doc => {
@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
     // setting id and rating value
 
     /*
-        Stock id format STK-CATEGORY-DATE 
+        Stock id format STK-CATEGORY-DATE-hhmmss 
         CATEGORY can take (CT - CATS, HT - HAMSTERS, BD - BIRDS, - ALL - ALL, DG - DOGS)
         DATE(ddmmyyy) without separators
     */
@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
         "all": "ALL" 
     }
 
-    data["id"] = `STK-${categories[req.body.category]}-${new Date().toJSON().substring(0, 10).split("-").reverse().join("")}`;
+    data["id"] = `STK-${categories[req.body.category]}-${new Date().toJSON().substring(0, 10).split("-").reverse().join("")}-${new Date().toTimeString().substring(0,8).split(":").join("")}`;
     data['createdOn'] = new Date();
     data['updatedOn'] = new Date();
 
@@ -83,7 +83,6 @@ router.post('/', async (req, res) => {
         console.log(error);
     });
 
-    
 });
 
 // updating stock
@@ -92,8 +91,28 @@ router.put('/', (req, res) => {
 });
 
 // deleting stock
-router.delete('/', (req, res) => {
-    res.json({"respond": "delete stock"});
+router.delete('/', async (req, res) => {
+    // deleting stock
+    console.log(req.body.id);
+    await firestore.collection("products").where("id", "==", req.body.id).get()
+    .then(response => {
+        console.log(response);
+
+        response.docs.forEach(async (doc) => {
+            await firestore.collection("products").doc(doc.id).delete()
+            .then(response => {
+                console.log(response);
+                res.json({"respond": "Stock successfully deleted stock"});
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        });
+    })
+    .catch(error => {
+        console.log(error);
+    });
+    
 });
 
 router.all('/', (req, res, next) => {
