@@ -110,7 +110,7 @@ var Stocks= ()=>{
         // sending data to retrive data
         socket.onopen = (event)=>{
             // console.log(socket.readyState);
-            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
         }
         
         // receives data each time the database is updated
@@ -161,7 +161,7 @@ var Stocks= ()=>{
             console.log(stkFrom.value);
             console.log(stkTo.value);
 
-            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
         }
 
         stkFrom.onchange = ()=>{
@@ -177,13 +177,23 @@ var Stocks= ()=>{
             }
             
             // sending prameters to socket (server)
-            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
         }
+
         stkTo.onchange = ()=>{
             console.log(stkCategory.value);
             console.log(stkFrom.value);
             console.log(stkTo.value);
-            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+        }
+
+        stkSearch.onkeyup = (event) => {
+            var acceptedChars = ['backspace', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', ']', '^', '_', ' ']
+            console.log(event.code.toString() == "Backspace")
+            
+            if(acceptedChars.includes(event.key.toString()) || event.code.toString() == "Backspace"){
+                socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            }
         }
         
         // Add item
@@ -347,7 +357,7 @@ var Stocks= ()=>{
                         <option value="birds">Birds</option>
                         <option value="hamsters">Hamsters</option>
                     </select>
-                    <input id="skt-search" type="search" placeholder="Search for items" />
+                    <input id="stk-search" type="search" placeholder="Search for items name" />
                     <div className="date-filter">
                         <input id="from-date" type="date" className="from-date" /> to {' '}
                         <input id="to-date" type="date" className="to-date" />

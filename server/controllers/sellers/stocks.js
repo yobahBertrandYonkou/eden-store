@@ -55,8 +55,14 @@ router.ws('/', (ws, req) => {
             var data = [];
             docs.docs.forEach(doc => {
                 // filter category here
-                if (doc.data().category == msg.category){
-                    data.unshift(doc.data());
+                if (msg.search != ""){
+                    if (doc.data().category == msg.category && doc.data().name.toLowerCase().includes(msg.search.toLowerCase())){
+                        data.unshift(doc.data());
+                    }
+                }else{
+                    if (doc.data().category == msg.category){
+                        data.unshift(doc.data());
+                    }
                 }
                 
             });
