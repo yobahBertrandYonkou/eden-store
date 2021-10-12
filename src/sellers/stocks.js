@@ -11,10 +11,29 @@ var Stocks= ()=>{
         var addItemContainer = document.getElementById("add-item-main-container");
         var addItemBtn = document.getElementById("add-item-btn");
         var cancelEntry = document.getElementById("add-item-cancel-btn");
+        var saveEntry = document.getElementById("add-item-save-btn");
+        var form = document.getElementById("stock-form");
 
         // Add item
         addItemBtn.onclick = ()=>{
             addItemContainer.style.display = "flex";
+        }
+
+        saveEntry.onclick = (event)=>{
+            event.preventDefault();
+
+            var selectBoxes = [
+                document.getElementById("color").value, 
+                document.getElementById("unit").value, 
+                document.getElementById("category").value, 
+                document.getElementById("brand").value, 
+            ]
+
+            if(selectBoxes.includes("0")){
+                alert("All fields are required");
+            }else{
+                form.submit();
+            }
         }
 
         cancelEntry.onclick = ()=>{
@@ -174,68 +193,70 @@ var Stocks= ()=>{
         </div>
         {/* Add new item */}
         <div id="add-item-main-container" className="add-item-dark-container">
-                <div className="add-item-container">
-                    <div className="add-item-header">New Stock</div>
-                    <div className="container">
-                        <div className="row">
-                            <div className="add-item-left-container col-md-6">
-                                <div style={{margin: 0}} className="form-group col-12 add-item-labels">
-                                    <label htmlFor="name">Product Name</label>
-                                    <input name="name" type="text" className="form-control" />
+                <form id="stock-form" action="" method="POST">
+                    <div className="add-item-container">
+                        <div className="add-item-header">New Stock</div>
+                        <div className="container">
+                            <div className="row">
+                                <div className="add-item-left-container col-md-6">
+                                    <div style={{margin: 0}} className="form-group col-12 add-item-labels">
+                                        <label htmlFor="name">Product Name</label>
+                                        <input name="name" type="text" className="form-control" required/>
+                                    </div>
+                                    <div className="row">
+                                        <div className="form-group col-md-6 add-item-labels">
+                                            <label htmlFor="price">Price</label>
+                                            <input name="price" type="number" min="1" className="form-control" required/>
+                                        </div>
+                                        <div className="form-group col-md-6 add-item-labels">
+                                            <label htmlFor="color">Color</label>
+                                            <select name="color" id="color" className="form-control" required>
+                                                <option value="0" selected disabled>-- Select a color --</option>
+                                            </select>
+                                        </div>
+                                        <div className="form-group col-md-6 add-item-labels">
+                                            <label htmlFor="quantity">Quantity</label>
+                                            <input name="quantity" type="number" min="1" className="form-control" required/>
+                                        </div>
+                                        <div className="form-group col-md-6 add-item-labels">
+                                            <label htmlFor="unit">Unit</label>
+                                            <select name="unit" id="unit" className="form-control" required>
+                                                <option value="0" selected disabled>-- Select a unit --</option>
+                                            </select>
+                                        </div>
+                                        <div className="form-group col-md-6 add-item-labels">
+                                            <label htmlFor="category">Category</label>
+                                            <select name="category" id="category" className="form-control" required>
+                                                <option value="0" selected disabled>-- Select a category --</option>
+                                            </select>
+                                        </div>
+                                        <div className="form-group col-md-6 add-item-labels">
+                                            <label htmlFor="brand">Brand</label>
+                                            <select name="brand" id="brand" className="form-control" required>
+                                                <option value="0" selected disabled>-- Select a brand --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="form-group col-12 add-item-labels">
+                                        <label htmlFor="description">Description</label>
+                                        <textarea name="description" rows="7" className="form-control" required></textarea>
+                                    </div>
                                 </div>
-                                <div className="row">
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="price">Price</label>
-                                        <input name="price" type="number" min="1" className="form-control" />
+                                <div className="add-item-right-container col-md-6">
+                                    <div className="item-photos-top">
+                                        <div className="title">Photos</div>
+                                        <div className="add-photo">Add Photo</div>
                                     </div>
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="color">Color</label>
-                                        <select name="color" id="color" className="form-control">
-                                            <option value="0" selected disabled>-- Select a color --</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="quantity">Quantity</label>
-                                        <input name="quantity" type="number" min="1" className="form-control" />
-                                    </div>
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="unit">Unit</label>
-                                        <select name="unit" id="unit" className="form-control">
-                                            <option value="0" selected disabled>-- Select a unit --</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="category">Category</label>
-                                        <select name="category" id="category" className="form-control">
-                                            <option value="0" selected disabled>-- Select a category --</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-6 add-item-labels">
-                                        <label htmlFor="brand">Brand</label>
-                                        <select name="brand" id="brand" className="form-control">
-                                            <option value="0" selected disabled>-- Select a brand --</option>
-                                        </select>
-                                    </div>
+                                    <div className="item-photos-container"></div>
                                 </div>
-                                <div className="form-group col-12 add-item-labels">
-                                    <label htmlFor="description">Description</label>
-                                    <textarea name="description" rows="7" className="form-control"></textarea>
-                                </div>
-                            </div>
-                            <div className="add-item-right-container col-md-6">
-                                <div className="item-photos-top">
-                                    <div className="title">Photos</div>
-                                    <div className="add-photo">Add Photo</div>
-                                </div>
-                                <div className="item-photos-container"></div>
                             </div>
                         </div>
+                        <div className="add-item-buttons">
+                            <button type="button" id="add-item-cancel-btn" className="add-item-cancel">Cancel</button>
+                            <button type="submit" id="add-item-save-btn" className="add-item-save">Save</button>
+                        </div>
                     </div>
-                    <div className="add-item-buttons">
-                        <div id="add-item-cancel-btn" className="add-item-cancel">Cancel</div>
-                        <div className="add-item-save">Save</div>
-                    </div>
-                </div>
+                </form>
             </div>
        
         </div>

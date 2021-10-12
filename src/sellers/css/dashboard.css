@@ -465,6 +465,7 @@ input:focus, select:focus, textarea:focus{
     padding: 10px;
     color: white;
     user-select: none;
+    border: none;
 }
 
 .add-item-cancel{
