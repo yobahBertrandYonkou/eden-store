@@ -14,6 +14,42 @@ var Stocks= ()=>{
         var saveEntry = document.getElementById("add-item-save-btn");
         var tableBody = document.getElementById("table-body");
 
+        /**
+         * Handling context menu for stock item
+         */
+        
+        tableBody.oncontextmenu = (event) => {
+            // checking whether user has made a right click on the mouse
+            if(event.button == 2){
+                event.preventDefault();
+                // ref to c-menu
+                var cMenu = document.getElementById('c-menu');
+
+                // closing any opened context menu
+                cMenu.style.display = "none";
+
+                // onclick record
+                var clientX = event.clientX;
+                var clientY = event.clientY;
+
+                // positioning c-menu
+                cMenu.style.transform = `translate(${clientX}px, ${clientY}px)`;
+
+                // display c-menu
+                cMenu.style.display = "block";
+
+                // close menu on left click or wheel click
+                document.onmouseup = (event) => {
+                    if (event.button != 2){
+                        cMenu.style.display = "none";
+                    }
+                }
+
+                console.log(event);
+                return false
+            }
+        }
+
         /*
            Using a websocket here to get realtime updates after
            adding new stocks to the database  
@@ -46,7 +82,7 @@ var Stocks= ()=>{
                     // updating table
                     tableBody.insertAdjacentHTML('afterbegin', 
                         `
-                            <tr id="${doc.id}">
+                            <tr title="Right Click for more options." id="${doc.id}">
                                 <td>${doc.name}</td>
                                 <td>${doc.price}</td>
                                 <td>${doc.quantity} ${doc.unit}</td>
@@ -248,38 +284,8 @@ var Stocks= ()=>{
                             <th>Last Update</th>
                             <th>Created On</th>
                         </thead>
-                        <tbody id="table-body">
-                            <tr>
-                                <td>Rice</td>
-                                <td>Rs. 40</td>
-                                <td>Rs. 549kg</td>
-                                <td>BMB Brands</td>
-                                <td>Dog, Cats</td>
-                                <td>White</td>
-                                <td>20-04-2021</td>
-                                <td>20-04-2021</td>
-                            </tr>
-                            <tr>
-                                <td>Rice</td>
-                                <td>Rs. 40</td>
-                                <td>Rs. 549kg</td>
-                                <td>BMB Brands</td>
-                                <td>Dog, Cats</td>
-                                <td>White</td>
-                                <td>20-04-2021</td>
-                                <td>20-04-2021</td>
-                            </tr>
-                            <tr>
-                                <td>Rice</td>
-                                <td>Rs. 40</td>
-                                <td>Rs. 549kg</td>
-                                <td>BMB Brands</td>
-                                <td>Dog, Cats</td>
-                                <td>White</td>
-                                <td>20-04-2021</td>
-                                <td>20-04-2021</td>
-                            </tr>
-                        </tbody>
+                        {/* stock items */}
+                        <tbody id="table-body"></tbody>
                     </table>
                 </div>
             </div>
@@ -359,7 +365,13 @@ var Stocks= ()=>{
                     </div>
                 </form>
             </div>
-       
+
+            {/* Context menu */}
+            <div id="c-menu" className="context-menu-container">
+                <div className="cm-option"><i style={{color: "white"}} className="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Delete</div>
+                <div className="cm-option"><i style={{color: "white"}} className="fas fa-pen-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Update</div>
+                <div className="cm-option"><i style={{color: "white"}} className="fas fa-ellipsis-h"></i>&nbsp;&nbsp;&nbsp;&nbsp; Details</div>
+            </div>
         </div>
     );
 }
