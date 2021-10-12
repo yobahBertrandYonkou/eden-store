@@ -13,6 +13,11 @@ var Stocks= ()=>{
         var cancelEntry = document.getElementById("add-item-cancel-btn");
         var saveEntry = document.getElementById("add-item-save-btn");
         var tableBody = document.getElementById("table-body");
+        var stkCategory = document.getElementById('filter-drop');
+        var stkFrom = document.getElementById('from-date');
+        var stkTo = document.getElementById('to-date');
+        var stkSearch = document.getElementById('stk-search');
+
         /**
          * Handling context menu for stock item
          */
@@ -33,7 +38,7 @@ var Stocks= ()=>{
                 }
 
                 // gets item id
-                console.log(itemEvent.path[1])
+                // console.log(itemEvent.path[1])
                 var selectedItem = itemEvent.path[1];
                 
                 selectedItem.style.backgroundColor = "rgba(106,121,183, 0.3)";
@@ -58,12 +63,17 @@ var Stocks= ()=>{
                 window.onmouseup = (event) => {
                     if (event.button != 2){
                         cMenu.style.display = "none";
+
+                        // clear selected item 
+                        for (var index = 0; index < tableBody.childElementCount; index++ ){
+                            tableBody.children[index].style.backgroundColor = "white";
+                        }
                     }
                 }
                 
                 // listeners for each menu item
                 cMenu.onclick = async (cEvent) => {
-                    console.log(cEvent.target.id)
+                    // console.log(cEvent.target.id)
                     var cMenuOptionId = cEvent.target.id;
 
                     if(cMenuOptionId == "cm-delete"){
@@ -99,8 +109,8 @@ var Stocks= ()=>{
 
         // sending data to retrive data
         socket.onopen = (event)=>{
-            console.log(socket.readyState);
-            socket.send("Connected");
+            // console.log(socket.readyState);
+            socket.send(JSON.stringify({category: "all", search: "", from: "", to: "", type: "filter"}));
         }
         
         // receives data each time the database is updated
@@ -110,7 +120,7 @@ var Stocks= ()=>{
              * so it has to be converted to json using JSON.parse(str)
              */
             var data = JSON.parse(dataString.data);
-            console.log(data)
+            // console.log(data)
             // reseting table body content
             tableBody.innerHTML = "";
 
@@ -145,6 +155,39 @@ var Stocks= ()=>{
             socket.close();
         }        
 
+        // filtering
+        stkCategory.onchange = ()=>{
+            console.log(stkCategory.value);
+            console.log(stkFrom.value);
+            console.log(stkTo.value);
+
+            if(stkFrom.value == "" && stkTo.value == ""){
+                socket.send(JSON.stringify({category: "load-all", search: "", from: "", to: "", type: "filter"}));
+            }
+        }
+
+        stkFrom.onchange = ()=>{
+            console.log(stkCategory.value);
+            console.log(stkFrom.value);
+            console.log(stkTo.value);
+            // set min date and of "to" to selected date of from
+            // current date will be changed if current is less than min date
+            stkTo.setAttribute("min", stkFrom.value);
+
+            if(stkFrom.value > stkTo.value){
+                stkTo.value = stkFrom.value;
+            }
+            
+            // sending prameters to socket (server)
+            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value, type: "filter"}));
+        }
+        stkTo.onchange = ()=>{
+            console.log(stkCategory.value);
+            console.log(stkFrom.value);
+            console.log(stkTo.value);
+            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value, type: "filter"}));
+        }
+        
         // Add item
         addItemBtn.onclick = ()=>{
             addItemContainer.style.display = "flex";
@@ -300,16 +343,16 @@ var Stocks= ()=>{
                 {/* Filters */}
                 <div className="top-options-container">
                     <select name="" id="filter-drop">
-                        <option value="">All Categories</option>
-                        <option value="">Cats</option>
-                        <option value="">Dogs</option>
-                        <option value="">Birds</option>
-                        <option value="">Hamsters</option>
+                        <option value="all">All Categories</option>
+                        <option value="cats">Cats</option>
+                        <option value="dogs">Dogs</option>
+                        <option value="birds">Birds</option>
+                        <option value="hamsters">Hamsters</option>
                     </select>
-                    <input type="search" placeholder="Search for items" />
+                    <input id="skt-search" type="search" placeholder="Search for items" />
                     <div className="date-filter">
-                        <input type="date" className="from-date" /> to {' '}
-                        <input type="date" className="to-date" />
+                        <input id="from-date" type="date" className="from-date" /> to {' '}
+                        <input id="to-date" type="date" className="to-date" />
                     </div>
                     <div id="add-item-btn" className="new-item-btn">New Stock</div>
                 </div>

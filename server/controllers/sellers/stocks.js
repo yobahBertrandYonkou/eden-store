@@ -16,19 +16,51 @@ router.use((req, res, next)=>{
     next();
 });
 
-// fetches all stocks from the database (firebase/firestore)
-router.ws('/', async (ws, req) => {
+var snapShotTracker = null;
+
+// fetches all stocks from the database (firebase/firestore) and handling searches
+router.ws('/', (ws, req) => {
     console.log("New Socket created");
-    // fetching all stocks
-    await firestore.collection("products").orderBy("updatedOn", "desc").onSnapshot((docs)=>{
-        console.log(docs.docs);
-        var data = [];
-        docs.docs.forEach(doc => {
-            data.unshift(doc.data());
+    // receiving search filters
+    ws.on("message", async (message) => {
+        var msg = JSON.parse(message);
+        console.log(snapShotTracker)
+        console.log(msg)
+        // unsubscribe old data
+        if (snapShotTracker != null){
+            snapShotTracker();
+            console.log("Unsubscribed");
+        }
+        
+        // defining filter condition
+        if(msg.from == "" && msg.to == ""){
+            var conditions = firestore.collection("products").orderBy("updatedOn")
+        }else if(msg.from != "" && msg.to == ""){
+            var conditions = firestore.collection("products")
+            .where("updatedOn", ">=", new Date(msg.from)).orderBy("updatedOn")
+        }else if (msg.from == "" && msg.to != ""){
+            var conditions = firestore.collection("products")
+            .where("updatedOn", "<=", new Date(msg.to)).orderBy("updatedOn")
+        }else if(msg.from != "" && msg.to != ""){
+            var conditions = firestore.collection("products")
+            .where("updatedOn", ">=", new Date(msg.from)).where("updatedOn", "<=", new Date(msg.to)).orderBy("updatedOn")
+        }
+        
+        // fetching all stocks according to filter condition
+        snapShotTracker = conditions.onSnapshot((docs)=>{
+            // console.log(docs.docs);
+
+            // filter category here
+            // .where("category", "==", msg.category)
+            var data = [];
+            docs.docs.forEach(doc => {
+                data.unshift(doc.data());
+            });
+            ws.send(JSON.stringify({"data": data}));
+            // console.log(data);
+            // ws.send({"data": data});
         });
-        ws.send(JSON.stringify({"data": data}));
-        // console.log(data);
-        // ws.send({"data": data});
+        console.log(snapShotTracker)
     });
 
     // logging socket closed
