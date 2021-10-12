@@ -1,6 +1,6 @@
 const express = require('express');
 const firebase = require('firebase-admin');
-var serviceAccount = require("../credentails/serviceAccountKey.json");
+var serviceAccount = require("../crEDENtails/serviceAccountKey.json");
 const router = express.Router();
 
 // firebase  initialization

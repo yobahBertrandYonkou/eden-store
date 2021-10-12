@@ -35,7 +35,7 @@ var Header = ()=>{
                 {/* Middle row */}
                 <div className="middle-row">
                     <div className="middle-row-left">
-                    <div className="logo"><FontAwesomeIcon icon={faBars} id="menu-toggler" className="menu-toggler"/> PETBIOS</div>
+                    <div className="logo"><FontAwesomeIcon icon={faBars} id="menu-toggler" className="menu-toggler"/> EDEN (Pet app)</div>
                     <div className="search">
                         <select name="search-categories" id="search-categories" className="search-categories">
                             <option value="all">All Categories</option>

@@ -6,7 +6,7 @@ var Footer = ()=>{
             <div className="container">
                 <div className="row">
                     <div className="col-lg-4">
-                        <div style={{ fontWeight: "bold", fontSize: "36px"}} className="section-title">PETBIOS</div>
+                        <div style={{ fontWeight: "bold", fontSize: "36px"}} className="section-title">EDEN</div>
                         <div className="normal-string">The one-stop solution for you pet’s needs. Giving your pet a happy life</div>
                     </div>
                     <div className="footer-section col-lg-4">
@@ -23,7 +23,7 @@ var Footer = ()=>{
                         <a className="footer-links" href="#">Privacy Policy</a>
                     </div>
                     <div className="col-sm-12 extra-info">
-                        <div className="copy-write">© 2021 PETBIOS. All rights reserved.</div>
+                        <div className="copy-write">© 2021 EDEN. All rights reserved.</div>
                         <a href="#" className="back-to-top footer-links">Back to top</a>
                     </div>
                 </div>
