@@ -110,7 +110,7 @@ var Stocks= ()=>{
         // sending data to retrive data
         socket.onopen = (event)=>{
             // console.log(socket.readyState);
-            socket.send(JSON.stringify({category: "all", search: "", from: "", to: "", type: "filter"}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value}));
         }
         
         // receives data each time the database is updated
@@ -161,9 +161,7 @@ var Stocks= ()=>{
             console.log(stkFrom.value);
             console.log(stkTo.value);
 
-            if(stkFrom.value == "" && stkTo.value == ""){
-                socket.send(JSON.stringify({category: "load-all", search: "", from: "", to: "", type: "filter"}));
-            }
+            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value}));
         }
 
         stkFrom.onchange = ()=>{
@@ -179,13 +177,13 @@ var Stocks= ()=>{
             }
             
             // sending prameters to socket (server)
-            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value, type: "filter"}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value}));
         }
         stkTo.onchange = ()=>{
             console.log(stkCategory.value);
             console.log(stkFrom.value);
             console.log(stkTo.value);
-            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value, type: "filter"}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: "", from: stkFrom.value, to: stkTo.value}));
         }
         
         // Add item

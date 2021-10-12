@@ -33,28 +33,32 @@ router.ws('/', (ws, req) => {
         }
         
         // defining filter condition
+        var conditions;
         if(msg.from == "" && msg.to == ""){
-            var conditions = firestore.collection("products").orderBy("updatedOn")
+            conditions = firestore.collection("products").orderBy("updatedOn")
         }else if(msg.from != "" && msg.to == ""){
-            var conditions = firestore.collection("products")
-            .where("updatedOn", ">=", new Date(msg.from)).orderBy("updatedOn")
+            conditions = firestore.collection("products")
+            .where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).orderBy("updatedOn")
         }else if (msg.from == "" && msg.to != ""){
-            var conditions = firestore.collection("products")
-            .where("updatedOn", "<=", new Date(msg.to)).orderBy("updatedOn")
+            conditions = firestore.collection("products")
+            .where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).orderBy("updatedOn")
         }else if(msg.from != "" && msg.to != ""){
-            var conditions = firestore.collection("products")
-            .where("updatedOn", ">=", new Date(msg.from)).where("updatedOn", "<=", new Date(msg.to)).orderBy("updatedOn")
+            conditions = firestore.collection("products")
+            .where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).orderBy("updatedOn")
         }
         
         // fetching all stocks according to filter condition
         snapShotTracker = conditions.onSnapshot((docs)=>{
             // console.log(docs.docs);
 
-            // filter category here
             // .where("category", "==", msg.category)
             var data = [];
             docs.docs.forEach(doc => {
-                data.unshift(doc.data());
+                // filter category here
+                if (doc.data().category == msg.category){
+                    data.unshift(doc.data());
+                }
+                
             });
             ws.send(JSON.stringify({"data": data}));
             // console.log(data);
