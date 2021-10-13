@@ -444,6 +444,7 @@ input:focus, select:focus, textarea:focus{
 .item-photos-top > .title{
     text-align: center;
     font-size: 12px;
+    padding-bottom: 5px;
 }
 
 .item-photos-container{
@@ -495,7 +496,7 @@ input:focus, select:focus, textarea:focus{
 .photo-preview-div{
     width: 540px;
     height: 540px;
-    border: 1px solid var(--secondary-color);
+    border: 1px solid #d1d1d5;
     border-radius: 5px;
     overflow: hidden;
     user-select: none;
