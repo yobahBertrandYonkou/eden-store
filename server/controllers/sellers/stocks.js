@@ -177,7 +177,14 @@ router.post('/', async (req, res) => {
                 console.log(error);
             });
 
-            console.log(photoUrls)
+           // deleteing temp folder
+           fs.rmdir(path.join(__dirname, `temp/${data.id}/`), { recursive: true, force: true }, (error) => {
+               if (error) throw error;
+
+               console.log("Successfully deleted");
+           });
+
+
         })
         .catch( error => console.log(error));
     });
