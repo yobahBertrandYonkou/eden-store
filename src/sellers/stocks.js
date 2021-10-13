@@ -46,7 +46,6 @@ var Stocks= ()=>{
                 // gets item id
                 // console.log(itemEvent.path[1])
                 var selectedItem = itemEvent.path[1];
-                
                 selectedItem.style.backgroundColor = "rgba(106,121,183, 0.3)";
                 
                 // ref to c-menu
@@ -64,6 +63,11 @@ var Stocks= ()=>{
 
                 // display c-menu
                 cMenu.style.display = "block";
+
+                // handler for no stocks displayed
+                if (selectedItem.id.toString() == "no-stocks-msg"){
+                    cMenu.style.display = "none";
+                }
 
                 // close menu on left click or wheel click
                 window.onmouseup = (event) => {
@@ -188,7 +192,7 @@ var Stocks= ()=>{
 
             if(data.data.length == 0){
                 console.log("No data");
-                tableBody.innerHTML = `<tr style="border: none;"><td colspan="8" style="border: none; padding-top: 30px; text-align: center">No stocks</td></tr>`;
+                tableBody.innerHTML = `<tr id="no-stocks-msg" style="border: none;"><td colspan="8" style="border: none; padding-top: 30px; text-align: center">No stocks</td></tr>`;
             }
 
                 // publising data to table body
