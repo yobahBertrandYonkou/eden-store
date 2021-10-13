@@ -379,6 +379,16 @@ tr:hover{
     background-color: rgba(106,121,183, 0.1);
 }
 
+.table-header-tr:hover{
+    background-color: var(--secondary-color);
+    cursor: auto;
+    opacity: 1;
+}
+
+.table-header-tr{
+    background-color: var(--secondary-color);
+}
+
 .more-details > i{
     padding: 0px;
     border-radius: 100px;

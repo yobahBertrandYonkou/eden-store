@@ -99,7 +99,60 @@ var Stocks= ()=>{
                     }else if(cMenuOptionId == "cm-details"){
                         await fetch(`http://localhost:9000/stocks/${selectedItem.id.toString()}`)
                         .then(response => response.json())
-                        .then(response => console.log(response))
+                        .then(response => {
+                            console.log(response);
+                            var detailsContainer = addItemContainer.cloneNode(true);
+                            detailsContainer.style.display = "flex";
+                            detailsContainer.setAttribute('id', "pdt-details-container");
+                            document.body.insertAdjacentElement("afterbegin", detailsContainer);
+
+                            // getting ref of all fields
+                            var fields = {
+                                "name": detailsContainer.querySelector("#name"),
+                                "quantity": detailsContainer.querySelector("#quantity"),
+                                "price": detailsContainer.querySelector("#price"),
+                                "description": detailsContainer.querySelector("#description"),
+                                "color": detailsContainer.querySelector("#color"),
+                                "unit": detailsContainer.querySelector("#unit"),
+                                "category": detailsContainer.querySelector("#category"),
+                                "brand": detailsContainer.querySelector("#brand"),
+                            }
+
+                            // removing upload btn from thumbnails
+                            detailsContainer.querySelectorAll('.photo-thumbnail').forEach( thumbnail => {
+                                thumbnail.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+                            });
+                            
+                            // changing titles
+                            detailsContainer.querySelector(".title").textContent = "Photos";
+                            detailsContainer.querySelector(".add-item-header").textContent = "Product Details";
+
+                            //changing save/cancle btns
+                            detailsContainer.querySelector(".add-item-buttons").innerHTML = 
+                            `<button type="button" onclick="document.body.removeChild(document.getElementById('pdt-details-container'));" style="width: 100%; background-color: #d1d1d5; color: black;" class="add-item-save">Close</button>`;
+                            
+                            // loading data for input controls
+                            for (var field in fields){
+                                fields[field].value = response[field];
+
+                                // disabling field
+                                fields[field].disabled = true;
+                            }
+                            
+                            // loading images
+                            var images = response['photoUrls'];
+
+                            for(var image in images){
+                                var thElement = detailsContainer.querySelector(`#${image.replace("-", "-th-")}`);
+                                thElement.src = images[image];
+
+                                // onclick to preview image
+                                thElement.onclick = (event) => {
+                                    detailsContainer.querySelector("#photo-preview").src = event.target.src;
+                                }
+                            }
+
+                        })
                         .catch(error => console.log(error));
                     }
                 }
@@ -428,14 +481,16 @@ var Stocks= ()=>{
                 <div className="stock-table-container">
                     <table className="stock-table table">
                         <thead>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Brand</th>
-                            <th>Categories</th>
-                            <th>Color</th>
-                            <th>Last Update</th>
-                            <th>Created On</th>
+                            <tr className="table-header-tr">
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Brand</th>
+                                <th>Categories</th>
+                                <th>Color</th>
+                                <th>Last Update</th>
+                                <th>Created On</th>
+                            </tr>
                         </thead>
                         {/* stock items */}
                         <tbody id="table-body"></tbody>
@@ -462,8 +517,8 @@ var Stocks= ()=>{
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="color">Color</label>
-                                            <select name="color" id="color" className="form-control" required>
-                                                <option value="red" selected>Red</option>
+                                            <select defaultValue="red" name="color" id="color" className="form-control" required>
+                                                <option value="red">Red</option>
                                                 <option value="white">White</option>
                                             </select>
                                         </div>
@@ -473,15 +528,15 @@ var Stocks= ()=>{
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="unit">Unit</label>
-                                            <select name="unit" id="unit" className="form-control" required>
-                                                <option value="kg" selected>kg</option>
+                                            <select defaultValue="kg" name="unit" id="unit" className="form-control" required>
+                                                <option value="kg">kg</option>
                                                 <option value="pounds">Pounds</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="category">Category</label>
-                                            <select name="category" id="category" className="form-control" required>
-                                                <option value="all" selected>All Categories</option>
+                                            <select defaultValue="all" name="category" id="category" className="form-control" required>
+                                                <option value="all">All Categories</option>
                                                 <option value="cats">Cats</option>
                                                 <option value="dogs">Dogs</option>
                                                 <option value="birds">Birds</option>
@@ -504,11 +559,11 @@ var Stocks= ()=>{
                                 </div>
                                 <div className="add-item-right-container col-md-6">
                                     <div className="item-photos-top">
-                                        <div className="title ">Upload Photos (<span style={{fontSize: "10px", color: "blue"}}>Right Click <i class="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Upload/Change | Left Click <i class="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Preview</span>). <span style={{fontStyle: "italic", color: "green"}}>Preferred Photos: Square</span></div>
+                                        <div className="title ">Upload Photos (<span style={{fontSize: "10px", color: "blue"}}>Right Click <i className="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Upload/Change | Left Click <i className="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Preview</span>). <span style={{fontStyle: "italic", color: "green"}}>Preferred Photos: Square</span></div>
                                         {/* <div className="add-photo">Add Photo</div> */}
                                     </div>
                                     <div className="item-photos-container">
-                                        <div class="photo-preview-div">
+                                        <div className="photo-preview-div">
                                             <img id="photo-preview" src={ imgPreviewHolder } className="photo-preview" alt="preview" />
                                         </div>
                                         <div className="photo-thumbnails">
