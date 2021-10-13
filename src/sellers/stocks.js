@@ -480,12 +480,12 @@ var Stocks= ()=>{
                                 </div>
                                 <div className="add-item-right-container col-md-6">
                                     <div className="item-photos-top">
-                                        <div className="title">Upload Photos (<span style={{fontSize: "12px"}}>Right Click <i class="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Upload/Change | Left Click <i class="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Preview</span>)</div>
+                                        <div className="title ">Upload Photos (<span style={{fontSize: "10px", color: "blue"}}>Right Click <i class="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Upload/Change | Left Click <i class="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Preview</span>). <span style={{fontStyle: "italic", color: "green"}}>Preferred Photos: Square</span></div>
                                         {/* <div className="add-photo">Add Photo</div> */}
                                     </div>
                                     <div className="item-photos-container">
                                         <div class="photo-preview-div">
-                                            <img height="540px" width="540px" id="photo-preview" src={ imgPreviewHolder } className="photo-preview" alt="preview" />
+                                            <img id="photo-preview" src={ imgPreviewHolder } className="photo-preview" alt="preview" />
                                         </div>
                                         <div className="photo-thumbnails">
 
