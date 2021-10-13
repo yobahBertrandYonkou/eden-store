@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
 import './css/dashboard.css'
+import imgPreviewHolder from "./images/preview-image.png"
+import imgUploadHolder from "./images/upload-image.png"
+
 var Stocks= ()=>{
 
     useEffect(()=>{
@@ -17,6 +20,7 @@ var Stocks= ()=>{
         var stkFrom = document.getElementById('from-date');
         var stkTo = document.getElementById('to-date');
         var stkSearch = document.getElementById('stk-search');
+        var photoPreview = document.getElementById('photo-preview');
 
         /**
          * Handling context menu for stock item
@@ -199,6 +203,37 @@ var Stocks= ()=>{
         // Add item
         addItemBtn.onclick = ()=>{
             addItemContainer.style.display = "flex";
+
+            var pdtPhotos = document.querySelectorAll(".photo-thumbnail");
+            //handling add photo
+            pdtPhotos.forEach(element => {
+                element.setAttribute("title", "Right click to upload/change photo.\Left click to preview photo.");
+                element.onclick = (event) => {
+                    console.log(event.target.id);
+                    var inputID = event.target.id.toString().replace("th-", "");
+                    var inputElement = document.getElementById(inputID);
+                    if (inputElement.files.length != 0){
+                        photoPreview.src = URL.createObjectURL(inputElement.files[0]);
+                    }
+                }   
+
+                element.oncontextmenu = (event) => {
+                    event.preventDefault();
+                    console.log(event.target.id);
+                    // getting input id
+                    var inputID = event.target.id.toString().replace("th-", "");
+                    // getting input element ref
+                    var inputElement = document.getElementById(inputID);
+
+                    inputElement.onchange = (imgEvent) => {
+                        if (imgEvent.target.value == "") return false;
+                        event.target.src = URL.createObjectURL(imgEvent.target.files[0]);
+                        photoPreview.src =  event.target.src
+                    }
+                    // opening upload window
+                    inputElement.click();
+                }
+            });
         }
 
         // save item
@@ -445,10 +480,38 @@ var Stocks= ()=>{
                                 </div>
                                 <div className="add-item-right-container col-md-6">
                                     <div className="item-photos-top">
-                                        <div className="title">Photos</div>
-                                        <div className="add-photo">Add Photo</div>
+                                        <div className="title">Upload Photos (<span style={{fontSize: "12px"}}>Right Click <i class="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Upload/Change | Left Click <i class="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Preview</span>)</div>
+                                        {/* <div className="add-photo">Add Photo</div> */}
                                     </div>
-                                    <div className="item-photos-container"></div>
+                                    <div className="item-photos-container">
+                                        <div class="photo-preview-div">
+                                            <img height="540px" width="540px" id="photo-preview" src={ imgPreviewHolder } className="photo-preview" alt="preview" />
+                                        </div>
+                                        <div className="photo-thumbnails">
+
+                                            <input type="file" id="photo-1" accept="image/*" hidden/>
+                                            <img width="60px" height="60px" src = { imgUploadHolder } id="photo-th-1" className="photo-thumbnail" alt=""/>
+
+                                            <input type="file" id="photo-2" accept="image/*" hidden/>
+                                            <img src = { imgUploadHolder } id="photo-th-2" className="photo-thumbnail" alt=""/>
+
+                                            <input type="file" id="photo-3" accept="image/*" hidden/>
+                                            <img src = { imgUploadHolder } id="photo-th-3" className="photo-thumbnail" alt=""/>
+
+                                            <input type="file" id="photo-4" accept="image/*" hidden/>
+                                            <img src = { imgUploadHolder } id="photo-th-4" className="photo-thumbnail" alt=""/>
+
+                                            <input type="file" id="photo-5" accept="image/*" hidden/>
+                                            <img src = { imgUploadHolder } id="photo-th-5" className="photo-thumbnail" alt=""/>
+
+                                            <input type="file" id="photo-6" accept="image/*" hidden/>
+                                            <img src = { imgUploadHolder } id="photo-th-6" className="photo-thumbnail" alt=""/>
+
+                                            <input type="file" id="photo-7" accept="image/*" hidden/>
+                                            <img src = { imgUploadHolder } id="photo-th-7" className="photo-thumbnail" alt=""/>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
