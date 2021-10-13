@@ -21,6 +21,7 @@ var Stocks= ()=>{
         var stkTo = document.getElementById('to-date');
         var stkSearch = document.getElementById('stk-search');
         var photoPreview = document.getElementById('photo-preview');
+        var pdtPhotos = document.querySelectorAll(".photo-thumbnail");
 
         /**
          * Handling context menu for stock item
@@ -204,7 +205,6 @@ var Stocks= ()=>{
         addItemBtn.onclick = ()=>{
             addItemContainer.style.display = "flex";
 
-            var pdtPhotos = document.querySelectorAll(".photo-thumbnail");
             //handling add photo
             pdtPhotos.forEach(element => {
                 element.setAttribute("title", "Right click to upload/change photo.\Left click to preview photo.");
@@ -238,6 +238,20 @@ var Stocks= ()=>{
 
         // save item
         saveEntry.onclick = async (event)=>{
+            // getting form
+            var formData = new FormData();
+
+            // handling forms
+            pdtPhotos.forEach(element => {
+                var inputID = element.id.toString().replace("th-", "");
+                var inputElement = document.getElementById(inputID);
+
+                if (inputElement.value != ""){
+                    console.log(inputElement);
+                    formData.append(inputID, inputElement.files[0]);
+                    console.log("here");
+                }
+            });
 
             //validation
             var temp = [
@@ -252,6 +266,7 @@ var Stocks= ()=>{
                 return
             }
 
+            
             // data to be sent
             var data = {
                 "id": null,
@@ -273,14 +288,19 @@ var Stocks= ()=>{
             var url = "http://localhost:9000/stocks"
             var method = "POST"
 
+            // writing data into form data
+            for (var key in data){
+                formData.append(key, data[key]);
+            }
+
             // posting data
             await fetch(url,{
                 method: method,
                 mode: "cors",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
+                // headers: {
+                //     "Content-Type": "application/json"
+                // },
+                body: formData
             })
             .then(response=>response.json())
             .then(data=>{
@@ -489,25 +509,25 @@ var Stocks= ()=>{
                                         </div>
                                         <div className="photo-thumbnails">
 
-                                            <input type="file" id="photo-1" accept="image/*" hidden/>
+                                            <input type="file" id="photo-1" name="photo-1" accept="image/*" hidden/>
                                             <img width="60px" height="60px" src = { imgUploadHolder } id="photo-th-1" className="photo-thumbnail" alt=""/>
 
-                                            <input type="file" id="photo-2" accept="image/*" hidden/>
+                                            <input type="file" id="photo-2" name="photo-2" accept="image/*" hidden/>
                                             <img src = { imgUploadHolder } id="photo-th-2" className="photo-thumbnail" alt=""/>
 
-                                            <input type="file" id="photo-3" accept="image/*" hidden/>
+                                            <input type="file" id="photo-3" name="photo-3" accept="image/*" hidden/>
                                             <img src = { imgUploadHolder } id="photo-th-3" className="photo-thumbnail" alt=""/>
 
-                                            <input type="file" id="photo-4" accept="image/*" hidden/>
+                                            <input type="file" id="photo-4" name="photo-4" accept="image/*" hidden/>
                                             <img src = { imgUploadHolder } id="photo-th-4" className="photo-thumbnail" alt=""/>
 
-                                            <input type="file" id="photo-5" accept="image/*" hidden/>
+                                            <input type="file" id="photo-5" name="photo-5" accept="image/*" hidden/>
                                             <img src = { imgUploadHolder } id="photo-th-5" className="photo-thumbnail" alt=""/>
 
-                                            <input type="file" id="photo-6" accept="image/*" hidden/>
+                                            <input type="file" id="photo-6" name="photo-6" accept="image/*" hidden/>
                                             <img src = { imgUploadHolder } id="photo-th-6" className="photo-thumbnail" alt=""/>
 
-                                            <input type="file" id="photo-7" accept="image/*" hidden/>
+                                            <input type="file" id="photo-7" name="photo-7" accept="image/*" hidden/>
                                             <img src = { imgUploadHolder } id="photo-th-7" className="photo-thumbnail" alt=""/>
 
                                         </div>

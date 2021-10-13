@@ -5,13 +5,14 @@ var app = express();
 const expressWS = require('express-ws')(app);
 const stocks = require("./controllers/sellers/stocks")
 const cors = require('cors');
-const router = express.Router();
+const fileUpload = require("express-fileupload");
 
-
-router.ws("/");
 
 // enabling cross-origin resource sharing (cors)
 app.use(cors());
+
+// file upload middleware
+app.use(fileUpload());
 
 // using body parser
 app.use(express.json({extended: true}));

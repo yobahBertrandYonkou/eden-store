@@ -1,18 +1,29 @@
+/* eslint-disable no-loop-func */
 const express = require('express');
 const firebase = require('firebase-admin');
-var serviceAccount = require("../crEDENtails/serviceAccountKey.json");
+var serviceAccount = require("../credentials/serviceAccountKey.json");
 const router = express.Router();
+const fs = require('fs');
+const path = require('path');
+// const { Storage } = require("@google-cloud/storage");
+
+// // initializing gcloud stroage
+// var storage = new Storage({
+//     credentials: firebase.credential.cert(serviceAccount)
+// });
 
 // firebase  initialization
 firebase.initializeApp({
-  credential: firebase.credential.cert(serviceAccount)
+  credential: firebase.credential.cert(serviceAccount),
+  storageBucket: "login-371ec.appspot.com/"
 });
 const firestore = firebase.firestore();
 
 
 // logs every request (generic route)
 router.use((req, res, next)=>{
-    console.log(req.body);
+    // console.log(req.body);
+    console.log("New request");
     next();
 });
 
@@ -84,11 +95,18 @@ router.get('/search/:category/:from/:to/:text', (req, res) => {
     res.json({"respond": "all stocks"});
 });
 
+// uploading photos
+router.post('/stocks/upload', (req, res) => {
+    
+});
 // adding new stock
 router.post('/', async (req, res) => {
 
     // writing data to database (firestore)
     var data = req.body;
+    console.log(data)
+
+    
     // setting id and rating value
 
     /*
@@ -105,25 +123,46 @@ router.post('/', async (req, res) => {
     }
 
     data["id"] = `STK-${categories[req.body.category]}-${new Date().toJSON().substring(0, 10).split("-").reverse().join("")}-${new Date().toTimeString().substring(0,8).split(":").join("")}`;
-    data['createdOn'] = new Date();
-    data['updatedOn'] = new Date();
+    // data['createdOn'] = new Date();
+    // data['updatedOn'] = new Date();
 
-    data['rating'] = {
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 0,
-        "5": 0,
+    // data['rating'] = {
+    //     "1": 0,
+    //     "2": 0,
+    //     "3": 0,
+    //     "4": 0,
+    //     "5": 0,
+    // }
+
+    // handling files
+    var files = req.files;
+    var filePath;
+    for (var file in files){
+        // creates a temp file
+        filePath = path.join(__dirname, "temp/" + data.id + "." + files[file].name.split(".").reverse()[0]);
+        fs.writeFile(filePath, new Uint8Array(files[file].data), async (error) => {
+            if (error) throw error;
+
+            console.log("Uploaded");
+
+            // uploading file
+            await firebase.storage().bucket().upload(filePath)
+            .then( response => {
+                console.log(response);
+            })
+            .catch( error => console.log(error));
+        })
+        
     }
 
-    await firestore.collection("products").add(data)
-    .then(response => {
-        console.log(response);
-        res.json({"respond": "Stock added successfully."});
-    })
-    .catch(error => {
-        console.log(error);
-    });
+    // await firestore.collection("products").add(data)
+    // .then(response => {
+    //     console.log(response);
+    //     res.json({"respond": "Stock added successfully."});
+    // })
+    // .catch(error => {
+    //     console.log(error);
+    // });
 
 });
 

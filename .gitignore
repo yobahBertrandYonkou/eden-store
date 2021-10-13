@@ -15,7 +15,7 @@
 /vscode-root
 
 # others
-/server/controllers/crEDENtails
+/server/controllers/credentails
 
 # misc
 .DS_Store

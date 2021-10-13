@@ -498,6 +498,7 @@ input:focus, select:focus, textarea:focus{
     border: 1px solid var(--secondary-color);
     border-radius: 5px;
     overflow: hidden;
+    user-select: none;
 }
 
 .photo-preview{
