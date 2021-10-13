@@ -24,6 +24,24 @@ var Stocks= ()=>{
         var photoPreview = document.getElementById('photo-preview');
         var pdtPhotos = document.querySelectorAll(".photo-thumbnail");
 
+        var clearForm = () => {
+            // clearing fields
+            addItemContainer.querySelector("#name").value = "";
+            addItemContainer.querySelector("#quantity").value = "";
+            addItemContainer.querySelector("#price").value = "";
+            addItemContainer.querySelector("#description").value = "";
+            addItemContainer.querySelector("#color").selectedIndex = 0;
+            addItemContainer.querySelector("#unit").selectedIndex = 0;
+            addItemContainer.querySelector("#category").selectedIndex = 0;
+            addItemContainer.querySelector("#brand").selectedIndex = 0;
+            // removing upload btn from thumbnails
+            pdtPhotos.forEach( thumbnail => {
+                thumbnail.src = imgUploadHolder;
+            });
+
+            photoPreview.src = imgPreviewHolder;
+        };
+        
         /**
          * Handling context menu for stock item
          */
@@ -99,7 +117,42 @@ var Stocks= ()=>{
                         .then(response => console.log(response))
                         .catch(error => console.log(error));
                     }else if(cMenuOptionId == "cm-edit"){
+                        await fetch(`http://localhost:9000/stocks/${selectedItem.id.toString()}`)
+                        .then(response => response.json())
+                        .then(response => {
+                            console.log(response);
+                            // getting ref of all fields
+                            var fields = {
+                                "name": addItemContainer.querySelector("#name"),
+                                "quantity": addItemContainer.querySelector("#quantity"),
+                                "price": addItemContainer.querySelector("#price"),
+                                "description": addItemContainer.querySelector("#description"),
+                                "color": addItemContainer.querySelector("#color"),
+                                "unit": addItemContainer.querySelector("#unit"),
+                                "category": addItemContainer.querySelector("#category"),
+                                "brand": addItemContainer.querySelector("#brand"),
+                            }
+                            
+                            console.log(typeof addItemContainer.querySelector(".add-item-header").textContent.trim())
+                           
+                            // loading data for input controls
+                            for (var field in fields){
+                                fields[field].value = response[field];
+                            }
+                            
+                            // loading images
+                            var images = response['photoUrls'];
 
+                            for(var image in images){
+                                var thElement = addItemContainer.querySelector(`#${image.replace("-", "-th-")}`);
+                                thElement.src = images[image];
+                            }
+                            
+                            // triggering add stock
+                            addItemContainer.querySelector(".add-item-header").textContent = "New Stock";
+                            addItemBtn.click();
+                        })
+                        .catch(error => console.log(error));
                     }else if(cMenuOptionId == "cm-details"){
                         await fetch(`http://localhost:9000/stocks/${selectedItem.id.toString()}`)
                         .then(response => response.json())
@@ -266,6 +319,13 @@ var Stocks= ()=>{
         addItemBtn.onclick = ()=>{
             addItemContainer.style.display = "flex";
 
+            // changing titles
+            if (addItemContainer.querySelector(".add-item-header").textContent == "Edit Stock"){
+                addItemContainer.querySelector(".add-item-header").textContent = "New Stock";
+            }else{
+                addItemContainer.querySelector(".add-item-header").textContent = "Edit Stock";
+            }
+
             //handling add photo
             pdtPhotos.forEach(element => {
                 element.setAttribute("title", "Right click to upload/change photo.\nLeft click to preview photo.");
@@ -377,6 +437,9 @@ var Stocks= ()=>{
             //     addItemContainer.style.display = "none";
             // }
             addItemContainer.style.display = "none";
+            addItemContainer.querySelector(".add-item-header").textContent = "Edit Stock";
+
+            clearForm();
         }
 
         var showSideNav = ()=>{
