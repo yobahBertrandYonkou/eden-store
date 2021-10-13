@@ -5,20 +5,14 @@ var serviceAccount = require("../credentials/serviceAccountKey.json");
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
-// const { Storage } = require("@google-cloud/storage");
-
-// // initializing gcloud stroage
-// var storage = new Storage({
-//     credentials: firebase.credential.cert(serviceAccount)
-// });
 
 // firebase  initialization
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
-  storageBucket: "login-371ec.appspot.com/"
+  storageBucket: "login-371ec.appspot.com/",
 });
 const firestore = firebase.firestore();
-
+const storage = firebase.storage();
 
 // logs every request (generic route)
 router.use((req, res, next)=>{
@@ -104,7 +98,7 @@ router.post('/', async (req, res) => {
 
     // writing data to database (firestore)
     var data = req.body;
-    console.log(data)
+    // console.log(data)
 
     
     // setting id and rating value
@@ -123,46 +117,72 @@ router.post('/', async (req, res) => {
     }
 
     data["id"] = `STK-${categories[req.body.category]}-${new Date().toJSON().substring(0, 10).split("-").reverse().join("")}-${new Date().toTimeString().substring(0,8).split(":").join("")}`;
-    // data['createdOn'] = new Date();
-    // data['updatedOn'] = new Date();
+    data['createdOn'] = new Date();
+    data['updatedOn'] = new Date();
 
-    // data['rating'] = {
-    //     "1": 0,
-    //     "2": 0,
-    //     "3": 0,
-    //     "4": 0,
-    //     "5": 0,
-    // }
+    data['rating'] = {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+    }
 
     // handling files
     var files = req.files;
     var filePath;
+    // creates a dir for the current stock
+    fs.mkdirSync(path.join(__dirname, `temp/${data.id}`));
+
     for (var file in files){
+        
         // creates a temp file
-        filePath = path.join(__dirname, "temp/" + data.id + "." + files[file].name.split(".").reverse()[0]);
-        fs.writeFile(filePath, new Uint8Array(files[file].data), async (error) => {
-            if (error) throw error;
-
-            console.log("Uploaded");
-
-            // uploading file
-            await firebase.storage().bucket().upload(filePath)
-            .then( response => {
-                console.log(response);
-            })
-            .catch( error => console.log(error));
-        })
+        filePath = path.join(__dirname, `temp/${data.id}/` + file + "." + files[file].name.split(".").reverse()[0]);
+        fs.writeFileSync(filePath, new Uint8Array(files[file].data));
         
     }
 
-    // await firestore.collection("products").add(data)
-    // .then(response => {
-    //     console.log(response);
-    //     res.json({"respond": "Stock added successfully."});
-    // })
-    // .catch(error => {
-    //     console.log(error);
-    // });
+    // reading all files that have to be uploaded
+    fs.readdir(path.join(__dirname, `temp/${data.id}/`), async (error, files) => {
+        console.log(files);
+
+        // uploading images
+        await Promise.all(
+            files.map((filename => {
+                console.log("Uploading")
+                return storage.bucket().upload(path.join(__dirname, `temp/${data.id}/${filename}`),  { destination: `EDEN/accessories/stocks/${data.id}/${filename}` });
+            }))
+        )
+        .then( async (response) => {
+            console.log("Uploaded");
+
+            // putting photo urls together
+            var photoUrls = {};
+            var count = 1;
+            for (var file in response){
+                console.log(response[file][0].publicUrl());
+                photoUrls[`photo-${count++}`] = response[file][0].publicUrl();
+            }
+
+            // add photos to data
+            data['photoUrls'] = photoUrls;
+            console.log(data)
+            // saving data
+            await firestore.collection("products").add(data)
+            .then(response => {
+                console.log(response);
+                res.json({"respond": "Stock added successfully."});
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+            console.log(photoUrls)
+        })
+        .catch( error => console.log(error));
+    });
+
+    console.log(data);
 
 });
 
