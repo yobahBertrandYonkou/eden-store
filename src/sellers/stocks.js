@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { useEffect } from 'react';
 import './css/dashboard.css'
 import imgPreviewHolder from "./images/preview-image.png"
@@ -96,7 +97,10 @@ var Stocks= ()=>{
                     }else if(cMenuOptionId == "cm-edit"){
 
                     }else if(cMenuOptionId == "cm-details"){
-
+                        await fetch(`http://localhost:9000/stocks/${selectedItem.id.toString()}`)
+                        .then(response => response.json())
+                        .then(response => console.log(response))
+                        .catch(error => console.log(error));
                     }
                 }
 
@@ -207,7 +211,7 @@ var Stocks= ()=>{
 
             //handling add photo
             pdtPhotos.forEach(element => {
-                element.setAttribute("title", "Right click to upload/change photo.\Left click to preview photo.");
+                element.setAttribute("title", "Right click to upload/change photo.\nLeft click to preview photo.");
                 element.onclick = (event) => {
                     console.log(event.target.id);
                     var inputID = event.target.id.toString().replace("th-", "");

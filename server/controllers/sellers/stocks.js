@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable no-loop-func */
 const express = require('express');
 const firebase = require('firebase-admin');
@@ -84,15 +85,23 @@ router.ws('/', (ws, req) => {
     })
 });
 
-// search for stock record
-router.get('/search/:category/:from/:to/:text', (req, res) => {
-    res.json({"respond": "all stocks"});
+// fetches the details of one stock
+router.get('/:id', async(req, res) => {
+    console.log("here")
+    console.log(req.params);
+    await firestore.collection("products").where("id", "==", req.params.id).get()
+    .then(response => {
+        console.log(response);
+
+        // returning data
+        res.json(response.docs[0].data());
+
+    })
+    .catch(error => {
+        console.log(error);
+    });
 });
 
-// uploading photos
-router.post('/stocks/upload', (req, res) => {
-    
-});
 // adding new stock
 router.post('/', async (req, res) => {
 
