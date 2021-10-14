@@ -204,26 +204,95 @@ router.post('/', async (req, res) => {
 
 // updating stock
 router.put('/', async (req, res) => {
-
+    var data = req.body;
     // getting stock ref
     await firestore.collection("products").where("id", "==", req.body.id).get()
     .then(async (docs) => {
-        // adjusting data
-        var data = req.body;
-        delete data.sellerId;
-        delete data.rating;
-        delete data.createdOn;
-        delete data.id;
-        data['updatedOn'] = new Date();
+        console.log(data);
 
-        console.log(data)
-        // updating document
-        await firestore.collection('products').doc(docs.docs[0].id)
-        .update(data).then(response => {
-            res.json({"respond": "update stock"});
-            console.log("updated")
-        })
-        .catch( error => console.log(error))
+        // handling files
+        var files = req.files;
+        var filePath;
+        // creates a dir for the current stock
+        try{
+            fs.mkdirSync(path.join(__dirname, `temp/${data.id}`));
+        }catch(e){
+            if (e.code == "EEXIST"){
+                fs.rmdir(path.join(__dirname, `temp/${data.id}/`), { recursive: true, force: true }, (error) => {
+                    if (error) throw error;
+
+                    console.log("Successfully deleted");
+                    fs.mkdirSync(path.join(__dirname, `temp/${data.id}`));
+                });
+            }
+        }
+
+        for (var file in files){
+            
+            // creates a temp file
+            filePath = path.join(__dirname, `temp/${data.id}/` + file + "." + files[file].name.split(".").reverse()[0]);
+            fs.writeFileSync(filePath, new Uint8Array(files[file].data));
+            
+        }
+
+        // reading all files that have to be uploaded
+        fs.readdir(path.join(__dirname, `temp/${data.id}/`), async (error, files) => {
+            console.log(files);
+
+            // uploading images
+            await Promise.all(
+                files.map((filename => {
+                    console.log("Uploading")
+                    return storage.bucket().upload(path.join(__dirname, `temp/${data.id}/${filename}`),  { destination: `EDEN/accessories/stocks/${data.id}/${filename}` });
+                }))
+            )
+            .then( async (response) => {
+                console.log("Uploaded");
+
+                // putting photo urls together
+                var photoUrls = {};
+                var count = 0;
+                for (var file in response){
+                    console.log(response[file][0].publicUrl());
+                    photoUrls[files[count++].split(".")[0]] = response[file][0].publicUrl();
+                }
+
+                // adding photo urls to data
+                var newPhotoUrls = docs.docs[0].data().photoUrls;
+                for (var key in photoUrls){
+                    newPhotoUrls[key] = photoUrls[key];
+                }
+                data.photoUrls = newPhotoUrls;
+                
+                // adjusting data
+                var tempFolder = data.id;
+                delete data.sellerId;
+                delete data.rating;
+                delete data.createdOn;
+                delete data.id;
+                data['updatedOn'] = new Date();
+                // updating document
+                await firestore.collection('products').doc(docs.docs[0].id)
+                .update(data).then(response => {
+                    res.json({"respond": "update stock"});
+                    console.log("updated")
+                })
+                .catch( error => console.log(error))
+                
+                // deleteing temp folder
+                fs.rmdir(path.join(__dirname, `temp/${tempFolder}/`), { recursive: true, force: true }, (error) => {
+                    if (error) throw error;
+
+                    console.log("Successfully deleted");
+                });
+
+
+            })
+            .catch( error => console.log(error));
+        });
+
+
+        
     })
     .catch(error => {
         console.log(error);

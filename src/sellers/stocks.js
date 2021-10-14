@@ -341,8 +341,11 @@ var Stocks= ()=>{
                     console.log(event.target.id);
                     var inputID = event.target.id.toString().replace("th-", "");
                     var inputElement = document.getElementById(inputID);
+
                     if (inputElement.files.length != 0){
                         photoPreview.src = URL.createObjectURL(inputElement.files[0]);
+                    }else if (currentAction == "edit" && inputElement.files.length == 0 ){ // handling edit container displayed
+                        photoPreview.src = event.target.src;
                     }
                 }   
 
@@ -410,7 +413,8 @@ var Stocks= ()=>{
                 "brand": document.getElementById("brand").value.trim(),
                 "createdOn": null,
                 "updatedOn": null,
-                "rating": null
+                "rating": null,
+                "photoUrls": null
             }
 
             // endpoint
