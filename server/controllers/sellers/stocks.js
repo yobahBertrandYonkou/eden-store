@@ -203,8 +203,32 @@ router.post('/', async (req, res) => {
 });
 
 // updating stock
-router.put('/', (req, res) => {
-    res.json({"respond": "update stock"});
+router.put('/', async (req, res) => {
+
+    // getting stock ref
+    await firestore.collection("products").where("id", "==", req.body.id).get()
+    .then(async (docs) => {
+        // adjusting data
+        var data = req.body;
+        delete data.sellerId;
+        delete data.rating;
+        delete data.createdOn;
+        delete data.id;
+        data['updatedOn'] = new Date();
+
+        console.log(data)
+        // updating document
+        await firestore.collection('products').doc(docs.docs[0].id)
+        .update(data).then(response => {
+            res.json({"respond": "update stock"});
+            console.log("updated")
+        })
+        .catch( error => console.log(error))
+    })
+    .catch(error => {
+        console.log(error);
+    });
+    
 });
 
 // deleting stock

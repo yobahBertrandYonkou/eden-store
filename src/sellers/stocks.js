@@ -23,6 +23,8 @@ var Stocks= ()=>{
         var stkSearch = document.getElementById('stk-search');
         var photoPreview = document.getElementById('photo-preview');
         var pdtPhotos = document.querySelectorAll(".photo-thumbnail");
+        var currentAction = null;
+        var selectedItemForProcessing = null;
 
         var clearForm = () => {
             // clearing fields
@@ -65,7 +67,7 @@ var Stocks= ()=>{
                 // console.log(itemEvent.path[1])
                 var selectedItem = itemEvent.path[1];
                 selectedItem.style.backgroundColor = "rgba(106,121,183, 0.3)";
-                
+                selectedItemForProcessing = selectedItem;
                 // ref to c-menu
                 var cMenu = document.getElementById('c-menu');
 
@@ -105,6 +107,7 @@ var Stocks= ()=>{
                     var cMenuOptionId = cEvent.target.id;
 
                     if(cMenuOptionId == "cm-delete"){
+                        currentAction = "delete";
                         // deleting item
                         await fetch("http://localhost:9000/stocks",{
                             method: "DELETE",
@@ -151,9 +154,14 @@ var Stocks= ()=>{
                             // triggering add stock
                             addItemContainer.querySelector(".add-item-header").textContent = "New Stock";
                             addItemBtn.click();
+                            
+                            setTimeout(() => {
+                                currentAction = "edit";
+                            }, 500);
                         })
                         .catch(error => console.log(error));
                     }else if(cMenuOptionId == "cm-details"){
+                        currentAction = "details";
                         await fetch(`http://localhost:9000/stocks/${selectedItem.id.toString()}`)
                         .then(response => response.json())
                         .then(response => {
@@ -318,7 +326,7 @@ var Stocks= ()=>{
         // Add item
         addItemBtn.onclick = ()=>{
             addItemContainer.style.display = "flex";
-
+            currentAction = "add";
             // changing titles
             if (addItemContainer.querySelector(".add-item-header").textContent == "Edit Stock"){
                 addItemContainer.querySelector(".add-item-header").textContent = "New Stock";
@@ -408,6 +416,11 @@ var Stocks= ()=>{
             // endpoint
             var url = "http://localhost:9000/stocks"
             var method = "POST"
+
+            if (currentAction == "edit"){
+                method = "PUT";
+                data['id'] = selectedItemForProcessing.id;
+            }
 
             // writing data into form data
             for (var key in data){
