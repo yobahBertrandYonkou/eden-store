@@ -167,10 +167,10 @@ router.post('/', async (req, res) => {
 
             // putting photo urls together
             var photoUrls = {};
-            var count = 1;
+            var count = 0;
             for (var file in response){
                 console.log(response[file][0].publicUrl());
-                photoUrls[`photo-${count++}`] = response[file][0].publicUrl();
+                photoUrls[files[count++].split(".")[0]] = response[file][0].publicUrl();
             }
 
             // add photos to data

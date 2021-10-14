@@ -39,6 +39,7 @@ var Stocks= ()=>{
             // removing upload btn from thumbnails
             pdtPhotos.forEach( thumbnail => {
                 thumbnail.src = imgUploadHolder;
+                document.getElementById(thumbnail.id.replace("-th", "")).value = "";
             });
 
             photoPreview.src = imgPreviewHolder;
