@@ -59,24 +59,39 @@ router.ws('/', (ws, req) => {
 
             // .where("category", "==", msg.category)
             var data = [];
-            docs.docs.forEach(doc => {
-                // filter category here
-                if (msg.search != ""){
-                    if (doc.data().category == msg.category && doc.data().name.toLowerCase().includes(msg.search.toLowerCase())){
+            if (msg.category == "all"){
+                docs.docs.forEach(doc => {
+                    // filter category here
+                    if (msg.search != ""){
+                        if (doc.data().name.toLowerCase().includes(msg.search.toLowerCase())){
+                            data.unshift(doc.data());
+                        }
+                    }else{
+                        
                         data.unshift(doc.data());
                     }
-                }else{
-                    if (doc.data().category == msg.category){
-                        data.unshift(doc.data());
+                    
+                });
+            }else{
+                docs.docs.forEach(doc => {
+                    // filter category here
+                    if (msg.search != ""){
+                        if (doc.data().category == msg.category && doc.data().name.toLowerCase().includes(msg.search.toLowerCase())){
+                            data.unshift(doc.data());
+                        }
+                    }else{
+                        if (doc.data().category == msg.category){
+                            data.unshift(doc.data());
+                        }
                     }
-                }
-                
-            });
+                    
+                });
+            }
             ws.send(JSON.stringify({"data": data}));
             // console.log(data);
             // ws.send({"data": data});
         });
-        console.log(snapShotTracker)
+        // console.log(snapShotTracker)
     });
 
     // logging socket closed
@@ -91,7 +106,7 @@ router.get('/:id', async(req, res) => {
     console.log(req.params);
     await firestore.collection("products").where("id", "==", req.params.id).get()
     .then(response => {
-        console.log(response);
+        // console.log(response);
 
         // returning data
         res.json(response.docs[0].data());
@@ -175,11 +190,11 @@ router.post('/', async (req, res) => {
 
             // add photos to data
             data['photoUrls'] = photoUrls;
-            console.log(data)
+            // console.log(data)
             // saving data
             await firestore.collection("products").add(data)
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 res.json({"respond": "Stock added successfully."});
             })
             .catch(error => {
@@ -198,7 +213,7 @@ router.post('/', async (req, res) => {
         .catch( error => console.log(error));
     });
 
-    console.log(data);
+    // console.log(data);
 
 });
 
@@ -208,7 +223,7 @@ router.put('/', async (req, res) => {
     // getting stock ref
     await firestore.collection("products").where("id", "==", req.body.id).get()
     .then(async (docs) => {
-        console.log(data);
+        // console.log(data);
 
         // handling files
         var files = req.files;
@@ -306,12 +321,14 @@ router.delete('/', async (req, res) => {
     console.log(req.body.id);
     await firestore.collection("products").where("id", "==", req.body.id).get()
     .then(response => {
-        console.log(response);
+        // console.log(response);
+        //deleting files for the current stock item
+        
 
         response.docs.forEach(async (doc) => {
             await firestore.collection("products").doc(doc.id).delete()
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 res.json({"respond": "Stock successfully deleted stock"});
             })
             .catch(error => {

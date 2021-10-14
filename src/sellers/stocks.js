@@ -686,7 +686,6 @@ var Stocks= ()=>{
                     </div>
                 </form>
             </div>
-
             {/* Context menu */}
             <div id="c-menu" className="context-menu-container">
                 <div id="cm-delete" className="cm-option"><i style={{color: "white"}} className="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Delete</div>

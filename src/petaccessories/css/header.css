@@ -226,6 +226,17 @@ body{
     padding-bottom: 2px;
 }
 
+#product-search{
+    border: none !important;
+}
+
+#product-search:focus{
+    box-shadow: none !important;
+}
+
+.active {
+    text-decoration: underline !important;
+}
 /*  Media queries */
 @media only screen and (max-width: 1405px){
     .search{
@@ -345,10 +356,11 @@ body{
     .middle-row{
         border-bottom: none;
     }
-    .search-categories{
+    /* .search-categories{
         background-color: white;
         color: var(--primary-color);
-    }
+        border: 1px solid var(--primary-color);
+    } */
 }
 
 @media only screen and (max-width: 450px){

@@ -5,7 +5,9 @@ import Header from "./header";
 import ProductCard from "./productcard";
 import './css/oneanimal.css'
 
-var OneAnimal = ()=>{
+var OneAnimal = (props)=>{
+    console.log(props);
+    let title = props.animal + " Supplies"
     return(
         <div className="oneanimal-container">
             <Header />
@@ -16,7 +18,7 @@ var OneAnimal = ()=>{
                 <div className="home-right-container">
                     {/* one animal title */}
                     <div className="one-animal-title">
-                        <div className="title">Cat Supplies</div>
+                        <div className="title">{ title }</div>
                         <div className="record-count">Showing 20,000 of 10,00,000 products</div>
                     </div>
 
