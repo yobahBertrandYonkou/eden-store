@@ -72,13 +72,16 @@ var OneAnimal = ({animal})=>{
                             }
 
                             {/* outputing accessores from useFetch */}
-                            { !isLoading && accessories.products.map((productDetails) => {
-                                return (
-                                    <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                        <ProductCard details = { productDetails } />
-                                    </div>
-                                );
-                            })}
+                            { 
+                                !isLoading && hasAccessories &&
+                                accessories.products.map((productDetails) => {
+                                    return (
+                                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                            <ProductCard details = { productDetails } />
+                                        </div>
+                                    );
+                                })
+                            }
                             
                         </div>
                     </div>
@@ -98,14 +101,14 @@ var OneAnimal = ({animal})=>{
 
                             {/* no data found */}
                             { 
-                                !isLoading && !hasAccessories  && 
+                                !isLoading && !hasFood  && 
                                 <div className="col-12 text-center">
                                     No food supplies
                                 </div>
                             }
 
                             {/* outputing accessores from useFetch */}
-                            { !isFoodLoading && food.products.map((productDetails) => {
+                            { !isFoodLoading && hasFood &&food.products.map((productDetails) => {
                                 return (
                                     <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                         <ProductCard details = { productDetails } />
