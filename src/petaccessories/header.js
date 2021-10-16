@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faHome, faCat, faDog, faKiwiBird, faGift, faCheese, faBars, faGlobe} from '@fortawesome/free-solid-svg-icons';
 import { FaGooglePlay } from '@react-icons/all-files/fa/FaGooglePlay'
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 // Header component
 var Header = ()=>{
     // Running code after component gets rendered
@@ -30,7 +29,7 @@ var Header = ()=>{
                             <option value="english" selected> English</option>
                         </select>
                     </div>
-                    <Link to="/signup" className="signin-btn">Sign in</Link>
+                    <a href="/signup" className="signin-btn">Sign in</a>
                 </div>
                 {/* Top row with language and signin btn ends  */}
                 {/* Middle row */}
@@ -49,8 +48,8 @@ var Header = ()=>{
                     </div>
                     </div>
                     <div className="middle-row-right">
-                        <Link className="contacts" to="tell:7829073646">Call: +91 7829 073646</Link>
-                        <Link className="contacts" to="mailto:bmbvfx@gmail.com">Email: bmbvfx@gmail.com</Link>
+                        <a className="contacts" to="tell:7829073646">Call: +91 7829 073646</a>
+                        <a className="contacts" to="mailto:bmbvfx@gmail.com">Email: bmbvfx@gmail.com</a>
                         <div className="gplay-btn"><div>Google Play</div> <FaGooglePlay className="hide" /> </div>
                         <div className="cart-btn"><div>Card</div> <FontAwesomeIcon icon={faShoppingCart}/></div>
                     </div>
@@ -59,12 +58,12 @@ var Header = ()=>{
                 {/* Bottom row with categories */}
                 <div id="bottom-menu" className="bottom-row">
                     <div className="bottom-row-links">
-                        <Link to="/accessories" className="home"><FontAwesomeIcon icon={faHome} className="top-nav-icons"/>Home</Link>
-                        <Link to="/accessories/cats" className="cats"><FontAwesomeIcon icon={faCat} className="top-nav-icons"/>Cats</Link>
-                        <Link to="/accessories/dogs" className="dogs"><FontAwesomeIcon icon={faDog} className="top-nav-icons"/>Dogs</Link>
-                        <Link to="/accessories/birds" className="birds"><FontAwesomeIcon icon={faKiwiBird} className="top-nav-icons"/>Birds</Link>
-                        <Link to="/accessories/hamsters" className="hamsters"><FontAwesomeIcon icon={faCheese} className="top-nav-icons"/>Hamsters</Link>
-                        <Link to="#" className="offers"><FontAwesomeIcon icon={faGift} className="top-nav-icons"/>Offers</Link>
+                        <a href="/accessories" className="home"><FontAwesomeIcon icon={faHome} className="top-nav-icons"/>Home</a>
+                        <a href="/accessories/cats" className="cats"><FontAwesomeIcon icon={faCat} className="top-nav-icons"/>Cats</a>
+                        <a href="/accessories/dogs" className="dogs"><FontAwesomeIcon icon={faDog} className="top-nav-icons"/>Dogs</a>
+                        <a href="/accessories/birds" className="birds"><FontAwesomeIcon icon={faKiwiBird} className="top-nav-icons"/>Birds</a>
+                        <a href="/accessories/hamsters" className="hamsters"><FontAwesomeIcon icon={faCheese} className="top-nav-icons"/>Hamsters</a>
+                        <a href="#" className="offers"><FontAwesomeIcon icon={faGift} className="top-nav-icons"/>Offers</a>
                     </div>
                     <div className="cut-maker"></div>
                 </div>

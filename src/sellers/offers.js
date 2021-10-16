@@ -75,8 +75,8 @@ var Offers= ()=>{
                 <hr />
                 <div className="side-nav-link dashboard"><a href="/">  <i className="fa fa-tachometer-alt"></i> Dashboard</a></div>
                 <div className="side-nav-link stocks"><a href="/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
-                <div className="side-nav-link orders"><a className="active-side-link" href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
-                <div className="side-nav-link offers"><a href=""> <i className="fa fa-truck"></i> Orders</a></div>
+                <div className="side-nav-link offers"><a className="active-side-link" href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
+                <div className="side-nav-link orders"><a href=""> <i className="fa fa-truck"></i> Orders</a></div>
                 <div className="side-nav-link reports"><a href=""> <i className="fa fa-chart-line"></i> Reports</a></div>
             </div>
         </div>

@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom';
 import './css/productcard.css'
 import cardPhoto from './images/product1.png'
 
-var ProductCard = ()=>{
+var ProductCard = ({ details })=>{
+    console.log(details)
     return (
-        <Link to="/products/323232">
+        <Link to={`/products/${ details.id }`}>
             <div className="card-container">
             <div className="card-photo">
                 <img height="100%" src={cardPhoto} alt="" />

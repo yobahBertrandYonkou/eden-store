@@ -6,14 +6,15 @@ var serviceAccount = require("../credentials/serviceAccountKey.json");
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const { firestore, storage } = require('../initializers')
 
-// firebase  initialization
-firebase.initializeApp({
-  credential: firebase.credential.cert(serviceAccount),
-  storageBucket: "login-371ec.appspot.com/",
-});
-const firestore = firebase.firestore();
-const storage = firebase.storage();
+// // firebase  initialization
+// firebase.initializeApp({
+//   credential: firebase.credential.cert(serviceAccount),
+//   storageBucket: "login-371ec.appspot.com/",
+// });
+// const firestore = firebase.firestore();
+// const storage = firebase.storage();
 
 // logs every request (generic route)
 router.use((req, res, next)=>{

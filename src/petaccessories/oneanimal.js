@@ -4,10 +4,18 @@ import Footer from "./footer";
 import Header from "./header";
 import ProductCard from "./productcard";
 import './css/oneanimal.css'
+import { useState } from "react";
+import useFetch from "./hooks/useFetch";
 
-var OneAnimal = (props)=>{
-    console.log(props);
-    let title = props.animal + " Supplies"
+var OneAnimal = ({animal})=>{
+    console.log(animal);
+    let title = animal + " Supplies";
+
+    // fetching data for accessories
+    const { data: accessories, isLoading, hasData: hasAccessories } = useFetch("http://localhost:9000/products", animal, "accessories");
+    const { data: food, isLoading: isFoodLoading, hasData: hasFood } = useFetch("http://localhost:9000/products", animal, "food");
+
+    // fetc
     return(
         <div className="oneanimal-container">
             <Header />
@@ -45,66 +53,66 @@ var OneAnimal = (props)=>{
                     <div className="container-fluid accessories">
                         <div style={{fontWeight: "normal"}}  className="home-section-title">Accessories</div>
                         <div className="row accessories-cards">
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
+
+                            {/* Loading... */}
+                            { 
+                                isLoading &&  
+
+                                <div className="col-12 text-center">
+                                    <div className="spinner-grow text-secondary" role="status"></div>
+                                </div>
+                            }
+                            
+                            {/* no data found */}
+                            { 
+                                !isLoading && !hasAccessories  && 
+                                <div className="col-12 text-center">
+                                    No accessories
+                                </div>
+                            }
+
+                            {/* outputing accessores from useFetch */}
+                            { !isLoading && accessories.products.map((productDetails) => {
+                                return (
+                                    <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                        <ProductCard details = { productDetails } />
+                                    </div>
+                                );
+                            })}
+                            
                         </div>
                     </div>
                     {/* Food supplies */}
                     <div className="container-fluid accessories">
                         <div style={{fontWeight: "normal", marginTop: "50px"}} className="home-section-title">Food supplies</div>
                         <div className="row accessories-cards">
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
-                                <ProductCard />
-                            </div>
+                            
+                            {/* Loading... */}
+                            { 
+                                isFoodLoading &&  
+
+                                <div className="col-12 text-center">
+                                    <div className="spinner-grow text-secondary" role="status"></div>
+                                </div>
+                            }
+
+                            {/* no data found */}
+                            { 
+                                !isLoading && !hasAccessories  && 
+                                <div className="col-12 text-center">
+                                    No food supplies
+                                </div>
+                            }
+
+                            {/* outputing accessores from useFetch */}
+                            { !isFoodLoading && food.products.map((productDetails) => {
+                                return (
+                                    <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                        <ProductCard details = { productDetails } />
+                                    </div>
+                                );
+                            })}
+
                         </div>
                     </div>
                     
