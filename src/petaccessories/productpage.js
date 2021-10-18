@@ -37,10 +37,10 @@ var ProdudctPage = ()=>{
             // adding to cart
             addToCart.onclick = async () => {
                 if (parseInt(quantity.value) > 0){
-                    data['quantityNeeded'] = parseInt(quantity.value);
-                    data['photoUrl'] = data.photoUrls['photo-1'];
-                    var temp = data;
-                    delete data.photoUrls;
+                    var temp = {};
+                    temp['quantityNeeded'] = parseInt(quantity.value);
+                    temp['id'] = data.id;
+                    temp['userId'] = "DSErqrq545dsDh";
                     await fetch("http://localhost:9000/user/cart", {
                         method: "POST",
                         headers: {

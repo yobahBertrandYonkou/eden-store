@@ -15,7 +15,7 @@ var ShoppingCart = ()=>{
             document.querySelector('.sub-total-title').textContent = `Subtotal (${ userCart.products.length } items)`;
             var subTotal = 0
             userCart.products.forEach(item => {
-                subTotal += parseFloat(item.price);
+                subTotal += (parseFloat(item.price) * parseFloat(item.quantityNeeded));
             });
             document.querySelector('.sub-total-value').textContent = `Rs. ${ subTotal }`;
         }

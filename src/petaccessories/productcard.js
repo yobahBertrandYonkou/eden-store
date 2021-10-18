@@ -16,30 +16,32 @@ var ProductCard = ({ details })=>{
         addToCart.forEach(btn => {
             btn.onclick = async (event) => {
                 console.log(event.target.id);
-                var data = details;
-                var quantity = document.getElementById('onea-quantity');
-                data['quantityNeeded'] = parseInt(quantity.value);
-                data['photoUrl'] = data.photoUrls['photo-1'];
-                var temp = data;
-                delete data.photoUrls;
-                await fetch("http://localhost:9000/user/cart", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(temp)
-                })
-                .then(response => response.json())
-                .then(res => {
-                    console.log(res);
-                    document.querySelector('.show-notification').innerHTML = (
-                        `<div class="alert alert-success alert-dismissible" role="alert">
-                            ${ data.name.substring(0, 25) }... successfully added to cart.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                        </div>`
-                    );
-                })
-                .catch(error => console.error(error));
+                var quantity = document.getElementById(`quantity-${ event.target.id }`);
+                console.log(quantity.value)
+                if (parseInt(quantity.value) > 0){
+                    var temp = {};
+                    temp['quantityNeeded'] = parseInt(quantity.value);
+                    temp['id'] = event.target.id;
+                    temp['userId'] = "DSErqrq545dsDh";
+                    await fetch("http://localhost:9000/user/cart", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(temp)
+                    })
+                    .then(response => response.json())
+                    .then(res => {
+                        console.log(res);
+                        document.querySelector('.show-notification').innerHTML = (
+                            `<div class="alert alert-success alert-dismissible" role="alert">
+                                ${ event.target.getAttribute('data-pdt-name').substring(0, 25) }... successfully added to cart.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                            </div>`
+                        );
+                    })
+                    .catch(error => console.error(error));
+                }
             }
         });
 
@@ -59,10 +61,10 @@ var ProductCard = ({ details })=>{
             </a>
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center"}} className="row">
                     <div className="col-4 pdt-qty">
-                        <input min="1" defaultValue="1" id="onea-quantity" type="number" name="" />
+                        <input min="1" defaultValue="1" id={`quantity-${ details.id }`} type="number" name="" />
                     </div>
                     <div className="col-8 add-to-cart-btn">
-                        <input className="pdt-cart-btn" id={ details.id } type="button" value="Add to Cart" />
+                        <input className="pdt-cart-btn" id={ details.id } data-pdt-name={ details.name } type="button" value="Add to Cart" />
                     </div>
                 </div>
         </div>

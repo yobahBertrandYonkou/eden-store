@@ -19,21 +19,36 @@ router.ws("/cart", (ws, req) => {
 
 // add to cart
 router.post('/cart', async (req, res) => {
+    var data = req.body;
     console.log("Adding to cart");
-    await firestore.collection("users")
-    .doc(req.body.sellerId).collection("cart")
-    .add(req.body)
-    .then( response =>{
-        console.log("added to card")
-         res.json({ status: "item added" });
+    await firestore.collection("products")
+    .where("id", "==", req.body.id).get()
+    .then( async docs => {
+        var data = docs.docs[0].data();
+        data['photoUrl'] = data.photoUrls['photo-1'];
+        delete data.photoUrls;
+        data['createdOn'] = new Date();
+        data['updatedOn'] = new Date();
+        data['quantityNeeded'] = req.body.quantityNeeded;
+
+        await firestore.collection("users")
+        .doc(req.body.userId).collection("cart")
+        .add(data)
+        .then( response =>{
+            console.log("added to card")
+             res.json({ status: "item added" });
+        })
+        .catch( error => console.error(error));
     })
     .catch( error => console.error(error));
+    
 });
 
 router.get('/cart/:userId', async (req, res) => {
     console.log("user cart")
     await firestore.collection("users")
     .doc(req.params.userId).collection("cart")
+    .orderBy('updatedOn', 'desc')
     .get()
     .then(docs => {
         var data = [];
