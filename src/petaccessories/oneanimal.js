@@ -17,7 +17,7 @@ var OneAnimal = ({animal})=>{
 
     // fetc
     return(
-        <div className="oneanimal-container">
+        <div style={{ position: "relative" }} className="oneanimal-container">
             <Header />
             <div className="one-animal-content-section">
                 <div className="home-left-container">
@@ -121,6 +121,7 @@ var OneAnimal = ({animal})=>{
                     
                 </div>
             </div>
+            <div style={{ position: "fixed", top: "0", width: "100%"}} className="show-notification"></div>
             <Footer />
         </div>
     );
