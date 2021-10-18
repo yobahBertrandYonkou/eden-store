@@ -50,7 +50,7 @@ var ProductCard = ({ details })=>{
         <div className="card-container">
             <a href={`/accessories/${ details.category }/products/${ details.id }`} className="card-link">
                 <div className="card-photo">
-                    <img height="100%" src={details.photoUrls['photo-1']} alt="" />
+                    <img height="100%" width="100%" src={details.photoUrls['photo-1']} alt="" />
                 </div>
                 <div className="card-info">
                     <div className="card-title">{ details.name.substring(0, 25) }{ dots }</div>
