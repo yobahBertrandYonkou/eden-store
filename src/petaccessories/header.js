@@ -23,7 +23,7 @@ var Header = ()=>{
 
         // updating cart count
         (async () => {
-            var socket = new WebSocket("ws:localhost:9000/products/cart");
+            var socket = new WebSocket("ws:localhost:9000/user/cart");
             socket.onopen = () => {
                 socket.send("ok")
             };
@@ -53,7 +53,7 @@ var Header = ()=>{
                 {/* Middle row */}
                 <div className="middle-row">
                     <div className="middle-row-left">
-                    <div className="logo"><FontAwesomeIcon icon={faBars} id="menu-toggler" className="menu-toggler"/> EDEN</div>
+                    <div className="logo"><FontAwesomeIcon icon={faBars} id="menu-toggler" className="menu-toggler"/>EDEN</div>
                     <div className="search">
                         <select name="search-categories" defaultValue="all" id="search-categories" className="search-categories">
                             <option value="all">All Categories</option>
@@ -69,7 +69,7 @@ var Header = ()=>{
                         <a className="contacts" href="tell:7829073646">Call: +91 7829 073646</a>
                         <a className="contacts" href="mailto:bmbvfx@gmail.com">Email: bmbvfx@gmail.com</a>
                         <div className="gplay-btn"><div>Google Play</div> <FaGooglePlay className="hide" /> </div>
-                        <div className="cart-btn"> <FontAwesomeIcon icon={faShoppingCart}/><div id="num-items-in-cart">{ numberOfItemsInCart }</div><div style={{fontSize: "16px"}}>Cart</div></div>
+                        <button onClick={ ()=> window.open("/accessories/cart", "_self") } className="cart-btn"> <FontAwesomeIcon icon={faShoppingCart}/><div id="num-items-in-cart">{ numberOfItemsInCart }</div><div style={{fontSize: "16px"}}>Cart</div></button>
                     </div>
                 </div>
                 {/* Middle row ends */}

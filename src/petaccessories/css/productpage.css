@@ -57,13 +57,13 @@
 
 }
 
+.product-add-to-cart-btn:hover{
+    cursor: pointer;
+}
+
 .product-photos-container{
     display: flex;
     margin-bottom: 20px;
-}
-
-.product-add-to-cart-btn:hover{
-    cursor: pointer;
 }
 
 .return-policy-title{

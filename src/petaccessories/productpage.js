@@ -11,7 +11,7 @@ var ProdudctPage = ()=>{
     const { id } = useParams();
     const { data, isLoading } = useFetchOne("http://localhost:9000/products", id);
     const [ itemAddedToCartStatus, setItemAddedToCartStatus ] = useState(false);
-
+    
     useEffect(() => {
         var thumbnails = document.querySelectorAll('.photo-thumbnail');
         var photoPreview = document.getElementById('photo-preview');
@@ -38,13 +38,15 @@ var ProdudctPage = ()=>{
             addToCart.onclick = async () => {
                 if (parseInt(quantity.value) > 0){
                     data['quantityNeeded'] = parseInt(quantity.value);
-                
-                    await fetch("http://localhost:9000/products/cart", {
+                    data['photoUrl'] = data.photoUrls['photo-1'];
+                    var temp = data;
+                    delete data.photoUrls;
+                    await fetch("http://localhost:9000/user/cart", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
                         },
-                        body: JSON.stringify(data)
+                        body: JSON.stringify(temp)
                     })
                     .then(response => response.json())
                     .then(res => {

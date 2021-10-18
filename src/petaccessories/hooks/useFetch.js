@@ -9,6 +9,7 @@ const useFetchAll = (url, category, type) => {
     useEffect(() => {
 
         (async () => {
+ 
             await fetch(`${ url }/${ category }/${ type }`)
             .then(response => response.json())
             .then(data => {

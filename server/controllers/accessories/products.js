@@ -8,18 +8,6 @@ router.use((req, res, next) => {
     next();
 });
 
-router.ws("/cart", (ws, req) => {
-    ws.on("message", async (msg) => {
-        console.log("Cart count")
-        await firestore.collection("users")
-        .doc("DSErqrq545dsDh").collection("cart")
-        .onSnapshot((docs) => {
-            console.log(docs.docs.length );
-            ws.send(JSON.stringify(docs.docs.length))
-        });
-    });
-});
-
 // fetching data
 router.get('/:category/:type', async (req, res) => {
     console.log(req.params);
@@ -42,6 +30,7 @@ router.get('/:category/:type', async (req, res) => {
 
 });
 
+// details of a particular product
 router.get('/:id', async (req, res) => {
     console.log("Product detail request")
     // fetching data
@@ -53,19 +42,6 @@ router.get('/:id', async (req, res) => {
         res.json(docs.docs[0].data());
     })
     .catch( error => console.error(error));
-});
-
-router.post('/cart', async (req, res) => {
-    console.log("Adding to cart");
-    await firestore.collection("users")
-    .doc(req.body.sellerId).collection("cart")
-    .add(req.body)
-    .then( response =>{
-        console.log("added to card")
-         res.json({ status: "item added" });
-    })
-    .catch( error => console.error(error));
-
 });
 
 module.exports = router;
