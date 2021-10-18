@@ -43,6 +43,17 @@ router.get('/:id', async (req, res) => {
     .catch( error => console.error(error));
 });
 
+router.post('/cart', async (req, res) => {
+    console.log("Adding to cart");
+    await firestore.collection("users")
+    .doc(req.body.sellerId).collection("cart")
+    .add(req.body)
+    .then( response =>{
+        console.log("added to card")
+         res.json({ status: "item added" });
+    })
+    .catch( error => console.error(error));
 
+});
 
 module.exports = router;

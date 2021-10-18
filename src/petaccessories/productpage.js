@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import './css/productpage.css'
 import Footer from './footer';
@@ -10,6 +10,7 @@ import ProductCard from './productcard';
 var ProdudctPage = ()=>{
     const { id } = useParams();
     const { data, isLoading } = useFetchOne("http://localhost:9000/products", id);
+    const [ itemAddedToCartStatus, setItemAddedToCartStatus ] = useState(false);
 
     useEffect(() => {
         var thumbnails = document.querySelectorAll('.photo-thumbnail');
@@ -26,6 +27,39 @@ var ProdudctPage = ()=>{
                 
             }
         });
+
+        
+        setTimeout(() => {
+            console.log("ok")
+            var addToCart = document.querySelector('.product-add-to-cart-btn');
+            var quantity = document.querySelector('.onea-pdt-qty');
+
+            // adding to cart
+            addToCart.onclick = async () => {
+                if (parseInt(quantity.value) > 0){
+                    data['quantityNeeded'] = parseInt(quantity.value);
+                
+                    await fetch("http://localhost:9000/products/cart", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => response.json())
+                    .then(res => {
+                        console.log(res);
+                        document.querySelector('.product-overview-container').insertAdjacentHTML('afterbegin',
+                            `<div class="alert alert-success alert-dismissible" role="alert">
+                                ${ data.name.substring(0, 25) }... successfully added to cart.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                            </div>`
+                        );
+                    })
+                    .catch(error => console.error(error));
+                }
+            }
+        }, 1000);
     }, [data]);
 
     return(
@@ -44,7 +78,6 @@ var ProdudctPage = ()=>{
                             </div>
                             <div className="product-photo-display"></div>
                         </div> */}
-
                         <div className="col-lg-8 col-xl-6 item-photos-container">
                             <div className="photo-preview-div" style={{ padding: "20px" }}>
                                 <img id="photo-preview" src={ data.photoUrls['photo-1'] } className="photo-preview" alt="preview" />
@@ -62,9 +95,12 @@ var ProdudctPage = ()=>{
                         <div className="col-lg-4 col-xl-6 product-details-container">
                             <div className="product-detail-item product-title">{ !isLoading && data.name }</div>
                             <div className="product-detail-item product-rating">Rating</div>
-                            <div className="product-detail-item product-price">Rs. { !isLoading && data.price }</div>
+                            <div className="product-detail-item product-price">₹ { !isLoading && data.price }</div>
                             <div className="product-detail-item product-quantity">{ !isLoading && data.quantity } { !isLoading && data.unit }</div>
                             <div className="product-detail-item available-product-colors">Color: { !isLoading && data.color }</div>
+                            <div className="product-detail-item">
+                                Quantity: <input className="onea-pdt-qty" style={{ width: "100px" }} min="1" defaultValue="1" id="pdt-quantity" type="number" name="" id=""/>
+                            </div>
                             <div className="product-detail-item buy-add-to-cart-btns">
                                 <div className="product-add-to-cart-btn">Add to cart</div>
                                 <div className="buy-now-btn">Buy now</div>

@@ -53,7 +53,17 @@
     margin-right: 30px;
     border-radius: 5px;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    user-select: none;
 
+}
+
+.product-photos-container{
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.product-add-to-cart-btn:hover{
+    cursor: pointer;
 }
 
 .return-policy-title{
@@ -65,9 +75,8 @@
     font-style: italic;
 }
 
-.product-photos-container{
-    display: flex;
-    margin-bottom: 20px;
+.product-add-to-cart-btn:active{
+    box-shadow: none;
 }
 
 @media only screen and (max-width: 991px){

@@ -1,4 +1,4 @@
-.card-container{
+.card-container, .card-link{
     margin-bottom: 20px;
     width: 100%;
     display: flex;
@@ -7,6 +7,12 @@
     padding: 5%;
     border-radius: 10px;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.06);
+}
+
+.card-link{
+    box-shadow: none;
+    margin-bottom: 0%;
+    padding: 0%;
 }
 
 .card-container:hover{
@@ -31,7 +37,7 @@
     color: var(--primary-color);
 }
 
-.add-to-cart-btn{
+.add-to-cart-btn > input, .pdt-qty > input, .onea-pdt-qty{
     border: 1px solid #f5f5f8;
     padding: 2px;
     text-align: center;
@@ -39,10 +45,11 @@
     margin-top: 5px;
     color: var(--secondary-color);
     font-size: 12px;
-    
+    width: 100%;
+    background-color: white;
 }
 
-.add-to-cart-btn:hover{
+.add-to-cart-btn > input:hover{
     cursor: pointer;
     background-color: var(--primary-color);
     color: white;
