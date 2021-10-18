@@ -53,6 +53,12 @@
     font-size: 12px;
 }
 
+.card-info{
+    text-align: start;
+    width: 100%;
+    margin-top: 10px;
+}
+
 a{
     text-decoration: none !important;
     color: var(--primary-color) !important;
