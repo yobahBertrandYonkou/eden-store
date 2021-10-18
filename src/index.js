@@ -26,7 +26,7 @@ ReactDOM.render(
             <Route exact path="/accessories/hamsters">
                 <OneAnimal animal="Hamsters" />
             </Route>
-            <Route exact path="/products/:id" component={ProdudctPage}/>
+            <Route exact path="/accessories/:category/products/:id" component={ProdudctPage}/>
         </Switch>
     </BrowserRouter>
     , document.getElementById('root'))

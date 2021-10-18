@@ -38,10 +38,6 @@ a{
     font-size: 16px;
 }
 
-.side-nav-link > a{
-    color: white !important;
-}
-
 .title-sec, .seller-name,
 .dashboard, .stocks,
 .orders, .offers, .reports{
@@ -79,6 +75,18 @@ a{
     align-items: center;
     transition: 500ms cubic-bezier(0.47, 0, 0.745, 0.715) !important;
     position: relative;
+    color: white !important;
+}
+
+.side-nav-link > a:hover{
+    background-color: #f5f5f8 !important;
+    color: var(--primary-color) !important;
+}
+
+.active-side-link{
+    background-color: #f5f5f8 !important;
+    color: var(--primary-color) !important;
+    box-shadow: 0px 3px 50px black;
 }
 
 #close-drawer{
@@ -106,17 +114,6 @@ a{
 hr{
     padding: 0;
     margin: 0;
-}
-
-.side-nav-link > a:hover{
-    background-color: #f5f5f8 !important;
-    color: var(--primary-color) !important;
-}
-
-.active-side-link{
-    background-color: #f5f5f8 !important;
-    color: var(--primary-color) !important;
-    box-shadow: 0px 3px 50px black;
 }
 
 /* content section */

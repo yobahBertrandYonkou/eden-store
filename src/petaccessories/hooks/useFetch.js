@@ -1,6 +1,6 @@
 import {useEffect, useState } from 'react';
 
-const useFetch = (url, category, type) => {
+const useFetchAll = (url, category, type) => {
     const [ data, setData ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ hasData, setHasData ] = useState(true);
@@ -29,4 +29,26 @@ const useFetch = (url, category, type) => {
     return { data, isLoading, hasData }
 }
 
-export default useFetch;
+const useFetchOne = (url, id) => {
+    const [ data, setData ] = useState(null);
+    const [ isLoading, setIsLoading ] = useState(true);
+    console.log(id)
+    // sending get request from server
+    useEffect(() => {
+
+        (async () => {
+            await fetch(`${ url }/${ id }`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // data
+                setData(data);
+                setIsLoading(false);
+            })
+            .catch(error => console.error(error));
+        })();
+    }, []);
+    return { data, isLoading }
+}
+
+export { useFetchAll, useFetchOne };

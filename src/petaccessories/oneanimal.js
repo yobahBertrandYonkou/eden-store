@@ -5,15 +5,15 @@ import Header from "./header";
 import ProductCard from "./productcard";
 import './css/oneanimal.css'
 import { useState } from "react";
-import useFetch from "./hooks/useFetch";
+import { useFetchAll } from "./hooks/useFetch";
 
 var OneAnimal = ({animal})=>{
     console.log(animal);
     let title = animal + " Supplies";
 
     // fetching data for accessories
-    const { data: accessories, isLoading, hasData: hasAccessories } = useFetch("http://localhost:9000/products", animal, "accessories");
-    const { data: food, isLoading: isFoodLoading, hasData: hasFood } = useFetch("http://localhost:9000/products", animal, "food");
+    const { data: accessories, isLoading, hasData: hasAccessories } = useFetchAll("http://localhost:9000/products", animal, "accessories");
+    const { data: food, isLoading: isFoodLoading, hasData: hasFood } = useFetchAll("http://localhost:9000/products", animal, "food");
 
     // fetc
     return(

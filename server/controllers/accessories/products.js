@@ -30,6 +30,19 @@ router.get('/:category/:type', async (req, res) => {
 
 });
 
+router.get('/:id', async (req, res) => {
+    console.log("Product detail request")
+    // fetching data
+    await firestore.collection("products")
+    .where("id" , "==", req.params.id )
+    .get()
+    .then(docs => {
+        // console.log(data)
+        res.json(docs.docs[0].data());
+    })
+    .catch( error => console.error(error));
+});
+
 
 
 module.exports = router;
