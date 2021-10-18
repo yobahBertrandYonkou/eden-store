@@ -44,6 +44,7 @@ router.post('/cart', async (req, res) => {
     
 });
 
+// get cart items
 router.get('/cart/:userId', async (req, res) => {
     console.log("user cart")
     await firestore.collection("users")
@@ -60,5 +61,28 @@ router.get('/cart/:userId', async (req, res) => {
          res.json({ products: data});
     })
     .catch( error => console.error(error));
+});
+
+// delete cart items
+router.delete('/cart', async (req, res) => {
+    console.log("deleting item")
+    await firestore.collection("users")
+    .doc(req.body.userId).collection("cart")
+    .where("id", "==", req.body.itemId)
+    .get()
+    .then(async docs => {
+        console.log("here");
+        await firestore.collection("users")
+        .doc(req.body.userId).collection("cart")
+        .doc(docs.docs[0].id)
+        .delete()
+        .then(async response => {
+            console.log(docs.docs[0].data().name)
+            res.json({ status: "item deleted", name: docs.docs[0].data().name });
+        })
+        .catch( error => console.error(error)); 
+
+    })
+    .catch( error => console.error(error)); 
 });
 module.exports = router;

@@ -11,6 +11,16 @@ var ShoppingCart = ()=>{
 
     useEffect(() => {
         
+        if(localStorage.getItem("recent-action") == "delete"){
+            document.querySelector('.show-notification').innerHTML = (
+                `<div class="alert alert-success alert-dismissible" role="alert">
+                    ${localStorage.getItem("recent-delete")} successfully deleted.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                </div>`
+            );
+            localStorage.removeItem("recent-action");
+            localStorage.removeItem("recent-delete");
+        }
         if(userCart != null){
             document.querySelector('.sub-total-title').textContent = `Subtotal (${ userCart.products.length } items)`;
             var subTotal = 0
@@ -18,8 +28,44 @@ var ShoppingCart = ()=>{
                 subTotal += (parseFloat(item.price) * parseFloat(item.quantityNeeded));
             });
             document.querySelector('.sub-total-value').textContent = `Rs. ${ subTotal }`;
-        }
 
+            
+
+            setTimeout(() => {
+                // cart item action btns
+                var deleteItem = document.querySelectorAll('.delete-cart-item');
+                var updateItem = document.querySelectorAll('.update-cart-item');
+                
+                deleteItem.forEach(btn => {
+                    btn.onclick = async (event) => {
+                        console.log("Clicked")
+                        await fetch("http://localhost:9000/user/cart", {
+                            method: "DELETE",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({userId: "DSErqrq545dsDh", itemId: event.target.getAttribute("data-item-id")})
+                        })
+                        .then(response => response.json())
+                        .then(res => {
+                            console.log(res);
+                            localStorage.setItem("recent-action", "delete");
+                            localStorage.setItem("recent-delete", res.name);
+                            window.location.reload();
+                        })
+                        .catch(error => console.error(error));
+                    }
+                });
+
+                updateItem.forEach(btn => {
+                    btn.onclick = (event) => {
+    
+                    }
+                });
+            }, 1000);
+
+            
+        }
         
     }, [userCart]);
 
@@ -45,8 +91,8 @@ var ShoppingCart = ()=>{
                             {/* no data found */}
                             { 
                                 !isLoading && !hasData  && 
-                                <div className="col-12 text-center">
-                                    Your cart is empty
+                                <div style={{ fontWeight: 'lighter'}} className="col-12 text-center">
+                                    Your cart is empty.
                                 </div>
                             }
 
@@ -55,7 +101,7 @@ var ShoppingCart = ()=>{
                                 !isLoading && hasData &&
                                 userCart.products.map((productDetails) => {
                                     return (
-                                        <div className="col-12 cart-item-card">
+                                        <div className="col-12 cart-item-card" id={ `card-${ productDetails.id }`}>
                                             <img src={ productDetails.photoUrl }  className="item-photo" alt={ productDetails.id } />
                                             <div className="item-details">
                                                 <div className="item-title">{ productDetails.name } ({ productDetails.quantity } { productDetails.unit })</div>
@@ -65,8 +111,10 @@ var ShoppingCart = ()=>{
                                                 <div className="item-category">{ productDetails.category } accessories</div>
                                                 <div className="item-quantiy">Quantity: { productDetails.quantityNeeded }</div>
                                             </div>
-                                            <div>
-                                                <button className="scp-product-detials" onClick={ ()=> window.open(`/accessories/${ productDetails.category }/products/${ productDetails.id }`, "_self")}>More</button>
+                                            <div id="cart-action-btns">
+                                                <button className="scp-product-detials" onClick={ ()=> window.open(`/accessories/${ productDetails.category }/products/${ productDetails.id }`, "_self")} type = "button">More</button>
+                                                <button className="scp-product-detials delete-cart-item" data-item-id = { productDetails.id }  type = "button">Delete</button>
+                                                <button className="scp-product-detials update-cart-item" data-item-id = { productDetails.id }  type = "button">Update</button>
                                             </div>
                                         </div>
                                     );
@@ -77,7 +125,8 @@ var ShoppingCart = ()=>{
                             <div className="items-summary-content">
                             <div className="sub-total-title">Subtotal (0 items)</div>
                             <div className="sub-total-value">Rs. 00</div>
-                            <div className="add-to-cart-btn proceed-to-check-out">Proceed to buy</div>
+                            {hasData && <button type="button" className="add-to-cart-btn proceed-to-check-out">Proceed to buy</button>}
+                            {!hasData && <button style={{ width: "100%", borderRadius: "5px", border: "1px solid #d1d1d5", fontSize: "12px", padding: "3px", color: "#d1d1d5", backgroundColor: "white", cursor: "not-allowed"}} type="button" className="add-to-cart-btn" disabled>Proceed to buy</button>}
                             </div>
                         </div>
                     </div>
@@ -108,6 +157,7 @@ var ShoppingCart = ()=>{
                     </div>
                 </div>
             </div>
+            <div style={{ position: "fixed", top: "0", width: "100%"}} className="show-notification"></div>
             <Footer />
         </div>
     );

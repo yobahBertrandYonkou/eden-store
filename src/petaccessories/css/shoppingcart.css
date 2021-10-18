@@ -100,3 +100,8 @@
 .proceed-to-check-out{
     padding: 5px;
 }
+
+#cart-action-btns{
+    display: flex;
+    flex-direction: column;
+}
