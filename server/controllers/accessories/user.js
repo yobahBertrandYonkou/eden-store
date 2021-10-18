@@ -85,4 +85,29 @@ router.delete('/cart', async (req, res) => {
     })
     .catch( error => console.error(error)); 
 });
+
+// update cart item
+router.put('/cart', async (req, res) => {
+    console.log("updating item")
+    console.log(req.body)
+    await firestore.collection("users")
+    .doc(req.body.userId).collection("cart")
+    .where("id", "==", req.body.itemId)
+    .get()
+    .then(async docs => {
+        console.log("here");
+        await firestore.collection("users")
+        .doc(req.body.userId).collection("cart")
+        .doc(docs.docs[0].id)
+        .update({ quantityNeeded: req.body.quantity })
+        .then(async response => {
+            console.log(docs.docs[0].data().name)
+            res.json({ status: "quanity updated" });
+        })
+        .catch( error => console.error(error)); 
+
+    })
+    .catch( error => console.error(error)); 
+});
+
 module.exports = router;

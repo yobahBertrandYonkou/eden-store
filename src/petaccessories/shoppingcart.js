@@ -34,7 +34,6 @@ var ShoppingCart = ()=>{
             setTimeout(() => {
                 // cart item action btns
                 var deleteItem = document.querySelectorAll('.delete-cart-item');
-                var updateItem = document.querySelectorAll('.update-cart-item');
                 
                 deleteItem.forEach(btn => {
                     btn.onclick = async (event) => {
@@ -57,11 +56,6 @@ var ShoppingCart = ()=>{
                     }
                 });
 
-                updateItem.forEach(btn => {
-                    btn.onclick = (event) => {
-    
-                    }
-                });
             }, 1000);
 
             
@@ -109,12 +103,26 @@ var ShoppingCart = ()=>{
                                                 <div className="item-price">Price: Rs { productDetails.price }</div>
                                                 <div className="in-stock-status">In stock</div>
                                                 <div className="item-category">{ productDetails.category } accessories</div>
-                                                <div className="item-quantiy">Quantity: { productDetails.quantityNeeded }</div>
+                                                <div className="item-quantity">Quantity: <input onChange = { async (event) => {
+                                                    console.log(event.target.getAttribute("data-item-id"));
+                                                        await fetch("http://localhost:9000/user/cart", {
+                                                        method: "PUT",
+                                                        headers: {
+                                                            "Content-Type": "application/json"
+                                                        },
+                                                        body: JSON.stringify({userId: "DSErqrq545dsDh", itemId: event.target.getAttribute("data-item-id"), quantity: parseInt(event.target.value) })
+                                                        })
+                                                        .then(response => response.json())
+                                                        .then(res => {
+                                                            console.log(res);
+                                                        })
+                                                        .catch(error => console.error(error)); 
+                                                        } 
+                                                    } data-item-id = { productDetails.id } min="1" type="number" defaultValue={ `${productDetails.quantityNeeded}` } className="scp-product-detials" /></div>
                                             </div>
                                             <div id="cart-action-btns">
-                                                <button className="scp-product-detials" onClick={ ()=> window.open(`/accessories/${ productDetails.category }/products/${ productDetails.id }`, "_self")} type = "button">More</button>
-                                                <button className="scp-product-detials delete-cart-item" data-item-id = { productDetails.id }  type = "button">Delete</button>
-                                                <button className="scp-product-detials update-cart-item" data-item-id = { productDetails.id }  type = "button">Update</button>
+                                                <button className="scp-product-detials" onClick={ ()=> window.open(`/accessories/${ productDetails.category }/products/${ productDetails.id }`, "_self")} type = "button"><i className="fas fa-info scp-action-icons"></i></button>
+                                                <button className="scp-product-detials delete-cart-item" data-item-id = { productDetails.id }  type = "button"><i data-item-id = { productDetails.id } className="fas fa-trash-alt scp-action-icons"></i></button>
                                             </div>
                                         </div>
                                     );

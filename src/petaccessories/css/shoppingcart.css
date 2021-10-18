@@ -91,9 +91,23 @@
     background-color: white;
 }
 
-.scp-product-detials > input:hover, .proceed-to-check-out:hover{
+.scp-action-icons {
+    width: 25px;
+    height: 25px;
+    border-radius: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scp-action-icons:hover{
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.scp-product-detials:hover, .proceed-to-check-out:hover{
     cursor: pointer;
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     color: white;
 }
 
