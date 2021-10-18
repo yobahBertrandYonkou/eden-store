@@ -67,18 +67,18 @@ var Dashboard= ()=>{
     },[]);
     return (
         <div className="main-container">
-                <div id="sidenav-id" className="side-nav">
-                <div className="title-sec">EDEN<i id="close-drawer" className="fa fa-times"></i></div>
+            <div id="sidenav-id" className="side-nav">
+            <div className="title-sec">EDEN<i id="close-drawer" className="fa fa-times"></i></div>
+            <hr />
+            <div className="side-nav-links">
+                <div className="side-nav-link seller-name">Seller's Name</div>
                 <hr />
-                <div className="side-nav-links">
-                    <div className="side-nav-link seller-name">Seller's Name</div>
-                    <hr />
-                    <div className="side-nav-link dashboard"><a className="active-side-link" href="/">  <i className="fa fa-tachometer-alt"></i> Dashboard</a></div>
-                    <div className="side-nav-link stocks"><a href="/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
-                    <div className="side-nav-link orders"><a href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
-                    <div className="side-nav-link offers"><a href=""> <i className="fa fa-truck"></i> Orders</a></div>
-                    <div className="side-nav-link reports"><a href=""> <i className="fa fa-chart-line"></i> Reports</a></div>
-                </div>
+                <div className="side-nav-link dashboard"><a className="active-side-link" href="/">  <i className="fa fa-tachometer-alt"></i> Dashboard</a></div>
+                <div className="side-nav-link stocks"><a href="/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
+                <div className="side-nav-link orders"><a href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
+                <div className="side-nav-link offers"><a href=""> <i className="fa fa-truck"></i> Orders</a></div>
+                <div className="side-nav-link reports"><a href=""> <i className="fa fa-chart-line"></i> Reports</a></div>
+            </div>
             </div>
             <div id="body-container">
                 <div id="action-bar-id" className="action-bar">
@@ -266,7 +266,7 @@ var Dashboard= ()=>{
                 </div>
             </div>
 
-         </div>
+        </div>
     );
 }
 

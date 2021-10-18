@@ -36,6 +36,7 @@ var Stocks= ()=>{
             addItemContainer.querySelector("#unit").selectedIndex = 0;
             addItemContainer.querySelector("#category").selectedIndex = 0;
             addItemContainer.querySelector("#brand").selectedIndex = 0;
+            addItemContainer.querySelector("#type").selectedIndex = 0;
             // removing upload btn from thumbnails
             pdtPhotos.forEach( thumbnail => {
                 thumbnail.src = imgUploadHolder;
@@ -135,6 +136,7 @@ var Stocks= ()=>{
                                 "unit": addItemContainer.querySelector("#unit"),
                                 "category": addItemContainer.querySelector("#category"),
                                 "brand": addItemContainer.querySelector("#brand"),
+                                "type": addItemContainer.querySelector("#type"),
                             }
                             
                             console.log(typeof addItemContainer.querySelector(".add-item-header").textContent.trim())
@@ -182,6 +184,7 @@ var Stocks= ()=>{
                                 "unit": detailsContainer.querySelector("#unit"),
                                 "category": detailsContainer.querySelector("#category"),
                                 "brand": detailsContainer.querySelector("#brand"),
+                                "type": detailsContainer.querySelector("#type"),
                             }
 
                             // removing upload btn from thumbnails
@@ -264,7 +267,7 @@ var Stocks= ()=>{
                     tableBody.insertAdjacentHTML('afterbegin', 
                         `
                             <tr title="Right Click for more options." id="${doc.id}">
-                                <td>${doc.name}</td>
+                                <td title="${ doc.name }">${doc.name.substring(0, 25)}...</td>
                                 <td>${doc.price}</td>
                                 <td>${doc.quantity} ${doc.unit}</td>
                                 <td>${doc.brand}</td>
@@ -412,6 +415,7 @@ var Stocks= ()=>{
                 "unit": document.getElementById("unit").value.trim(),
                 "category": document.getElementById("category").value.trim(),
                 "brand": document.getElementById("brand").value.trim(),
+                "type": document.getElementById("type").value.trim(),
                 "createdOn": null,
                 "updatedOn": null,
                 "rating": null,
@@ -629,6 +633,13 @@ var Stocks= ()=>{
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
+                                            <label htmlFor="type">Type</label>
+                                            <select defaultValue="accessories" name="type" id="type" className="form-control" required>
+                                                <option value="accessories">Accessories</option>
+                                                <option value="food">Food</option>
+                                            </select>
+                                        </div>
+                                        <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="brand">Brand</label>
                                             <select name="brand" id="brand" className="form-control" required>
                                                 <option value="eukanuba">Eukanuba</option>
@@ -639,7 +650,7 @@ var Stocks= ()=>{
                                     </div>
                                     <div className="form-group col-12 add-item-labels">
                                         <label htmlFor="description">Description</label>
-                                        <textarea id="description" rows="7" className="form-control" required></textarea>
+                                        <textarea id="description" rows="3" className="form-control" required></textarea>
                                     </div>
                                 </div>
                                 <div className="add-item-right-container col-md-6">

@@ -8,7 +8,7 @@ var Filter = ()=>{
                 <div className="filter-title">Filters</div>
                 <div className="reset-filter">CLEAR ALL</div>
             </div>
-            <hr />
+            <hr style={{ margin: "20px 40px 0 40px" }} />
             {/* Price filter */}
             <div className="filter-group price-filter">
                 <div className="sub-filter-title">Price</div>

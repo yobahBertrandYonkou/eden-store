@@ -1,11 +1,12 @@
 import ReactDOM from "react-dom";
+import HomePage from "./petaccessories/home";
+import OneAnimal from "./petaccessories/oneanimal";
+import ProdudctPage from "./petaccessories/productpage";
 import Dashboard from './sellers/dashboard'
 import Stocks from "./sellers/stocks";
 import Offers from "./sellers/offers";
 import { Switch, BrowserRouter, Route } from "react-router-dom";
-import HomePage from "./petaccessories/home";
-import OneAnimal from "./petaccessories/oneanimal";
-import ProdudctPage from "./petaccessories/productpage";
+
 
 ReactDOM.render(
     <BrowserRouter>

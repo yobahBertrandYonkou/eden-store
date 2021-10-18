@@ -14,7 +14,7 @@ router.get('/:category/:type', async (req, res) => {
 
     // fetching data
     await firestore.collection("products")
-    .where("category", "==", req.params.category.toLowerCase())
+    .where("category", "in", [req.params.category.toLowerCase(), "all"])
     .where("type" , "==", req.params.type.toLowerCase() )
     .get()
     .then(docs => {

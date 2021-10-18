@@ -68,7 +68,7 @@ var Offers= ()=>{
     return (
         <div className="main-container">
             <div id="sidenav-id" className="side-nav">
-            <div className="title-sec">EDEN <i id="close-drawer" className="fa fa-times"></i></div>
+            <div style={{padding: "0"}} className="title-sec">EDEN <i id="close-drawer" className="fa fa-times"></i></div>
             <hr />
             <div className="side-nav-links">
                 <div className="side-nav-link seller-name">Seller's Name</div>
