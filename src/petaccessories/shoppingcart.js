@@ -115,6 +115,13 @@ var ShoppingCart = ()=>{
                                                         .then(response => response.json())
                                                         .then(res => {
                                                             console.log(res);
+                                                            
+                                                            document.querySelector('.show-notification').innerHTML = (
+                                                                `<div class="alert alert-info alert-dismissible" role="alert">
+                                                                    Please <button style="border: none;, background-color: white;" onclick="window.location.reload()" style="color: blue">reload</button> to reflect changes. Thank you.
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                                                                </div>`
+                                                            );
                                                         })
                                                         .catch(error => console.error(error)); 
                                                         } 
