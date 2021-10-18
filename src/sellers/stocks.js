@@ -636,6 +636,7 @@ var Stocks= ()=>{
                                             <label htmlFor="type">Type</label>
                                             <select defaultValue="accessories" name="type" id="type" className="form-control" required>
                                                 <option value="accessories">Accessories</option>
+                                                <option value="grooming">Grooming</option>
                                                 <option value="food">Food</option>
                                             </select>
                                         </div>

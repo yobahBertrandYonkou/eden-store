@@ -12,11 +12,20 @@ router.use((req, res, next) => {
 router.get('/:category/:type', async (req, res) => {
     console.log(req.params);
 
+    var conditions;
+
+    if(req.params.category == "all"){
+        conditions = firestore.collection("products")
+        .where("type", "==", req.params.type.toLowerCase());
+    }else{
+        conditions = firestore.collection("products")
+        .where("category", "in", [req.params.category.toLowerCase(), "all"])
+        .where("type" , "==", req.params.type.toLowerCase() );
+        
+    }
+    
     // fetching data
-    await firestore.collection("products")
-    .where("category", "in", [req.params.category.toLowerCase(), "all"])
-    .where("type" , "==", req.params.type.toLowerCase() )
-    .get()
+    await conditions.get()
     .then(docs => {
         var data = [];
 
