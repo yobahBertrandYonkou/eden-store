@@ -19,7 +19,7 @@ var ProductCard = ({ details })=>{
                 <div className="pdt-seller-name">by BOLTZ</div>
                 <div className="rating">Rating here</div>
                 <div className="card-price">₹ { details.price }</div>
-                {/* <div className="add-to-cart-btn">Add to Cart</div> */}
+                <div className="add-to-cart-btn">Add to Cart</div>
             </div>
         </div>
         </a>
