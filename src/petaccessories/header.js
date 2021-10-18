@@ -25,8 +25,8 @@ var Header = ()=>{
                 <div className="top-row">
                     <div className="language">
                     <FontAwesomeIcon icon={faGlobe}/>
-                        <select name="language" id="language">
-                            <option value="english" selected> English</option>
+                        <select defaultValue="english" name="language" id="language">
+                            <option value="english"> English</option>
                         </select>
                     </div>
                     <a href="/signup" className="signin-btn">Sign in</a>

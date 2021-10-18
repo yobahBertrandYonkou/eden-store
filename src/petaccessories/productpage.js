@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import './css/productpage.css'
 import Footer from './footer';
@@ -9,14 +11,31 @@ var ProdudctPage = ()=>{
     const { id } = useParams();
     const { data, isLoading } = useFetchOne("http://localhost:9000/products", id);
 
+    useEffect(() => {
+        var thumbnails = document.querySelectorAll('.photo-thumbnail');
+        var photoPreview = document.getElementById('photo-preview');
+
+        // display thumb to preview container
+        thumbnails.forEach(thumbnail => {
+            console.log("sdf")
+            thumbnail.onclick = (event) => {
+                console.log(event)
+                if (event.target.src != "" && event.target.nodeName == "IMG"){
+                    photoPreview.src = event.target.src;
+                }
+                
+            }
+        });
+    }, [data]);
+
     return(
-        <div className="product-page-container">
+       data && <div className="product-page-container">
             <Header />
             <div className="product-page-content">
                 <div className="container product-overview-container">
                     <div className="row">
-                        <div className="col-lg-8 col-xl-6 product-photos-container">
-                        <div className="product-alternative-photos">
+                        {/* <div className="col-lg-8 col-xl-6 product-photos-container">
+                            <div className="product-alternative-photos">
                                 <div className="photo-thumb"></div>
                                 <div className="photo-thumb"></div>
                                 <div className="photo-thumb"></div>
@@ -24,6 +43,21 @@ var ProdudctPage = ()=>{
                                 <div className="photo-thumb"></div>
                             </div>
                             <div className="product-photo-display"></div>
+                        </div> */}
+
+                        <div className="col-lg-8 col-xl-6 item-photos-container">
+                            <div className="photo-preview-div" style={{ padding: "20px" }}>
+                                <img id="photo-preview" src={ data.photoUrls['photo-1'] } className="photo-preview" alt="preview" />
+                            </div>
+                            <div className="photo-thumbnails">
+                                <img width="60px" height="60px" src = { data.photoUrls['photo-1'] } id="photo-th-1" className="photo-thumbnail" alt=""/>
+                                <img src = { data.photoUrls['photo-2'] } id="photo-th-2" className="photo-thumbnail" alt=""/>
+                                <img src = { data.photoUrls['photo-3'] } id="photo-th-3" className="photo-thumbnail" alt=""/>
+                                <img src = { data.photoUrls['photo-4'] } id="photo-th-4" className="photo-thumbnail" alt=""/>
+                                <img src = { data.photoUrls['photo-5'] } id="photo-th-5" className="photo-thumbnail" alt=""/>
+                                <img src = { data.photoUrls['photo-6'] } id="photo-th-6" className="photo-thumbnail" alt=""/>
+                                <img src = { data.photoUrls['photo-7'] } id="photo-th-7" className="photo-thumbnail" alt=""/>
+                            </div>
                         </div>
                         <div className="col-lg-4 col-xl-6 product-details-container">
                             <div className="product-detail-item product-title">{ !isLoading && data.name }</div>
