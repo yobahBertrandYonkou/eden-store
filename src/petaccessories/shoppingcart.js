@@ -56,7 +56,7 @@ var ShoppingCart = ()=>{
                                 userCart.products.map((productDetails) => {
                                     return (
                                         <div className="col-12 cart-item-card">
-                                            <img src={ productDetails.photoUrl }  className="item-photo" />
+                                            <img src={ productDetails.photoUrl }  className="item-photo" alt={ productDetails.id } />
                                             <div className="item-details">
                                                 <div className="item-title">{ productDetails.name } ({ productDetails.quantity } { productDetails.unit })</div>
                                                 <div className="item-seller">Boltz Accessories</div>
