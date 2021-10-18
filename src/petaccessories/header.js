@@ -2,9 +2,12 @@ import './css/header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faHome, faCat, faDog, faKiwiBird, faGift, faCheese, faBars, faGlobe} from '@fortawesome/free-solid-svg-icons';
 import { FaGooglePlay } from '@react-icons/all-files/fa/FaGooglePlay'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // Header component
 var Header = ()=>{
+
+    const [numberOfItemsInCart, setNumberOfItemsInCart ] = useState(0);
+
     // Running code after component gets rendered
     useEffect(()=>{
         var menuToggler = document.getElementById('menu-toggler');
@@ -17,6 +20,21 @@ var Header = ()=>{
         menuToggler.onclick = ()=>{
             menu.classList.toggle('hide');
         };
+
+        // updating cart count
+        (async () => {
+            var socket = new WebSocket("ws:localhost:9000/products/cart");
+            socket.onopen = () => {
+                socket.send("ok")
+            };
+            socket.onmessage = (msg) => {
+                
+                setNumberOfItemsInCart(msg.data)
+            } 
+
+            document.onclose = () => socket.close();
+        })();
+
     }, []);
     return (
         <header>
@@ -48,10 +66,10 @@ var Header = ()=>{
                     </div>
                     </div>
                     <div className="middle-row-right">
-                        <a className="contacts" to="tell:7829073646">Call: +91 7829 073646</a>
-                        <a className="contacts" to="mailto:bmbvfx@gmail.com">Email: bmbvfx@gmail.com</a>
+                        <a className="contacts" href="tell:7829073646">Call: +91 7829 073646</a>
+                        <a className="contacts" href="mailto:bmbvfx@gmail.com">Email: bmbvfx@gmail.com</a>
                         <div className="gplay-btn"><div>Google Play</div> <FaGooglePlay className="hide" /> </div>
-                        <div className="cart-btn"><div>Card</div> <FontAwesomeIcon icon={faShoppingCart}/></div>
+                        <div className="cart-btn"> <FontAwesomeIcon icon={faShoppingCart}/><div id="num-items-in-cart">{ numberOfItemsInCart }</div><div style={{fontSize: "16px"}}>Cart</div></div>
                     </div>
                 </div>
                 {/* Middle row ends */}

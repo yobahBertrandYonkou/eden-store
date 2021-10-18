@@ -8,6 +8,18 @@ router.use((req, res, next) => {
     next();
 });
 
+router.ws("/cart", (ws, req) => {
+    ws.on("message", async (msg) => {
+        console.log("Cart count")
+        await firestore.collection("users")
+        .doc("DSErqrq545dsDh").collection("cart")
+        .onSnapshot((docs) => {
+            console.log(docs.docs.length );
+            ws.send(JSON.stringify(docs.docs.length))
+        });
+    });
+});
+
 // fetching data
 router.get('/:category/:type', async (req, res) => {
     console.log(req.params);
