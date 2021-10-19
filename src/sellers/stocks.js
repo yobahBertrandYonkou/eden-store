@@ -25,6 +25,59 @@ var Stocks= ()=>{
         var pdtPhotos = document.querySelectorAll(".photo-thumbnail");
         var currentAction = null;
         var selectedItemForProcessing = null;
+        var categories = document.querySelectorAll('.category-item');
+        var catView = document.getElementById("categories-dpd");
+
+        categories.forEach( category => {
+            category.onchange = (event) => {
+                if (catView.textContent == "...") catView.textContent = "";
+                console.log(event);
+                if (event.target.value == "all"){
+                    catView.textContent = "Cats, Dogs, Birds, Hamsters";
+
+                    categories.forEach( category => {
+                        category.checked = event.target.checked;
+                    });
+
+                    if(!event.target.checked){
+                        catView.textContent = "..."
+                    }
+                }else{
+                    var allCat = document.getElementById("all");
+                    allCat.checked = false;
+                    var contentStr = "";
+
+                    categories.forEach(cat => {
+                        if (cat.checked) contentStr += cat.value.substring(0,1).toUpperCase() 
+                        + cat.value.slice(1) + ", ";
+                    });
+
+                    if (contentStr == "") contentStr = "...";
+                    contentStr = contentStr.split(", ").slice(0, -1);
+                    
+                    if (contentStr.length == 4) allCat.checked = true;
+                    contentStr = contentStr.join(", "); 
+                    catView.textContent = contentStr;
+                }
+                // }else if (event.target.value == "cats"){
+                //     console.log(event.target.id)
+                //     if (event.target.checked) catView.textContent += "Cats, ";
+                //     else catView.textContent = catView.textContent.replace("Cats, ", "");
+                // }else if (event.target.value == "dogs"){
+                //     console.log(event.target.id)
+                //     if (event.target.checked) catView.textContent += "Dogs, ";
+                //     else catView.textContent = catView.textContent.replace("Dogs, ", "");
+                // }else if (event.target.value == "birds"){
+                //     console.log(event.target.id)
+                //     if (event.target.checked) catView.textContent += "Birds, ";
+                //     else catView.textContent = catView.textContent.replace("Birds, ", "");
+                // }else if (event.target.value == "hamsters"){
+                //     console.log(event.target.id)
+                //     if (event.target.checked) catView.textContent += "Hamsters, ";
+                //     else catView.textContent = catView.textContent.replace("Hamsters, ", "");
+                // }
+            }
+        });
 
         var clearForm = () => {
             // clearing fields
@@ -220,7 +273,7 @@ var Stocks= ()=>{
                                     detailsContainer.querySelector("#photo-preview").src = event.target.src;
                                 }
                             }
-
+                        
                         })
                         .catch(error => console.log(error));
                     }
@@ -623,17 +676,38 @@ var Stocks= ()=>{
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="category">Category</label>
+                                            <label htmlFor="category">Category (Animals)</label>
+                                            <button onClick = { () => {
+
+                                                if (document.querySelector(".dpd-list").style.display == "block"){
+                                                    document.querySelector(".dpd-list").style.display = "none";
+                                                }else{
+                                                    document.querySelector(".dpd-list").style.display = "block";
+                                                }
+
+                                            }} style={{borderColor: "#d1d1d5"}} id="categories-dpd" type="button" className = "btn btn-outline form-control" >
+                                                ...
+                                            </button>
+                                            <ul onMouseLeave = { () => {
+                                                document.querySelector(".dpd-list").style.display = "none";
+                                            }} className="dpd-list">
+                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="all" value="all" /> <label htmlFor="all"> All Categories</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="cats" value="cats" /> <label htmlFor="cats"> Cats</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="dogs" value="dogs" /> <label htmlFor="dogs"> Dogs</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="birds" value="birds" /> <label htmlFor="birds"> Birds</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="hamsters" value="hamsters" /> <label htmlFor="hamsters"> Hamsters</label></li>
+                                            </ul>
+                                            {/* <label htmlFor="category">Category</label>
                                             <select defaultValue="all" name="category" id="category" className="form-control" required>
                                                 <option value="all">All Categories</option>
                                                 <option value="cats">Cats</option>
                                                 <option value="dogs">Dogs</option>
                                                 <option value="birds">Birds</option>
                                                 <option value="hamsters">Hamsters</option>
-                                            </select>
+                                            </select> */}
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="type">Type</label>
+                                            <label htmlFor="type">Product Type</label>
                                             <select defaultValue="accessories" name="type" id="type" className="form-control" required>
                                                 <option value="accessories">Accessories</option>
                                                 <option value="grooming">Grooming</option>

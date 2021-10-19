@@ -2,17 +2,14 @@
 /* eslint-disable no-loop-func */
 const express = require('express');
 const firebase = require('firebase-admin');
-const algoliasearch = require('algoliasearch');
 var serviceAccount = require("../credentials/serviceAccountKey.json");
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
-const { firestore, storage } = require('../initializers');
-const algoliaKeys = require('../credentials/algolia.json');
+const { firestore, storage, algoliaIndex } = require('../initializers');
 
-// initializing algolia
-const algoliaClient = algoliasearch(algoliaKeys.ApplicationId, algoliaKeys.AdminAPIKey);
-const algoliaIndex = algoliaClient.initIndex("eden_products");
+
+
 
 
 // // firebase  initialization

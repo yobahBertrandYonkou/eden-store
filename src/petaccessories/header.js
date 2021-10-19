@@ -35,6 +35,28 @@ var Header = ()=>{
             document.onclose = () => socket.close();
         })();
 
+        // search box
+        var searchCategory = document.getElementById("search-categories");
+        var searchBox = document.getElementById("product-search");
+
+        searchBox.onchange = async () => {
+            await fetch("http://localhost:9000/products/search", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    searchText: searchBox.value.trim(),
+                    category: searchCategory.value
+                })
+            })
+            .then( response => response.json() )
+            .then( result => {
+                console.log(result.result);
+            } )
+            .catch( error => console.log(error));
+        }
+
     }, []);
     return (
         <header>
