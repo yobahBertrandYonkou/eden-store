@@ -2,11 +2,18 @@
 /* eslint-disable no-loop-func */
 const express = require('express');
 const firebase = require('firebase-admin');
+const algoliasearch = require('algoliasearch');
 var serviceAccount = require("../credentials/serviceAccountKey.json");
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
-const { firestore, storage } = require('../initializers')
+const { firestore, storage } = require('../initializers');
+const algoliaKeys = require('../credentials/algolia.json');
+
+// initializing algolia
+const algoliaClient = algoliasearch(algoliaKeys.ApplicationId, algoliaKeys.AdminAPIKey);
+const algoliaIndex = algoliaClient.initIndex("eden_products");
+
 
 // // firebase  initialization
 // firebase.initializeApp({
@@ -196,6 +203,23 @@ router.post('/', async (req, res) => {
             await firestore.collection("products").add(data)
             .then(response => {
                 // console.log(response);
+                // saving data to algolia
+                var algoliaData = data;
+                delete algoliaData['createdOn'];
+                delete algoliaData['color'];
+                delete algoliaData['photoUrls'];
+                delete algoliaData['rating'];
+                delete algoliaData['sellerId'];
+                delete algoliaData['updatedOn'];
+                algoliaData['objectID'] = algoliaData['id'];
+                delete algoliaData['id'];
+
+                algoliaIndex.saveObject(data)
+                .then( response => {
+                    console.log(response);
+                    console.log("Algolia saved")
+                })
+                .catch( error => console.error(error));
                 res.json({"respond": "Stock added successfully."});
             })
             .catch(error => {
@@ -323,13 +347,17 @@ router.delete('/', async (req, res) => {
     await firestore.collection("products").where("id", "==", req.body.id).get()
     .then(response => {
         // console.log(response);
-        //deleting files for the current stock item
-        
 
+        //deleting files for the current stock item
         response.docs.forEach(async (doc) => {
             await firestore.collection("products").doc(doc.id).delete()
             .then(response => {
                 // console.log(response);
+                // delete from algolia
+                algoliaIndex.deleteObject(req.body.id)
+                .then( response => console.log(response))
+                .catch( error => console.log(error));
+
                 res.json({"respond": "Stock successfully deleted stock"});
             })
             .catch(error => {
