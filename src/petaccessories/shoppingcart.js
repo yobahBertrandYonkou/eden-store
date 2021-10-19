@@ -14,7 +14,7 @@ var ShoppingCart = ()=>{
         if(localStorage.getItem("recent-action") == "delete"){
             document.querySelector('.show-notification').innerHTML = (
                 `<div class="alert alert-success alert-dismissible" role="alert">
-                    ${localStorage.getItem("recent-delete")} successfully deleted.
+                    ${localStorage.getItem("recent-delete")} has been successfully deleted.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                 </div>`
             );
@@ -110,7 +110,7 @@ var ShoppingCart = ()=>{
                                                         headers: {
                                                             "Content-Type": "application/json"
                                                         },
-                                                        body: JSON.stringify({userId: "DSErqrq545dsDh", itemId: event.target.getAttribute("data-item-id"), quantity: parseInt(event.target.value) })
+                                                        body: JSON.stringify({ userId: "DSErqrq545dsDh", itemId: event.target.getAttribute("data-item-id"), quantity: parseInt(event.target.value) })
                                                         })
                                                         .then(response => response.json())
                                                         .then(res => {
