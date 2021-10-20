@@ -196,7 +196,18 @@ var Stocks= ()=>{
                            
                             // loading data for input controls
                             for (var field in fields){
-                                fields[field].value = response[field];
+                                if (field == "category"){
+                                    catView.textContent = response[field].join(", ");
+                                    if (response[field].length == 4){
+                                        addItemContainer.querySelector("#all").click();
+                                    }else{
+                                        response[field].forEach( cat => {
+                                            addItemContainer.querySelector(`#${ cat.toLowerCase() }`).checked = true;
+                                        });
+                                    }
+                                }else{
+                                    fields[field].value = response[field];
+                                }
                             }
                             
                             // loading images
@@ -255,12 +266,19 @@ var Stocks= ()=>{
                             
                             // loading data for input controls
                             for (var field in fields){
-                                fields[field].value = response[field];
+
+                                if (field == "category"){
+                                    detailsContainer.querySelector("#category").textContent = response[field].join(", ");
+                                }else{
+                                    fields[field].value = response[field];
+                                }
 
                                 // disabling field
                                 fields[field].disabled = true;
                             }
+
                             
+
                             // loading images
                             var images = response['photoUrls'];
 
@@ -323,11 +341,11 @@ var Stocks= ()=>{
                                 <td title="${ doc.name }">${doc.name.substring(0, 25)}...</td>
                                 <td>${doc.price}</td>
                                 <td>${doc.quantity} ${doc.unit}</td>
-                                <td>${doc.brand}</td>
-                                <td>${doc.category.toString().toUpperCase()}</td>
-                                <td>${doc.color}</td>
-                                <td>${new Date(doc.updatedOn._seconds * 1000).toDateString()}</td>
-                                <td>${new Date(doc.createdOn._seconds * 1000).toDateString()}</td>
+                                <td>${doc.brand.substring(0, 1).toUpperCase() }${ doc.brand.slice(1) }</td>
+                                <td>${doc.category.join(", ")}</td>
+                                <td>${doc.color.substring(0, 1).toUpperCase() }${ doc.color.slice(1) }</td>
+                                <td>${new Date(doc.updatedOn._seconds * 1000).toDateString()} ${new Date(doc.updatedOn._seconds * 1000).toLocaleTimeString()}</td>
+                                <td>${new Date(doc.createdOn._seconds * 1000).toDateString()} ${new Date(doc.createdOn._seconds * 1000).toLocaleTimeString()}</td>
                             </tr>
                         `
                     );

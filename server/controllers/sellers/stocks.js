@@ -70,11 +70,11 @@ router.ws('/', (ws, req) => {
                 docs.docs.forEach(doc => {
                     // filter category here
                     if (msg.search != ""){
-                        if (doc.data().category == msg.category && doc.data().name.toLowerCase().includes(msg.search.toLowerCase())){
+                        if (doc.data().category.includes(msg.category.substring(0, 1).toUpperCase() + msg.category.slice(1)) && doc.data().name.toLowerCase().includes(msg.search.toLowerCase())){
                             data.unshift(doc.data());
                         }
                     }else{
-                        if (doc.data().category == msg.category){
+                        if (doc.data().category.includes(msg.category.substring(0, 1).toUpperCase() + msg.category.slice(1))){
                             data.unshift(doc.data());
                         }
                     }
@@ -158,7 +158,6 @@ router.post('/', async (req, res) => {
         "4": 0,
         "5": 0,
     }
-    
     // handling files
     var files = req.files;
     var filePath;
@@ -310,6 +309,7 @@ router.put('/', async (req, res) => {
                 delete data.createdOn;
                 delete data.id;
                 data['updatedOn'] = new Date();
+                data['category'] = data.category.split(", ")
                 // updating document
                 await firestore.collection('products').doc(docs.docs[0].id)
                 .update(data).then(response => {
