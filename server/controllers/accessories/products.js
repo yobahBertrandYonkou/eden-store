@@ -19,7 +19,7 @@ router.get('/:category/:type', async (req, res) => {
         .where("type", "==", req.params.type.toLowerCase());
     }else{
         conditions = firestore.collection("products")
-        .where("category", "in", [req.params.category.toLowerCase(), "all"])
+        .where("category", "array-contains", req.params.category)
         .where("type" , "==", req.params.type.toLowerCase() );
         
     }
