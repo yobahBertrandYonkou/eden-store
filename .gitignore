@@ -16,6 +16,7 @@
 
 # others
 /server/controllers/credentails
+server/controllers/sellers/temp
 
 # misc
 .DS_Store

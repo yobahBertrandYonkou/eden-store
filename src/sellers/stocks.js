@@ -26,7 +26,7 @@ var Stocks= ()=>{
         var currentAction = null;
         var selectedItemForProcessing = null;
         var categories = document.querySelectorAll('.category-item');
-        var catView = document.getElementById("categories-dpd");
+        var catView = document.getElementById("category");
 
         categories.forEach( category => {
             category.onchange = (event) => {
@@ -450,11 +450,10 @@ var Stocks= ()=>{
                 document.getElementById("description").value.trim()
             ]
 
-            if (temp.includes("")){
+            if (temp.includes("") || catView.textContent == '...'){
                 alert("All fields required");
                 return
             }
-
             
             // data to be sent
             var data = {
@@ -466,7 +465,7 @@ var Stocks= ()=>{
                 "description": document.getElementById("description").value.trim(),
                 "color": document.getElementById("color").value.trim(),
                 "unit": document.getElementById("unit").value.trim(),
-                "category": document.getElementById("category").value.trim(),
+                "category": catView.textContent,
                 "brand": document.getElementById("brand").value.trim(),
                 "type": document.getElementById("type").value.trim(),
                 "createdOn": null,
@@ -685,7 +684,7 @@ var Stocks= ()=>{
                                                     document.querySelector(".dpd-list").style.display = "block";
                                                 }
 
-                                            }} style={{borderColor: "#d1d1d5"}} id="categories-dpd" type="button" className = "btn btn-outline form-control" >
+                                            }} style={{borderColor: "#d1d1d5"}} id="category" type="button" className = "btn btn-outline form-control" >
                                                 ...
                                             </button>
                                             <ul onMouseLeave = { () => {

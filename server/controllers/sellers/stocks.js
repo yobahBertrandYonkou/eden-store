@@ -9,17 +9,6 @@ const path = require('path');
 const { firestore, storage, algoliaIndex } = require('../initializers');
 
 
-
-
-
-// // firebase  initialization
-// firebase.initializeApp({
-//   credential: firebase.credential.cert(serviceAccount),
-//   storageBucket: "login-371ec.appspot.com/",
-// });
-// const firestore = firebase.firestore();
-// const storage = firebase.storage();
-
 // logs every request (generic route)
 router.use((req, res, next)=>{
     // console.log(req.body);
@@ -144,8 +133,21 @@ router.post('/', async (req, res) => {
         "dogs": "DG",
         "all": "ALL" 
     }
+    data['category'] = data.category.split(", ");
 
-    data["id"] = `STK-${categories[req.body.category]}-${new Date().toJSON().substring(0, 10).split("-").reverse().join("")}-${new Date().toTimeString().substring(0,8).split(":").join("")}`;
+    var idCat = "";
+
+    if (data.category.length == 1){
+        idCat = categories[data.category[0].toLowerCase()];
+    }else if(data.category.length == 4){
+        idCat = "ALL";
+    }else {
+        data.category.forEach( cat => {
+            idCat += cat.substring(0,1);
+        });
+    }
+
+    data["id"] = `STK-${idCat}-${new Date().toJSON().substring(0, 10).split("-").reverse().join("")}-${new Date().toTimeString().substring(0,8).split(":").join("")}`;
     data['createdOn'] = new Date();
     data['updatedOn'] = new Date();
 
@@ -156,7 +158,7 @@ router.post('/', async (req, res) => {
         "4": 0,
         "5": 0,
     }
-
+    
     // handling files
     var files = req.files;
     var filePath;
@@ -195,6 +197,7 @@ router.post('/', async (req, res) => {
 
             // add photos to data
             data['photoUrls'] = photoUrls;
+            var folderName = data.id;
             // console.log(data)
             // saving data
             await firestore.collection("products").add(data)
@@ -222,9 +225,8 @@ router.post('/', async (req, res) => {
             .catch(error => {
                 console.log(error);
             });
-
            // deleteing temp folder
-           fs.rmdir(path.join(__dirname, `temp/${data.id}/`), { recursive: true, force: true }, (error) => {
+           fs.rmdir(path.join(__dirname, `temp/${folderName}/`), { recursive: true, force: true }, (error) => {
                if (error) throw error;
 
                console.log("Successfully deleted");
