@@ -37,9 +37,8 @@ var Header = ()=>{
 
         // search box
         var searchCategory = document.getElementById("search-categories");
-        var searchBox = document.getElementById("product-search");
-
-        searchBox.onchange = async () => {
+        var searchBox = document.getElementById("product-search");  
+        var searchAlgolia = async () => {
             await fetch("http://localhost:9000/products/search", {
                 method: "POST",
                 headers: {
@@ -56,6 +55,9 @@ var Header = ()=>{
             } )
             .catch( error => console.log(error));
         }
+
+        searchBox.onchange = () => searchAlgolia();
+        searchCategory.onchange = () => searchAlgolia();
 
     }, []);
     return (

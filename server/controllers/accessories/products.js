@@ -65,7 +65,7 @@ router.post('/search', (req, res) => {
         })
         .catch( error => console.log(error));
     }else{
-        algoliaIndex.search(req.body.searchText, { filters: `category:${ req.body.category }`})
+        algoliaIndex.search(req.body.searchText, { filters: `category:${ req.body.category.substring(0, 1).toUpperCase() + req.body.category.slice(1) }`})
         .then( hits => {
             console.log(hits);
              res.json({ result: hits });
