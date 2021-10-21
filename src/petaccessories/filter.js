@@ -56,8 +56,9 @@ var Filter = ()=>{
                 <div className="sub-filter-title">Price (Rs)</div>
                 <div className="price-slider">
                     <div className="low-text">0</div>
-                    <Box sx={{width: 120 }}>
-                        <Slider 
+                    <Box sx={{width: 130 }}>
+                        <Slider
+                            size="small"
                             getAriaLabel = { () => "Price" } 
                             value = { price }
                             onChange = { updatePriceSlider }
@@ -100,8 +101,9 @@ var Filter = ()=>{
                 <div className="sub-filter-title">Ratings</div>
                 <div className="rating-slider">
                     <div className="low-text rate-low">0</div>
-                    <Box sx={{width: 120 }}>
+                    <Box sx={{width: 130 }}>
                         <Slider 
+                            size="small"
                             getAriaLabel = { () => "Price" } 
                             step = { 20 }
                             value = { rate }
@@ -144,8 +146,9 @@ var Filter = ()=>{
                 <div className="sub-filter-title">Discount (%)</div>
                 <div className="discount-slider">
                     <div className="low-text dis-low">0</div>
-                    <Box sx={{width: 120 }}>
+                    <Box sx={{width: 130 }}>
                         <Slider 
+                            size="small"
                             getAriaLabel = { () => "Price" } 
                             value = { discount }
                             onChange = { updateDiscountSlider }
