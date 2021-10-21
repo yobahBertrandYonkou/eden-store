@@ -17,7 +17,7 @@ body{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0 40px 0 40px;
+    padding: 0 20px 0 20px;
 }
 
 .reset-filter{
@@ -46,13 +46,21 @@ body{
     padding-bottom: 5px;
 }
 
-.price-slider > input, .rating-slider > input, .discount-slider > input{
+.price-slider, .rating-slider, .discount-slider{
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.high-text, .low-text{
+    font-size: 14px;
+    padding-bottom: 7px;
 }
 
 .filter-group{
     margin-top: 20px;
-    padding: 0 40px 0 40px;
+    padding: 0 20px 0 20px;
 }
 
 @media only screen and (max-width: 740px){

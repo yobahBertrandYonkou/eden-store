@@ -1,6 +1,37 @@
 import "./css/filter.css"
+import Slider from '@mui/material/Slider';
+import Box from '@mui/material/Box';
+import { useState } from "react";
 
 var Filter = ()=>{
+    // slider value
+    const [price, setPrice] = useState([0, 100]);
+    const [rate, setRate] = useState([0, 100]);
+    const [discount, setDiscount] = useState([0, 100]);
+
+    var updatePriceSlider = (event, newPrice) => {
+        setPrice(newPrice);
+        document.querySelector('.low-text').textContent = newPrice[0];
+        document.querySelector('.high-text').textContent = newPrice[1];
+    }
+
+    var updateRateSlider = (event, newRate) => {
+        setRate(newRate);
+        document.querySelector('.rate-low').textContent = newRate[0] / 20;
+        document.querySelector('.rate-high').textContent = newRate[1] / 20;
+    }
+
+    var updateDiscountSlider = (event, newDiscount) => {
+        setDiscount(newDiscount);
+        document.querySelector('.dis-low').textContent = newDiscount[0];
+        document.querySelector('.dis-high').textContent = newDiscount[1];
+    }
+
+    var valuetext = (price) => {
+        return price;
+    }
+
+
     return (
         <div className="filter-container">
             {/* Title bar */}
@@ -8,13 +39,27 @@ var Filter = ()=>{
                 <div className="filter-title">Filters</div>
                 <div className="reset-filter">CLEAR ALL</div>
             </div>
-            <hr style={{ margin: "20px 40px 0 40px" }} />
+            <hr style={{ margin: "20px 20px 0 20px" }} />
             {/* Price filter */}
             <div className="filter-group price-filter">
-                <div className="sub-filter-title">Price</div>
+                <div className="sub-filter-title">Price (Rs)</div>
                 <div className="price-slider">
-                    <input type="range" />
+                    <div className="low-text">0</div>
+                    <Box sx={{width: 120 }}>
+                        <Slider 
+                            getAriaLabel = { () => "Price" } 
+                            value = { price }
+                            onChange = { updatePriceSlider }
+                            getAriaValueText = { valuetext }
+                            valueLabelDisplay = "auto"
+                        />
+                    </Box>
+                    <div className="high-text">100</div>
                 </div>
+            </div>
+
+            <div>
+                
             </div>
             {/* Brand filter */}
             <div className="filter-group brand-filter">
@@ -46,7 +91,18 @@ var Filter = ()=>{
             <div className="filter-group rating-filter">
                 <div className="sub-filter-title">Ratings</div>
                 <div className="rating-slider">
-                    <input type="range" min="0" max="5" />
+                    <div className="low-text rate-low">0</div>
+                    <Box sx={{width: 120 }}>
+                        <Slider 
+                            getAriaLabel = { () => "Price" } 
+                            step = { 20 }
+                            value = { rate }
+                            onChange = { updateRateSlider }
+                            getAriaValueText = { valuetext }
+                            valueLabelDisplay = "auto"
+                        />
+                    </Box>
+                    <div className="high-text rate-high">5</div>
                 </div>
             </div>
             {/* Sellers filter */}
@@ -77,9 +133,19 @@ var Filter = ()=>{
             </div>
             {/* Discount filter  */}
             <div className="filter-group discount-filter">
-                <div className="sub-filter-title">Discount</div>
+                <div className="sub-filter-title">Discount (%)</div>
                 <div className="discount-slider">
-                    <input type="range" min="0" max="5" />
+                    <div className="low-text dis-low">0</div>
+                    <Box sx={{width: 120 }}>
+                        <Slider 
+                            getAriaLabel = { () => "Price" } 
+                            value = { discount }
+                            onChange = { updateDiscountSlider }
+                            getAriaValueText = { valuetext }
+                            valueLabelDisplay = "auto"
+                        />
+                    </Box>
+                    <div className="high-text dis-high">100</div>
                 </div>
             </div>
         </div>
