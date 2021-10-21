@@ -84,6 +84,7 @@ var Stocks= ()=>{
             addItemContainer.querySelector("#name").value = "";
             addItemContainer.querySelector("#quantity").value = "";
             addItemContainer.querySelector("#price").value = "";
+            addItemContainer.querySelector("#discount").value = "";
             addItemContainer.querySelector("#description").value = "";
             addItemContainer.querySelector("#color").selectedIndex = 0;
             addItemContainer.querySelector("#unit").selectedIndex = 0;
@@ -247,6 +248,7 @@ var Stocks= ()=>{
                             var fields = {
                                 "name": detailsContainer.querySelector("#name"),
                                 "quantity": detailsContainer.querySelector("#quantity"),
+                                "discount": detailsContainer.querySelector("#discount"),
                                 "price": detailsContainer.querySelector("#price"),
                                 "description": detailsContainer.querySelector("#description"),
                                 "color": detailsContainer.querySelector("#color"),
@@ -469,6 +471,7 @@ var Stocks= ()=>{
             var temp = [
                 document.getElementById("name").value.trim(),
                 document.getElementById("price").value.trim(),
+                document.getElementById("discount").value.trim(),
                 document.getElementById("quantity").value.trim(),
                 document.getElementById("description").value.trim()
             ]
@@ -494,6 +497,7 @@ var Stocks= ()=>{
                 "name": document.getElementById("name").value.trim(),
                 "quantity": parseFloat(document.getElementById("quantity").value.trim()),
                 "price": parseFloat(document.getElementById("price").value.trim()),
+                "discount": parseFloat(document.getElementById("discount").value.trim()),
                 "description": document.getElementById("description").value.trim(),
                 "color": document.getElementById("color").value.trim(),
                 "unit": document.getElementById("unit").value.trim(),
@@ -532,9 +536,15 @@ var Stocks= ()=>{
             .then(response=>response.json())
             .then(response=>{
                 console.log(response);
+                var message;
+                if (currentAction == "edit"){
+                    message = "edited";
+                }else{
+                    message = "added";
+                }
                 document.querySelector('.show-notification').innerHTML = (
                     `<div class="alert alert-success alert-dismissible" role="alert">
-                        ${data.name} has been successfully added.
+                        ${data.name} has been successfully ${ message }.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     </div>`
                 );
@@ -697,11 +707,8 @@ var Stocks= ()=>{
                                             <input id="price" type="number" min="1" className="form-control" required/>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="color">Color</label>
-                                            <select defaultValue="red" name="color" id="color" className="form-control" required>
-                                                <option value="red">Red</option>
-                                                <option value="white">White</option>
-                                            </select>
+                                            <label htmlFor="discount">Discount (%)</label>
+                                            <input id="discount" defaultValue= { 0 } type="number" min={ 0 } max = { 100 } className="form-control" required/>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="quantity">Quantity</label>
@@ -751,6 +758,13 @@ var Stocks= ()=>{
                                                 <option value="accessories">Accessories</option>
                                                 <option value="grooming">Grooming</option>
                                                 <option value="food">Food</option>
+                                            </select>
+                                        </div>
+                                        <div className="form-group col-md-6 add-item-labels">
+                                            <label htmlFor="color">Color</label>
+                                            <select defaultValue="red" name="color" id="color" className="form-control" required>
+                                                <option value="red">Red</option>
+                                                <option value="white">White</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
