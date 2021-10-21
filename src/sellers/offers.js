@@ -158,6 +158,7 @@ var Offers= ()=>{
                 </div>
             </div>
         </div>
+        <div style={{ position: "fixed", top: "0", width: "100%"}} className="show-notification"></div>
         </div>
     );
 }

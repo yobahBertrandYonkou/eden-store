@@ -87,9 +87,14 @@ var Stocks= ()=>{
             addItemContainer.querySelector("#description").value = "";
             addItemContainer.querySelector("#color").selectedIndex = 0;
             addItemContainer.querySelector("#unit").selectedIndex = 0;
-            addItemContainer.querySelector("#category").selectedIndex = 0;
+            catView.textContent = "...";
             addItemContainer.querySelector("#brand").selectedIndex = 0;
             addItemContainer.querySelector("#type").selectedIndex = 0;
+            
+            // clearing categories
+            categories.forEach( cat => {
+                cat.checked = false;
+            });
             // removing upload btn from thumbnails
             pdtPhotos.forEach( thumbnail => {
                 thumbnail.src = imgUploadHolder;
@@ -469,7 +474,16 @@ var Stocks= ()=>{
             ]
 
             if (temp.includes("") || catView.textContent == '...'){
-                alert("All fields required");
+                document.querySelector('.show-notification').innerHTML = (
+                    `<div class="alert alert-danger alert-dismissible" role="alert">
+                    All fields required.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                    </div>`
+                );
+
+                setTimeout(() => {
+                    document.querySelector('.show-notification').innerHTML = "";
+                }, 5000);
                 return
             }
             
@@ -516,8 +530,16 @@ var Stocks= ()=>{
                 body: formData
             })
             .then(response=>response.json())
-            .then(data=>{
-                console.log(data);
+            .then(response=>{
+                console.log(response);
+                document.querySelector('.show-notification').innerHTML = (
+                    `<div class="alert alert-success alert-dismissible" role="alert">
+                        ${data.name} has been successfully added.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                    </div>`
+                );
+                addItemContainer.style.display = "none";
+                
                 // LoadData();
             })
             .catch(error=>console.log(error));
@@ -795,6 +817,7 @@ var Stocks= ()=>{
                 <div id="cm-edit" className="cm-option"><i style={{color: "white"}} className="fas fa-pen-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Edit</div>
                 <div id="cm-details" className="cm-option"><i style={{color: "white"}} className="fas fa-ellipsis-h"></i>&nbsp;&nbsp;&nbsp;&nbsp; Details</div>
             </div>
+            <div style={{ position: "fixed", top: "0", width: "100%", zIndex: 100}} className="show-notification"></div>
         </div>
     );
 }

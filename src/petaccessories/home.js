@@ -9,7 +9,9 @@ import Cats from "./images/cats.jpg"
 import Dogs from "./images/dogs.jpg"
 import Birds from "./images/birds.jpg"
 import Hamsters from "./images/hamsters.jpg"
-import Grooms from "./images/grooms.jpeg"
+import offer1 from "./images/offer1.jpg"
+import offer2 from "./images/offer2.jpg"
+import offer3 from "./images/offer3.jpg"
 
 var HomePage = ()=>{
     // fetching data for accessories
@@ -49,13 +51,13 @@ var HomePage = ()=>{
                         <div className="home-section-title">Offers you can’t escape form</div>
                         <div className="row offer-cards">
                             <div className="col-lg-4 col-sm-6 col-6 category-card-container">
-                                <CategoryCard photoURL = {Grooms} />
+                                <CategoryCard photoURL = { offer1 } />
                             </div>
                             <div className="col-lg-4 col-sm-6  col-6 category-card-container">
-                                <CategoryCard />
+                                <CategoryCard photoURL = { offer2 } />
                             </div>
                             <div className="col-lg-4 col-sm-6  col-6 category-card-container">
-                                <CategoryCard />
+                                <CategoryCard photoURL = { offer3 } />
                             </div>
                         </div>
                     </div>
