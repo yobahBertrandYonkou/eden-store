@@ -33,7 +33,7 @@ var Filter = ()=>{
 
 
     return (
-        <div className="filter-container">
+        <div style={{top: 0, position: "sticky"}} className="filter-container">
             {/* Title bar */}
             <div className="filter-title-bar">
                 <div className="filter-title">Filters</div>
@@ -69,9 +69,6 @@ var Filter = ()=>{
                 </div>
             </div>
 
-            <div>
-                
-            </div>
             {/* Brand filter */}
             <div className="filter-group brand-filter">
                 <div className="sub-filter-title">Brands</div>

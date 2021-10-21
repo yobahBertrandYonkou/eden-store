@@ -5,6 +5,11 @@ import CategoryCard from "./category";
 import ProductCard from "./productcard";
 import Footer from "./footer";
 import { useFetchAll } from "./hooks/useFetch";
+import Cats from "./images/cats.jpg"
+import Dogs from "./images/dogs.jpg"
+import Birds from "./images/birds.jpg"
+import Hamsters from "./images/hamsters.jpg"
+import Grooms from "./images/grooms.jpeg"
 
 var HomePage = ()=>{
     // fetching data for accessories
@@ -25,16 +30,16 @@ var HomePage = ()=>{
                         <div className="line"></div>
                         <div className="row category-cards">
                             <div className="col-sm-6 col-6 col-lg-3 col-md-4 category-card-container">
-                                <CategoryCard />
+                                <CategoryCard name="Cats" photoURL={Cats} />
                             </div>
                             <div className="col-sm-6 col-6 col-lg-3 col-md-4 category-card-container">
-                                <CategoryCard />
+                                <CategoryCard name="Dogs" photoURL={Dogs} />
                             </div>
                             <div className="col-sm-6 col-6 col-lg-3 col-md-4 category-card-container">
-                                <CategoryCard />
+                                <CategoryCard name="Birds" photoURL={Birds} />
                             </div>
                             <div className="col-sm-6 col-6 col-lg-3 col-md-4 category-card-container">
-                                <CategoryCard />
+                                <CategoryCard name="Hamsters" photoURL={Hamsters} />
                             </div>
                         </div>
                     </div>
@@ -44,7 +49,7 @@ var HomePage = ()=>{
                         <div className="home-section-title">Offers you can’t escape form</div>
                         <div className="row offer-cards">
                             <div className="col-lg-4 col-sm-6 col-6 category-card-container">
-                                <CategoryCard />
+                                <CategoryCard photoURL = {Grooms} />
                             </div>
                             <div className="col-lg-4 col-sm-6  col-6 category-card-container">
                                 <CategoryCard />

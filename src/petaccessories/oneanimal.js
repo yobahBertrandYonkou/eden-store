@@ -3,9 +3,11 @@ import Filter from "./filter";
 import Footer from "./footer";
 import Header from "./header";
 import ProductCard from "./productcard";
+import Offers from "./images/offers.png";
 import './css/oneanimal.css'
 import { useState } from "react";
 import { useFetchAll } from "./hooks/useFetch";
+import OfferCard from "./offer";
 
 var OneAnimal = ({animal})=>{
     console.log(animal);
@@ -23,7 +25,9 @@ var OneAnimal = ({animal})=>{
                 <div className="home-left-container">
                     <Filter />
                 </div>
+                
                 <div className="home-right-container">
+                    <OfferCard photo={Offers} />
                     {/* one animal title */}
                     <div className="one-animal-title">
                         <div className="title">{ title }</div>
