@@ -37,7 +37,18 @@ var Filter = ()=>{
             {/* Title bar */}
             <div className="filter-title-bar">
                 <div className="filter-title">Filters</div>
-                <div className="reset-filter">CLEAR ALL</div>
+                <div onClick = { () => {
+                    setDiscount([0, 100]);
+                    setPrice([0, 100]);
+                    setRate([0, 100]);
+                    document.querySelector('.low-text').textContent = 0;
+                    document.querySelector('.high-text').textContent = 100;
+                    document.querySelector('.rate-low').textContent = 0;
+                    document.querySelector('.rate-high').textContent = 5;
+                    document.querySelector('.dis-low').textContent = 0;
+                    document.querySelector('.dis-high').textContent = 100;
+
+                }} className="reset-filter">CLEAR ALL</div>
             </div>
             <hr style={{ margin: "20px 20px 0 20px" }} />
             {/* Price filter */}
