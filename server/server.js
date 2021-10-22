@@ -6,6 +6,7 @@ const expressWS = require('express-ws')(app);
 const stocks = require("./controllers/sellers/stocks")
 const products = require("./controllers/accessories/products")
 const user = require("./controllers/accessories/user")
+const offers = require("./controllers/sellers/offers")
 const cors = require('cors');
 const fileUpload = require("express-fileupload");
 
@@ -27,6 +28,9 @@ app.use("/products", products);
 
 // users
 app.use("/user", user);
+
+// offers
+app.use("/offers", offers)
 
 // starting server
 app.listen(9000, () => {

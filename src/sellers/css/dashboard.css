@@ -578,6 +578,9 @@ input[type='text']:focus, input[type='file']:focus,
     user-select: none;
     display: none;
     position: absolute;
+    max-height: 135px;
+    overflow: auto;
+    z-index: 5;
 }
 
 @media only screen and (min-width: 976px){

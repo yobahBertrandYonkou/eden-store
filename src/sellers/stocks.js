@@ -538,7 +538,7 @@ var Stocks= ()=>{
                 console.log(response);
                 var message;
                 if (currentAction == "edit"){
-                    message = "edited";
+                    message = "Updated";
                 }else{
                     message = "added";
                 }

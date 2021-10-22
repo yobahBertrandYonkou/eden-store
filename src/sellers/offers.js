@@ -1,11 +1,26 @@
 /* eslint-disable eqeqeq */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './css/dashboard.css'
 import imgPreviewHolder from "./images/preview-image.png"
 import imgUploadHolder from "./images/upload-image.png"
+import "react-datetime/css/react-datetime.css";
+import Datetime from "react-datetime";
+import moment from 'moment';
+import { useFetchAll } from "../petaccessories/hooks/useFetch";
 
 var Offers= ()=>{
 
+    const { data: productList } = useFetchAll("http://localhost:9000", "offers", "stocks");
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date().setDate( new Date().getDate() + 1));
+    var validateStartDate =  ( current ) => {
+        return current.isAfter(moment().subtract(1, 'day'));
+    }
+    var validateEndDate =  ( current ) => {
+        console.log()
+        return current.isAfter(moment( startDate ));
+    }
     useEffect(()=>{
         var switcher = document.getElementById("drawer-switch");
         var closeDrawer = document.getElementById("close-drawer");
@@ -23,61 +38,73 @@ var Offers= ()=>{
         var stkSearch = document.getElementById('stk-search');
         var photoPreview = document.getElementById('photo-preview');
         var pdtPhotos = document.querySelectorAll(".photo-thumbnail");
-        var currentAction = null;
-        var selectedItemForProcessing = null;
-        var categories = document.querySelectorAll('.category-item');
-        var catView = document.getElementById("category");
+        var currentActionOffer = null;
+        var selectedItemForProcessingOffer = null;
+        var products = document.querySelectorAll('.product-item');
+        var catView = document.getElementById("products");
 
-        categories.forEach( category => {
-            category.onchange = (event) => {
-                if (catView.textContent == "...") catView.textContent = "";
-                console.log(event);
-                if (event.target.value == "all"){
-                    catView.textContent = "Cats, Dogs, Birds, Hamsters";
+        // populate products
+        if (productList != null){
+            var list = document.querySelector(".temp-list");
+            list.innerHTML = "";
+            productList.products.forEach( product => {
+                list.insertAdjacentHTML("beforeend", 
+                `
+                    <li class = "dpd-item" ><input data-item-name=${ product.name } type="checkbox" class="product-item" id="${ product.id }" value="${ product.id }" /> <label for="${ product.id }"> ${ product.name }</label></li>
+                `);
+            });
+        }
+        setTimeout(() => {
+            products = document.querySelectorAll('.product-item');
+            products.forEach( category => {
+                category.onchange = (event) => {
+                    if (catView.textContent == "...") catView.textContent = "";
+                    if (event.target.value == "all"){
+                        catView.textContent = "All Products";
+                        products.forEach( product => {
+                            product.checked = event.target.checked;
+                        });
+                        if(!event.target.checked){
+                            catView.textContent = "..."
+                        }
+                    }else{
+                        var allCat = document.getElementById("all");
+                        allCat.checked = false;
+                        var contentStr = "";
+    
+                        products.forEach(cat => {
+                            if (cat.checked) contentStr += cat.getAttribute("data-item-name").substring(0,1).toUpperCase() 
+                            + cat.getAttribute("data-item-name").slice(1) + ", ";
+                        });
 
-                    categories.forEach( category => {
-                        category.checked = event.target.checked;
-                    });
-
-                    if(!event.target.checked){
-                        catView.textContent = "..."
+                        if (contentStr.length == 0) contentStr = "...";
+                        else contentStr = contentStr.split(", ").slice(0, -1);
+                        
+                        if (contentStr.length == productList.products.length) allCat.checked = true;
+                        if (contentStr != "...") contentStr = contentStr.join(", "); 
+                        catView.textContent = contentStr;
                     }
-                }else{
-                    var allCat = document.getElementById("all");
-                    allCat.checked = false;
-                    var contentStr = "";
-
-                    categories.forEach(cat => {
-                        if (cat.checked) contentStr += cat.value.substring(0,1).toUpperCase() 
-                        + cat.value.slice(1) + ", ";
-                    });
-
-                    if (contentStr == "") contentStr = "...";
-                    contentStr = contentStr.split(", ").slice(0, -1);
-                    
-                    if (contentStr.length == 4) allCat.checked = true;
-                    contentStr = contentStr.join(", "); 
-                    catView.textContent = contentStr;
                 }
-            }
-        });
-
+            });
+        }, 2000);
+        
         var clearForm = () => {
             // clearing fields
-            addItemContainer.querySelector("#name").value = "";
+            addItemContainer.querySelector("#title").value = "";
+            addItemContainer.querySelector("#condition").selectedIndex = 0;
             addItemContainer.querySelector("#quantity").value = "";
-            addItemContainer.querySelector("#price").value = "";
+            addItemContainer.querySelector("#discount-type").selectedIndex = 0;
+            addItemContainer.querySelector("#discount-value").value = "";
+
             addItemContainer.querySelector("#description").value = "";
-            addItemContainer.querySelector("#color").selectedIndex = 0;
-            addItemContainer.querySelector("#unit").selectedIndex = 0;
             catView.textContent = "...";
-            addItemContainer.querySelector("#brand").selectedIndex = 0;
-            addItemContainer.querySelector("#type").selectedIndex = 0;
             
-            // clearing categories
-            categories.forEach( cat => {
+            // clearing products
+            document.querySelectorAll('.product-item').forEach( cat => {
+                console.log(cat)
                 cat.checked = false;
             });
+
             // removing upload btn from thumbnails
             pdtPhotos.forEach( thumbnail => {
                 thumbnail.src = imgUploadHolder;
@@ -110,7 +137,7 @@ var Offers= ()=>{
                 // console.log(itemEvent.path[1])
                 var selectedItem = itemEvent.path[1];
                 selectedItem.style.backgroundColor = "rgba(106,121,183, 0.3)";
-                selectedItemForProcessing = selectedItem;
+                selectedItemForProcessingOffer = selectedItem;
                 // ref to c-menu
                 var cMenu = document.getElementById('c-menu');
 
@@ -150,7 +177,7 @@ var Offers= ()=>{
                     var cMenuOptionId = cEvent.target.id;
 
                     if(cMenuOptionId == "cm-delete"){
-                        currentAction = "delete";
+                        currentActionOffer = "delete";
                         // deleting item
                         await fetch("http://localhost:9000/stocks",{
                             method: "DELETE",
@@ -211,12 +238,12 @@ var Offers= ()=>{
                             addItemBtn.click();
                             
                             setTimeout(() => {
-                                currentAction = "edit";
+                                currentActionOffer = "edit";
                             }, 500);
                         })
                         .catch(error => console.log(error));
                     }else if(cMenuOptionId == "cm-details"){
-                        currentAction = "details";
+                        currentActionOffer = "details";
                         await fetch(`http://localhost:9000/stocks/${selectedItem.id.toString()}`)
                         .then(response => response.json())
                         .then(response => {
@@ -388,14 +415,18 @@ var Offers= ()=>{
         
         // Add item
         addItemBtn.onclick = ()=>{
+            setStartDate(new Date());
+            setEndDate(new Date().setDate( new Date().getDate() + 1));
             addItemContainer.style.display = "flex";
-            currentAction = "add";
+            currentActionOffer = "add";
             // changing titles
-            if (addItemContainer.querySelector(".add-item-header").textContent == "Edit Stock"){
-                addItemContainer.querySelector(".add-item-header").textContent = "New Stock";
-            }else{
-                addItemContainer.querySelector(".add-item-header").textContent = "Edit Stock";
-            }
+            setTimeout(() => {
+                if (addItemContainer.querySelector(".add-item-header").textContent == "Edit Stock"){
+                    addItemContainer.querySelector(".add-item-header").textContent = "New Stock";
+                }else{
+                    addItemContainer.querySelector(".add-item-header").textContent = "Edit Stock";
+                }
+            }, 100);
 
             //handling add photo
             pdtPhotos.forEach(element => {
@@ -407,7 +438,7 @@ var Offers= ()=>{
 
                     if (inputElement.files.length != 0){
                         photoPreview.src = URL.createObjectURL(inputElement.files[0]);
-                    }else if (currentAction == "edit" && inputElement.files.length == 0 ){ // handling edit container displayed
+                    }else if (currentActionOffer == "edit" && inputElement.files.length == 0 ){ // handling edit container displayed
                         photoPreview.src = event.target.src;
                     }
                 }   
@@ -450,11 +481,24 @@ var Offers= ()=>{
 
             //validation
             var temp = [
-                document.getElementById("name").value.trim(),
-                document.getElementById("price").value.trim(),
+                document.getElementById("title").value.trim(),
+                document.getElementById("discount-value").value.trim(),
                 document.getElementById("quantity").value.trim(),
                 document.getElementById("description").value.trim()
             ]
+            if (moment( new Date(document.getElementById("end-date").value.trim()) ).diff(document.getElementById("start-date").value.trim()) <= 0){
+                document.querySelector('.show-notification').innerHTML = (
+                    `<div class="alert alert-danger alert-dismissible" role="alert">
+                    Start date must be less than End date.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                    </div>`
+                );
+
+                setTimeout(() => {
+                    document.querySelector('.show-notification').innerHTML = "";
+                }, 5000);
+                return
+            }
 
             if (temp.includes("") || catView.textContent == '...'){
                 document.querySelector('.show-notification').innerHTML = (
@@ -474,28 +518,27 @@ var Offers= ()=>{
             var data = {
                 "id": null,
                 "sellerId": "DSErqrq545dsDh",
-                "name": document.getElementById("name").value.trim(),
+                "title": document.getElementById("title").value.trim(),
+                "condition": document.getElementById("condition").value.trim(),
                 "quantity": parseFloat(document.getElementById("quantity").value.trim()),
-                "price": parseFloat(document.getElementById("price").value.trim()),
+                "discount-type": document.getElementById("discount-type").value.trim(),
+                "discount-value": parseFloat(document.getElementById("discount-value").value.trim()),
                 "description": document.getElementById("description").value.trim(),
-                "color": document.getElementById("color").value.trim(),
-                "unit": document.getElementById("unit").value.trim(),
-                "category": catView.textContent,
-                "brand": document.getElementById("brand").value.trim(),
-                "type": document.getElementById("type").value.trim(),
+                "start-date": document.getElementById("start-date").value.trim(),
+                "end-date": document.getElementById("end-date").value.trim(),
+                "products": catView.textContent,
                 "createdOn": null,
                 "updatedOn": null,
-                "rating": null,
                 "photoUrls": null
             }
-
+            console.log(data)
             // endpoint
-            var url = "http://localhost:9000/stocks"
+            var url = "http://localhost:9000/offers"
             var method = "POST"
 
-            if (currentAction == "edit"){
+            if (currentActionOffer == "edit"){
                 method = "PUT";
-                data['id'] = selectedItemForProcessing.id;
+                data['id'] = selectedItemForProcessingOffer.id;
             }
 
             // writing data into form data
@@ -596,7 +639,7 @@ var Offers= ()=>{
         }
 
         initSideNav();
-    },[]);
+    },[ productList ]);
     return (
         <div className="main-container">
             <div id="sidenav-id" className="side-nav">
@@ -606,8 +649,8 @@ var Offers= ()=>{
                 <div className="side-nav-link seller-name">Seller's Name</div>
                 <hr />
                 <div className="side-nav-link dashboard"><a href="/">  <i className="fa fa-tachometer-alt"></i> Dashboard</a></div>
-                <div className="side-nav-link stocks"><a className="active-side-link"  href="/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
-                <div className="side-nav-link offers"><a href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
+                <div className="side-nav-link stocks"><a href="/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
+                <div className="side-nav-link offers"><a className="active-side-link" href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
                 <div className="side-nav-link orders"><a href="/orders"> <i className="fa fa-truck"></i> Orders</a></div>
                 <div className="side-nav-link reports"><a href="/reports"> <i className="fa fa-chart-line"></i> Reports</a></div>
             </div>
@@ -616,7 +659,7 @@ var Offers= ()=>{
             <div id="action-bar-id" className="action-bar">
                 <div id="drawer-switch" style={{width: "fit-content"}}><i className="fa fa-bars"></i></div>
                 <div className="title-profile">
-                    <div className="page-title">Stocks </div>
+                    <div className="page-title">Offers </div>
                     <div className="profile-photo">
                         <img width="100%"  src="" alt="" />
                     </div>
@@ -647,12 +690,12 @@ var Offers= ()=>{
                         <thead>
                             <tr className="table-header-tr">
                                 <th>Title</th>
-                                <th>Type</th>
-                                <th>Discount (%)</th>
+                                <th>Condition (With Qty)</th>
+                                <th>Discount Type</th>
+                                <th>Discount Value</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Created On</th>
-                                <th>Last Update</th>
                                 <th>Last Update</th>
                             </tr>
                         </thead>
@@ -666,39 +709,59 @@ var Offers= ()=>{
         <div id="add-item-main-container" className="add-item-dark-container">
                 <form id="stock-form" method="POST">
                     <div className="add-item-container">
-                        <div className="add-item-header">New Stock</div>
+                        <div className="add-item-header">New Offer</div>
                         <div className="container">
                             <div className="row">
                                 <div className="add-item-left-container col-md-6">
                                     <div style={{margin: 0}} className="form-group col-12 add-item-labels">
-                                        <label htmlFor="name">Product Name</label>
-                                        <input id="name" type="text" className="form-control" required/>
+                                        <label htmlFor="title">Title</label>
+                                        <input id="title" type="text" className="form-control" required/>
                                     </div>
                                     <div className="row">
                                         <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="price">Price  (₹)</label>
-                                            <input id="price" type="number" min="1" className="form-control" required/>
-                                        </div>
-                                        <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="color">Color</label>
-                                            <select defaultValue="red" name="color" id="color" className="form-control" required>
-                                                <option value="red">Red</option>
-                                                <option value="white">White</option>
+                                            <label htmlFor="condition">Condition</label>
+                                            <select defaultValue="cont-1" name="condition" id="condition" className="form-control" required>
+                                                <option value="cond-1">At least N quantity of items.</option>
+                                                <option value="cond-2">For each product.</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="quantity">Quantity</label>
-                                            <input id="quantity" type="number" min="1" className="form-control" required/>
+                                            <label htmlFor="quantity">N Quantity</label>
+                                            <input id="quantity" type="number" min="2" className="form-control" required/>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="unit">Unit</label>
-                                            <select defaultValue="kg" name="unit" id="unit" className="form-control" required>
-                                                <option value="kg">kg</option>
-                                                <option value="pounds">Pounds</option>
+                                            <label htmlFor="discount-type">Discount Type</label>
+                                            <select defaultValue="percentage-of" name="discount-type" id="discount-type" className="form-control" required>
+                                                <option value="percentage-of">Percentage of</option>
+                                                <option value="fixed-price">Fixed Price</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="category">Category (Animals)</label>
+                                            <label htmlFor="discount-value">Discount Value</label>
+                                            <input id="discount-value" type="number" min="1" className="form-control" required/>
+                                        </div>
+                                        <div className="form-group col-md-6 add-item-labels">
+                                            <label htmlFor="start-date">Start Date and Time</label>
+                                            <Datetime isValidDate={ validateStartDate } value= { startDate } onChange={ (newMoment) => {
+                                                setStartDate(newMoment);
+                                                document.getElementById("start-date").value = newMoment._d;
+                                            } } />
+                                            <input defaultValue={ new Date() } type="datetime" name="" id="start-date" hidden/>
+                                        </div>
+                                        <div className="form-group col-md-6 add-item-labels">
+                                            <label htmlFor="end-date">End Date and Time</label>
+                                            <Datetime isValidDate = { validateEndDate }  value={ endDate } onChange={ (moment) => {
+                                                setEndDate(moment)
+                                                document.getElementById("end-date").value = moment._d;    
+                                            } } />
+                                            <input defaultValue={ new Date(new Date().setDate(new Date().getDate() + 1)) } type="datetime" name="" id="end-date" hidden/>
+                                        </div>
+                                        <div className="form-group col-12 add-item-labels">
+                                            <label htmlFor="description">Description</label>
+                                            <textarea id="description" rows="3" className="form-control" required></textarea>
+                                        </div>
+                                        <div className="form-group col-md-12 add-item-labels">
+                                            <label htmlFor="products">Add Products</label>
                                             <button onClick = { () => {
 
                                                 if (document.querySelector(".dpd-list").style.display == "block"){
@@ -707,52 +770,22 @@ var Offers= ()=>{
                                                     document.querySelector(".dpd-list").style.display = "block";
                                                 }
 
-                                            }} style={{borderColor: "#d1d1d5"}} id="category" type="button" className = "btn btn-outline form-control" >
+                                            }} style={{borderColor: "#d1d1d5"}} id="products" type="button" className = "btn btn-outline form-control" >
                                                 ...
                                             </button>
                                             <ul onMouseLeave = { () => {
                                                 document.querySelector(".dpd-list").style.display = "none";
                                             }} className="dpd-list">
-                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="all" value="all" /> <label htmlFor="all"> All Categories</label></li>
-                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="cats" value="cats" /> <label htmlFor="cats"> Cats</label></li>
-                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="dogs" value="dogs" /> <label htmlFor="dogs"> Dogs</label></li>
-                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="birds" value="birds" /> <label htmlFor="birds"> Birds</label></li>
-                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="hamsters" value="hamsters" /> <label htmlFor="hamsters"> Hamsters</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="product-item" id="all" value="all" /> <label htmlFor="all"> All Products</label></li>
+                                                <div className="temp-list"></div>
                                             </ul>
-                                            {/* <label htmlFor="category">Category</label>
-                                            <select defaultValue="all" name="category" id="category" className="form-control" required>
-                                                <option value="all">All Categories</option>
-                                                <option value="cats">Cats</option>
-                                                <option value="dogs">Dogs</option>
-                                                <option value="birds">Birds</option>
-                                                <option value="hamsters">Hamsters</option>
-                                            </select> */}
-                                        </div>
-                                        <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="type">Product Type</label>
-                                            <select defaultValue="accessories" name="type" id="type" className="form-control" required>
-                                                <option value="accessories">Accessories</option>
-                                                <option value="grooming">Grooming</option>
-                                                <option value="food">Food</option>
-                                            </select>
-                                        </div>
-                                        <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="brand">Brand</label>
-                                            <select name="brand" id="brand" className="form-control" required>
-                                                <option value="eukanuba">Eukanuba</option>
-                                                <option value="purina">Purina</option>
-                                                <option value="hillspet">Hill's Pet Nutrition</option>
-                                            </select>
                                         </div>
                                     </div>
-                                    <div className="form-group col-12 add-item-labels">
-                                        <label htmlFor="description">Description</label>
-                                        <textarea id="description" rows="3" className="form-control" required></textarea>
-                                    </div>
+                                    
                                 </div>
                                 <div className="add-item-right-container col-md-6">
                                     <div className="item-photos-top">
-                                        <div className="title ">Upload Photos (<span style={{fontSize: "10px", color: "blue"}}>Right Click <i className="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Upload/Change | Left Click <i className="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Preview</span>). <span style={{fontStyle: "italic", color: "green"}}>Preferred Photos: Square</span></div>
+                                        <div className="title ">Upload Photo (<span style={{fontSize: "10px", color: "blue"}}>Right Click <i className="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Upload/Change | Left Click <i className="fas fa-upload" style={{color: "#d1d1d5", fontSize: "16px"}}></i> to Preview</span>). <span style={{fontStyle: "italic", color: "green"}}>Preferred Photo: Square</span></div>
                                         {/* <div className="add-photo">Add Photo</div> */}
                                     </div>
                                     <div className="item-photos-container">
@@ -763,25 +796,6 @@ var Offers= ()=>{
 
                                             <input type="file" id="photo-1" name="photo-1" accept="image/*" hidden/>
                                             <img width="60px" height="60px" src = { imgUploadHolder } id="photo-th-1" className="photo-thumbnail" alt=""/>
-
-                                            <input type="file" id="photo-2" name="photo-2" accept="image/*" hidden/>
-                                            <img src = { imgUploadHolder } id="photo-th-2" className="photo-thumbnail" alt=""/>
-
-                                            <input type="file" id="photo-3" name="photo-3" accept="image/*" hidden/>
-                                            <img src = { imgUploadHolder } id="photo-th-3" className="photo-thumbnail" alt=""/>
-
-                                            <input type="file" id="photo-4" name="photo-4" accept="image/*" hidden/>
-                                            <img src = { imgUploadHolder } id="photo-th-4" className="photo-thumbnail" alt=""/>
-
-                                            <input type="file" id="photo-5" name="photo-5" accept="image/*" hidden/>
-                                            <img src = { imgUploadHolder } id="photo-th-5" className="photo-thumbnail" alt=""/>
-
-                                            <input type="file" id="photo-6" name="photo-6" accept="image/*" hidden/>
-                                            <img src = { imgUploadHolder } id="photo-th-6" className="photo-thumbnail" alt=""/>
-
-                                            <input type="file" id="photo-7" name="photo-7" accept="image/*" hidden/>
-                                            <img src = { imgUploadHolder } id="photo-th-7" className="photo-thumbnail" alt=""/>
-
                                         </div>
                                     </div>
                                 </div>
