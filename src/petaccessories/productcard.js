@@ -47,7 +47,7 @@ var ProductCard = ({ details })=>{
 
     }, []);
     return (
-        <div className="card-container card border-0">
+        <div className="card-container card">
             <a href={`/accessories/${ details.category }/products/${ details.id }`} className="card-link">
                 <div className="card-photo card-img-top">
                     <img height="100%" width="100%" src={details.photoUrls['photo-1']} alt="" />

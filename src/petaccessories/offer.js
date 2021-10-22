@@ -75,7 +75,7 @@ var Offers = () => {
                                             </div>
                                             <div className="card-body">
                                                 <div className="card-title"> { productDetails.name } </div>
-                                                <div style={ { fontSize: "12px", backgroundColor: "orange", textAlign: "center", marginBottom: "10px"} } className="offer-name text-black">{ productDetails.offer.title } </div>
+                                                <div style={ { fontSize: "12px", backgroundColor: "orange", textAlign: "center", marginBottom: "10px", color: "black"} } className="offer-name text-black">{ productDetails.offer.title } </div>
                                         
                                                 { 
                                                     Object.keys(productDetails.offer.condition)[0] == "cond-1" && 
