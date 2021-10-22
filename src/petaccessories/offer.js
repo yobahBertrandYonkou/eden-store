@@ -7,8 +7,21 @@ import { useFetchAll } from "./hooks/useFetch";
 import { useEffect } from "react";
 var OfferCard = ( { photo }) => {
     return(
-        <div className="offer-card-container">
-            <img src= { photo } alt="" />
+        <div className="carousel slide" data-bs-ride="carousel" id="offer-display-card">
+            <div className="carousel-inner" role="listbox">
+                <div className="offer-card-container carousel-item active">
+                    <img src= { photo } alt="" />
+                </div>
+                <div className="offer-card-container carousel-item">
+                    <img src= { photo } alt="" />
+                </div>
+            </div>
+            <button className="carousel-control-prev" data-bs-target="#offer-display-card" data-bs-slide="prev">
+                <span style={{backgroundColor: "rgba(0,0,0,0.5)", borderRadius: "50px" }} className="carousel-control-prev-icon" arial-hidden = { true }></span>
+            </button>
+            <button href="#offer-display-card" className="carousel-control-next" data-bs-target="#offer-display-card" data-bs-slide="next">
+                <span style={{backgroundColor: "rgba(0,0,0,0.5)", borderRadius: "50px" }} className="carousel-control-next-icon" arial-hidden = { true }></span>
+            </button>
         </div>
     );
 }
