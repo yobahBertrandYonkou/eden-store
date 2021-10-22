@@ -50,12 +50,12 @@ var ProductCard = ({ details })=>{
         <div className="card-container card">
             <a href={`/accessories/${ details.category }/products/${ details.id }`} className="card-link">
                 <div className="card-photo card-img-top">
-                    <img height="100%" width="100%" src={details.photoUrls['photo-1']} alt="" />
+                    <img width="100%" height="200px" style={{objectFit: "contain"}} src={details.photoUrls['photo-1']} alt="" />
                 </div>
-                <div className="card-info card-body">
-                    <div className="card-title">{ details.name.substring(0, 25) }{ dots }</div>
-                    <div className="pdt-seller-name">by BOLTZ</div>
-                    <div className="rating">Rating here</div>
+                <div className="card-info ">
+                    <div className="card-title">{ details.name.substring(0, 15) } <span style={{ color: "blueviolet"}}>More...</span></div>
+                    <div className="pdt-seller-name">by { details.brand.toUpperCase() }</div>
+                    {/* <div className="rating">Rating here</div> */}
                     <div className="card-price">₹ { details.price }</div>
                 </div>
             </a>

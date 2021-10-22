@@ -97,7 +97,7 @@ var HomePage = ()=>{
                     <div className="container best-selling">
                         <div className="home-section-title">Best selling items</div>
                         <div className="row best-selling-cards">
-
+                        <div className="col-12">Comming Soon ...</div>
                             {/* <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
                                 <ProductCard />
                             </div>

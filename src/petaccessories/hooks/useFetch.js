@@ -33,6 +33,8 @@ const useFetchAll = (url, category, type) => {
 const useFetchOne = (url, id) => {
     const [ data, setData ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(true);
+    const [ related, setRelated ] = useState(null);
+
     console.log(id)
     // sending get request from server
     useEffect(() => {
@@ -41,15 +43,16 @@ const useFetchOne = (url, id) => {
             await fetch(`${ url }/${ id }`)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                console.log(data.related);
                 // data
-                setData(data);
+                setData(data.data);
+                setRelated(data.related);
                 setIsLoading(false);
             })
             .catch(error => console.error(error));
         })();
     }, []);
-    return { data, isLoading }
+    return { data, related, isLoading }
 }
 
 export { useFetchAll, useFetchOne };

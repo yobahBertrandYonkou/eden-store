@@ -58,11 +58,11 @@ router.ws('/', (ws, req) => {
                     // filter category here
                     if (msg.search != ""){
                         if (doc.data().name.toLowerCase().includes(msg.search.toLowerCase())){
-                            data.unshift(doc.data());
+                            data.push(doc.data());
                         }
                     }else{
                         
-                        data.unshift(doc.data());
+                        data.push(doc.data());
                     }
                     
                 });
@@ -71,11 +71,11 @@ router.ws('/', (ws, req) => {
                     // filter category here
                     if (msg.search != ""){
                         if (doc.data().category.includes(msg.category.substring(0, 1).toUpperCase() + msg.category.slice(1)) && doc.data().name.toLowerCase().includes(msg.search.toLowerCase())){
-                            data.unshift(doc.data());
+                            data.push(doc.data());
                         }
                     }else{
                         if (doc.data().category.includes(msg.category.substring(0, 1).toUpperCase() + msg.category.slice(1))){
-                            data.unshift(doc.data());
+                            data.push(doc.data());
                         }
                     }
                     
@@ -204,6 +204,7 @@ router.post('/', async (req, res) => {
                 // console.log(response);
                 // saving data to algolia
                 var algoliaData = data;
+                algoliaData['photoUrl'] = algoliaData['photoUrls']['photo-1'];
                 delete algoliaData['createdOn'];
                 delete algoliaData['color'];
                 delete algoliaData['photoUrls'];

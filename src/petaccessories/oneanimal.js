@@ -61,11 +61,11 @@ var OneAnimal = ({animal})=>{
                                 return (
                                     <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                         <a className="card" href={`/accessories/offers/products/${ productDetails.id }`}>
-                                            <div className="card-img-top">
-                                            <img width="100%" src={ productDetails.photoUrls['photo-1'] } alt="" />
+                                            <div style={{height: "200px", display: "flex", justifyContent: "center"}} className="card-img-top">
+                                                <img style={{objectFit: "contain"}} height="200px" width="80%" src={ productDetails.photoUrls['photo-1'] } alt="" />
                                             </div>
                                             <div className="card-body">
-                                                <div className="card-title"> { productDetails.name } </div>
+                                                <div className="card-title"> { productDetails.name.substring(0, 25) }... </div>
                                                 <div style={ { fontSize: "12px", backgroundColor: "orange", textAlign: "center", marginBottom: "10px", color: "black"} } className="offer-name text-black">{ productDetails.offer.title } </div>
                                         
                                                 { 

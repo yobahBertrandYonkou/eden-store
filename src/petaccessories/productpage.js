@@ -9,7 +9,7 @@ import ProductCard from './productcard';
 
 var ProdudctPage = ()=>{
     const { id } = useParams();
-    const { data, isLoading } = useFetchOne("http://localhost:9000/products", id);
+    const { data, related, isLoading } = useFetchOne("http://localhost:9000/products", id);
     const [ itemAddedToCartStatus, setItemAddedToCartStatus ] = useState(false);
     
     useEffect(() => {
@@ -122,6 +122,7 @@ var ProdudctPage = ()=>{
                 <div className="container best-selling">
                     <div style={{fontWeight: "normal", marginTop: "60px"}} className="home-section-title">Often bought with the following</div>
                     <div className="row best-selling-cards">
+                        <div className="col-12">Comming Soon ...</div>
                         {/* <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
                             <ProductCard />
                         </div>
@@ -146,25 +147,37 @@ var ProdudctPage = ()=>{
                 {/* related products */}
                 <div className="container best-selling">
                     <div style={{fontWeight: "normal", marginTop: "60px"}} className="home-section-title">Related products</div>
+                    <br />
+
                     <div className="row best-selling-cards">
-                        {/* <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div> */}
+                        {/* Loading... */}
+                        { 
+                                isLoading &&  
+
+                                <div className="col-12 text-center">
+                                    <div className="spinner-grow text-secondary" role="status"></div>
+                                </div>
+                            }
+                            
+                            {/* no data found */}
+                            { 
+                                !isLoading && related.length == 0  && 
+                                <div className="col-12 text-center">
+                                    No accessories
+                                </div>
+                            }
+
+                            {/* outputing accessores from useFetch */}
+                            { 
+                                !isLoading && related.length != 0 &&
+                                related.map((productDetails) => {
+                                    return (
+                                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                            <ProductCard details = { productDetails } />
+                                        </div>
+                                    );
+                                })
+                            }
                     </div>
                 </div>
             </div>

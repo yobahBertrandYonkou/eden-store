@@ -40,10 +40,10 @@ var Header = ()=>{
                     if (hit.name == undefined){
                         resultCardHolder.insertAdjacentHTML('beforeend', 
                         `
-                        <div style="margin-bottom: 10px" class="col-xs-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
-                            <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }}" class="card">
-                                <div class="card-img-top">
-                                    <img width="100%" src="https://storage.googleapis.com/login-371ec.appspot.com/EDEN/accessories/stocks/STK-ALL-20102021-145535/photo-1.jpg" alt="" />
+                        <div style="margin-bottom: 20px" class="col-xs-6 col-sm-5 col-md-4 col-lg-4 col-xl-3">
+                            <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }" class="card">
+                                <div class="card-photo card-img-top">
+                                    <img style="object-fit: contain;" height="200px; width: 70%" src="https://storage.googleapis.com/login-371ec.appspot.com/EDEN/accessories/stocks/STK-ALL-20102021-145535/photo-1.jpg" alt="" />
                                 </div>
                                 <div class="card-body">
                                     <div class="card-title">${ hit.title }</div>
@@ -58,10 +58,10 @@ var Header = ()=>{
                         }
                         resultCardHolder.insertAdjacentHTML('beforeend', 
                         `
-                        <div style="margin-bottom: 10px" class="col-xs-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
+                        <div style="margin-bottom: 20px" class="col-xs-6 col-sm-5 col-md-4 col-lg-4 col-xl-3">
                             <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }" class="card">
-                                <div class="card-img-top">
-                                    <img width="100%" src="https://storage.googleapis.com/login-371ec.appspot.com/EDEN/accessories/stocks/STK-ALL-20102021-145535/photo-1.jpg" alt="" />
+                                <div class="card-photo card-img-top">
+                                    <img style="object-fit: contain;" height="200px; width: 70%" src="${ hit.photoUrl }" alt="" />
                                 </div>
                                 <div class="card-body">
                                     <div class="card-title">${ name }</div>
@@ -117,7 +117,7 @@ var Header = ()=>{
                             <option value="english"> English</option>
                         </select>
                     </div>
-                    <a href="/signup" className="signin-btn">Sign in</a>
+                    <a href="/" className="signin-btn">Sign in</a>
                 </div>
                 {/* Top row with language and signin btn ends  */}
                 {/* Middle row */}

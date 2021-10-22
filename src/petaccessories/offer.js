@@ -2,10 +2,13 @@ import Header from "../petaccessories/header"
 import Footer from "../petaccessories/footer"
 import './css/offercardcontainer.css'
 import photoUrl from "./images/offers.png";
+import photo from "./images/offers.png";
+import photo1 from "./images/offers11.png";
+import photo2 from "./images/offers12.png";
 import Filter from './filter';
 import { useFetchAll } from "./hooks/useFetch";
 import { useEffect } from "react";
-var OfferCard = ( { photo }) => {
+var OfferCard = () => {
     return(
         <div className="carousel slide" data-bs-ride="carousel" id="offer-display-card">
             <div className="carousel-inner" role="listbox">
@@ -13,7 +16,10 @@ var OfferCard = ( { photo }) => {
                     <img src= { photo } alt="" />
                 </div>
                 <div className="offer-card-container carousel-item">
-                    <img src= { photo } alt="" />
+                    <img src= { photo1 } alt="" />
+                </div>
+                <div className="offer-card-container carousel-item">
+                    <img src= { photo2 } alt="" />
                 </div>
             </div>
             <button className="carousel-control-prev" data-bs-target="#offer-display-card" data-bs-slide="prev">
@@ -81,13 +87,13 @@ var Offers = () => {
                             {/* outputing accessores from useFetch */}
                             { !isOfferLoading && offerHasData && offerProductList.products.map((productDetails) => {
                                 return (
-                                    <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                    <div style={{ marginBottom: "20px"}} className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                         <a className="card" href={`/accessories/offers/products/${ productDetails.id }`}>
-                                            <div className="card-img-top">
-                                            <img width="100%" src={ productDetails.photoUrls['photo-1'] } alt="" />
+                                            <div style={{height: "200px", display: "flex", justifyContent: "center"}} className="card-img-top">
+                                            <img height="200px" width="80%" style={{ objectFit: "contain"}} src={ productDetails.photoUrls['photo-1'] } alt="" />
                                             </div>
                                             <div className="card-body">
-                                                <div className="card-title"> { productDetails.name } </div>
+                                                <div className="card-title"> { productDetails.name.substring(0, 38) } <span style={{color: "blueviolet"}}>More...</span> </div>
                                                 <div style={ { fontSize: "12px", backgroundColor: "orange", textAlign: "center", marginBottom: "10px", color: "black"} } className="offer-name text-black">{ productDetails.offer.title } </div>
                                         
                                                 { 

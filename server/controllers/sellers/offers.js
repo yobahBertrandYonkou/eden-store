@@ -286,6 +286,7 @@ router.post('/', (req, res) => {
                 // console.log(response);
                 // saving data to algolia
                 var algoliaData = data;
+                algoliaData['photoUrl'] = algoliaData['photoUrls']['photo-1'];
                 delete algoliaData['createdOn'];
                 delete algoliaData['photoUrls'];
                 delete algoliaData['sellerId'];

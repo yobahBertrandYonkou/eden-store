@@ -46,9 +46,23 @@ router.get('/:id', async (req, res) => {
     await firestore.collection("products")
     .where("id" , "==", req.params.id )
     .get()
-    .then(docs => {
+    .then(async response => {
         // console.log(data)
-        res.json(docs.docs[0].data());
+        // fetching related items
+        await firestore.collection("products")
+        .where("category", "array-contains", response.docs[0].data().category[0])
+        .limit(12)
+        .get()
+        .then( docs => {
+            var related = [];
+
+            docs.docs.forEach( doc => {
+                related.push(doc.data())
+            });
+            // returning data
+        res.json({data: response.docs[0].data(), related: related});
+        })
+        .catch( error => console.log(error));
     })
     .catch( error => console.error(error));
 });

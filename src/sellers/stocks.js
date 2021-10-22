@@ -358,10 +358,11 @@ var Stocks= ()=>{
                         `
                             <tr title="Right Click for more options." id="${doc.id}">
                                 <td title="${ doc.name }">${doc.name.substring(0, 25)}...</td>
-                                <td>${doc.price}</td>
+                                <td>Rs. ${doc.price}</td>
                                 <td>${doc.quantity} ${doc.unit}</td>
                                 <td>${doc.brand.substring(0, 1).toUpperCase() }${ doc.brand.slice(1) }</td>
                                 <td>${doc.category.join(", ")}</td>
+                                <td>${doc.type.substring(0, 1).toUpperCase() }${ doc.type.slice(1)}</td>
                                 <td>${doc.color.substring(0, 1).toUpperCase() }${ doc.color.slice(1) }</td>
                                 <td>${new Date(doc.updatedOn._seconds * 1000).toDateString()} ${new Date(doc.updatedOn._seconds * 1000).toLocaleTimeString()}</td>
                                 <td>${new Date(doc.createdOn._seconds * 1000).toDateString()} ${new Date(doc.createdOn._seconds * 1000).toLocaleTimeString()}</td>
@@ -688,9 +689,10 @@ var Stocks= ()=>{
                             <tr className="table-header-tr">
                                 <th>Name</th>
                                 <th>Price</th>
-                                <th>Quantity</th>
+                                <th>Weight</th>
                                 <th>Brand</th>
                                 <th>Categories</th>
+                                <th>Type</th>
                                 <th>Color</th>
                                 <th>Last Update</th>
                                 <th>Created On</th>
@@ -777,7 +779,12 @@ var Stocks= ()=>{
                                             <label htmlFor="color">Color</label>
                                             <select defaultValue="red" name="color" id="color" className="form-control" required>
                                                 <option value="red">Red</option>
+                                                <option value="pink">Pink</option>
+                                                <option value="orange">Orange</option>
+                                                <option value="green">Green</option>
                                                 <option value="white">White</option>
+                                                <option value="yellow">Yellow</option>
+                                                <option value="black">Black</option>
                                             </select>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
