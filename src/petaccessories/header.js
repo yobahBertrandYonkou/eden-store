@@ -7,6 +7,76 @@ import { useEffect, useState } from 'react';
 var Header = ()=>{
 
     const [numberOfItemsInCart, setNumberOfItemsInCart ] = useState(0);
+    var searchAlgolia = async () => {
+         var searchCategory = document.getElementById("search-categories");
+        var searchBox = document.getElementById("product-search"); 
+        console.log("Changed")
+        await fetch("http://localhost:9000/products/search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                searchText: searchBox.value.trim(),
+                category: searchCategory.value
+            })
+        })
+        .then( response => response.json() )
+        .then( result => {
+            var resultCardHolder = document.querySelector(".search-result");
+            if(searchBox.value.trim() == ""){
+                resultCardHolder.innerHTML = "";
+                document.getElementById("number-of-hits").textContent = "0";
+                return
+            }
+            console.log(result.result);
+            document.getElementById("number-of-hits").textContent = result.result.nbHits;
+            
+            if (result.result.nbHits == 0){
+                resultCardHolder.textContent = "No items found";
+            }else{
+                resultCardHolder.innerHTML = "";
+                result.result.hits.forEach( hit => {
+                    if (hit.name == undefined){
+                        resultCardHolder.insertAdjacentHTML('beforeend', 
+                        `
+                        <div style="margin-bottom: 10px" class="col-xs-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
+                            <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }}" class="card">
+                                <div class="card-img-top">
+                                    <img width="100%" src="https://storage.googleapis.com/login-371ec.appspot.com/EDEN/accessories/stocks/STK-ALL-20102021-145535/photo-1.jpg" alt="" />
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">${ hit.title }</div>
+                                </div>
+                            </a>
+                        </div>
+                        `);
+                    }else{
+                        var name = hit.name;
+                        if (hit.name.length > 20){
+                            name = hit.name.substring(0 , 20) + "...";
+                        }
+                        resultCardHolder.insertAdjacentHTML('beforeend', 
+                        `
+                        <div style="margin-bottom: 10px" class="col-xs-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
+                            <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }}" class="card">
+                                <div class="card-img-top">
+                                    <img width="100%" src="https://storage.googleapis.com/login-371ec.appspot.com/EDEN/accessories/stocks/STK-ALL-20102021-145535/photo-1.jpg" alt="" />
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-title">${ name }</div>
+                                    <div class="card-price">Rs ${ hit.price }</div>
+                                </div>
+                            </a>
+                        </div>
+                        `);
+                    }
+                });
+            }
+
+        } )
+        .catch( error => console.log(error));
+    }
 
     // Running code after component gets rendered
     useEffect(()=>{
@@ -35,30 +105,6 @@ var Header = ()=>{
             document.onclose = () => socket.close();
         })();
 
-        // search box
-        var searchCategory = document.getElementById("search-categories");
-        var searchBox = document.getElementById("product-search");  
-        var searchAlgolia = async () => {
-            await fetch("http://localhost:9000/products/search", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    searchText: searchBox.value.trim(),
-                    category: searchCategory.value
-                })
-            })
-            .then( response => response.json() )
-            .then( result => {
-                console.log(result.result);
-            } )
-            .catch( error => console.log(error));
-        }
-
-        searchBox.onchange = () => searchAlgolia();
-        searchCategory.onchange = () => searchAlgolia();
-
     }, []);
     return (
         <header>
@@ -79,14 +125,21 @@ var Header = ()=>{
                     <div className="middle-row-left">
                     <div className="logo"><FontAwesomeIcon icon={faBars} id="menu-toggler" className="menu-toggler"/>EDEN</div>
                     <div className="search">
-                        <select name="search-categories" defaultValue="all" id="search-categories" className="search-categories">
+                        <select onChange = { searchAlgolia } name="search-categories" defaultValue="all" id="search-categories" className="search-categories">
                             <option value="all">All Categories</option>
                             <option value="cats">Cats</option>
                             <option value="dogs">Dogs</option>
                             <option value="birds">Birds</option>
                             <option value="hamsters">Hamsters</option>
                         </select>
-                        <input id="product-search" type="search" className="search-box"  placeholder="Search for products" />
+                        <input onFocus = { () => {
+                            var searchResult = document.querySelector(".search-result");
+                            console.log(document.querySelector(".search-result-container").style.display)
+                            if (document.querySelector(".search-result-container").style.display != "block"){
+                                searchResult.innerHTML= "";
+                                document.querySelector(".search-result-container").style.display = "block";
+                            }
+                        }} onChange = { searchAlgolia } id="product-search" type="search" className="search-box"  placeholder="Search for products" />
                     </div>
                     </div>
                     <div className="middle-row-right">
@@ -97,6 +150,20 @@ var Header = ()=>{
                     </div>
                 </div>
                 {/* Middle row ends */}
+                {/* search results */}
+                    <div className="search-result-container">
+                        <div style={{ fontSize: "16px", marginBottom: "20px" }} className="card-title">Search Results (<span id="number-of-hits">0</span>)</div>
+                        <div className="container">
+                            <div className="row search-result">
+                            </div>
+                        </div>
+                        <div title="Close search results" className="close-search-result" onClick = { () => {
+                            document.getElementById("number-of-hits").textContent = "0";
+                            document.querySelector(".search-result").innerHTML = "";
+                            document.querySelector(".search-result-container").style.display = "none";
+
+                        }}><i className="fa fa-times"></i></div>
+                    </div>
                 {/* Bottom row with categories */}
                 <div id="bottom-menu" className="bottom-row">
                     <div className="bottom-row-links">
