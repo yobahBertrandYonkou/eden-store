@@ -116,7 +116,7 @@ router.post('/', async (req, res) => {
 
     // writing data to database (firestore)
     var data = req.body;
-    // console.log(data)
+    console.log(data.products)
 
     
     // setting id and rating value

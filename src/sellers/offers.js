@@ -61,6 +61,7 @@ var Offers= ()=>{
                     if (catView.textContent == "...") catView.textContent = "";
                     if (event.target.value == "all"){
                         catView.textContent = "All Products";
+                        catView.setAttribute("data-product-ids", "all");
                         products.forEach( product => {
                             product.checked = event.target.checked;
                         });
@@ -71,18 +72,29 @@ var Offers= ()=>{
                         var allCat = document.getElementById("all");
                         allCat.checked = false;
                         var contentStr = "";
+                        var productIds = "";
     
                         products.forEach(cat => {
-                            if (cat.checked) contentStr += cat.getAttribute("data-item-name").substring(0,1).toUpperCase() 
-                            + cat.getAttribute("data-item-name").slice(1) + ", ";
+                            if (cat.checked){
+                                contentStr += cat.getAttribute("data-item-name").substring(0,1).toUpperCase() 
+                                + cat.getAttribute("data-item-name").slice(1) + ", ";
+
+                                productIds += cat.value + ", ";
+                            }
                         });
 
                         if (contentStr.length == 0) contentStr = "...";
-                        else contentStr = contentStr.split(", ").slice(0, -1);
+                        else {
+                            contentStr = contentStr.split(", ").slice(0, -1);
+                            productIds = productIds.split(", ").slice(0, -1);
+                        }
                         
                         if (contentStr.length == productList.products.length) allCat.checked = true;
                         if (contentStr != "...") contentStr = contentStr.join(", "); 
                         catView.textContent = contentStr;
+                        catView.setAttribute("data-product-ids", productIds);
+                        console.log(productIds)
+
                     }
                 }
             });
@@ -521,12 +533,12 @@ var Offers= ()=>{
                 "title": document.getElementById("title").value.trim(),
                 "condition": document.getElementById("condition").value.trim(),
                 "quantity": parseFloat(document.getElementById("quantity").value.trim()),
-                "discount-type": document.getElementById("discount-type").value.trim(),
-                "discount-value": parseFloat(document.getElementById("discount-value").value.trim()),
+                "discountType": document.getElementById("discount-type").value.trim(),
+                "discountValue": parseFloat(document.getElementById("discount-value").value.trim()),
                 "description": document.getElementById("description").value.trim(),
-                "start-date": document.getElementById("start-date").value.trim(),
-                "end-date": document.getElementById("end-date").value.trim(),
-                "products": catView.textContent,
+                "startDate": document.getElementById("start-date").value.trim(),
+                "endDate": document.getElementById("end-date").value.trim(),
+                "products": catView.getAttribute('data-product-ids'),
                 "createdOn": null,
                 "updatedOn": null,
                 "photoUrls": null
@@ -560,10 +572,11 @@ var Offers= ()=>{
                 console.log(response);
                 document.querySelector('.show-notification').innerHTML = (
                     `<div class="alert alert-success alert-dismissible" role="alert">
-                        ${data.name} has been successfully added.
+                        ${data.title} has been successfully added.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     </div>`
                 );
+                clearForm();
                 addItemContainer.style.display = "none";
                 
                 // LoadData();

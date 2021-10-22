@@ -548,6 +548,7 @@ var Stocks= ()=>{
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     </div>`
                 );
+                clearForm();
                 addItemContainer.style.display = "none";
                 
                 // LoadData();
