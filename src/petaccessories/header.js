@@ -59,7 +59,7 @@ var Header = ()=>{
                         resultCardHolder.insertAdjacentHTML('beforeend', 
                         `
                         <div style="margin-bottom: 10px" class="col-xs-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
-                            <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }}" class="card">
+                            <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }" class="card">
                                 <div class="card-img-top">
                                     <img width="100%" src="https://storage.googleapis.com/login-371ec.appspot.com/EDEN/accessories/stocks/STK-ALL-20102021-145535/photo-1.jpg" alt="" />
                                 </div>
