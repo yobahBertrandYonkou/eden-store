@@ -15,7 +15,7 @@ var OfferCard = ( { photo }) => {
 
 var Offers = () => {
     const { data: offerList } = useFetchAll("http://localhost:9000", "offers", "offers");
-    const { data: offerProductList, isLoading: isOfferLoading, hasData: offerHasData } = useFetchAll("http://localhost:9000", "offers", "products");
+    const { data: offerProductList, isLoading: isOfferLoading, hasData: offerHasData } = useFetchAll("http://localhost:9000", "offers", "products/all");
     useEffect(() => {  
         var availableOffers = document.querySelector(".available-offers");
         if (offerList != null && offerList.products.length != 0){

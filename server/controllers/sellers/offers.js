@@ -116,11 +116,19 @@ router.get('/stocks', async (req, res) => {
 });
 
 // all products associated with offers
-router.get('/products', async (req, res) => {
+router.get('/products/:animal', async (req, res) => {
+    console.log(req.params)
     await firestore.collection("offers").get()
     .then(async offers => {
         
-        await firestore.collection("products").get()
+        var conditions;
+        if (req.params.animal == "all"){
+            conditions = firestore.collection("products");
+        }else{
+            conditions = firestore.collection("products").where("category", "array-contains", req.params.animal);
+        }
+        
+        await conditions.get()
         .then(async products => {
             
             var offerProductList = [];
