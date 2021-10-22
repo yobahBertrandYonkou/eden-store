@@ -12,6 +12,11 @@ import Hamsters from "./images/hamsters.jpg"
 import offer1 from "./images/offer1.jpg"
 import offer2 from "./images/offer2.jpg"
 import offer3 from "./images/offer3.jpg"
+import offers3 from "./images/offers3.png"
+import offers4 from "./images/offers4.png"
+import offers2 from "./images/offers2.png"
+import offers1 from "./images/offers1.png"
+import howItsDone from "./images/how-its-done.png"
 
 var HomePage = ()=>{
     // fetching data for accessories
@@ -21,6 +26,32 @@ var HomePage = ()=>{
     return (
         <div className="homepage-container">
             <Header />
+            <br />
+            <div className="home-top-carousel carousel slide" data-bs-ride="carousel" id="home-top-carousel">
+                <div className="carousel-inner" role="listbox">
+                <div className="carousel-item active">
+                        <img width="100%" src={ offers4 } alt="" />
+                    </div>
+                    <div className="carousel-item">
+                        <img width="100%" src={ offers3 } alt="" />
+                    </div>
+                    <div className="carousel-item">
+                        <img width="100%" src={ offers2 } alt="" />
+                    </div>
+                    <div className="carousel-item">
+                        <img width="100%" src={ offers1 } alt="" />
+                    </div>
+                </div>
+                <button className="carousel-control-prev" data-bs-slide="prev" data-bs-target="#home-top-carousel">
+                    <span className="carousel-control-prev-icon" aria-hidden= { true }></span>
+                </button>
+                <button className="carousel-control-next" data-bs-slide="next" data-bs-target="#home-top-carousel">
+                    <span className="carousel-control-next-icon" aria-hidden= { true }></span>
+                </button>
+            </div>
+            <div style={{marginBottom: "40px"}} className="how-its-done">
+                <img width="100%" src={ howItsDone } alt="" />
+            </div>
             <div className="home-content-section">
                 <div className="home-left-container">
                     <Filter />

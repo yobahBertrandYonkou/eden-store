@@ -58,7 +58,7 @@ var Offers = () => {
                     <OfferCard photo={photoUrl} />
                     {/* Accessories */}
                     <div className="container-fluid accessories">
-                        <div style={{fontWeight: "normal"}}  className="home-section-title">Offers</div>
+                        <div style={{fontWeight: "normal", marginTop: "20px"}}  className="home-section-title">Offers</div>
                         <div style={{marginTop: "20px"}} className="row">
 
                             {/* Loading... */}
