@@ -7,7 +7,7 @@ import Offers from "./images/offers.png";
 import './css/oneanimal.css'
 import { useState } from "react";
 import { useFetchAll } from "./hooks/useFetch";
-import OfferCard from "./offer";
+import { OfferCard } from "./offer";
 
 var OneAnimal = ({animal})=>{
     console.log(animal);

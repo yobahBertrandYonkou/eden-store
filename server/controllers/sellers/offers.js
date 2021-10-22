@@ -115,6 +115,68 @@ router.get('/stocks', async (req, res) => {
     });
 });
 
+// all products associated with offers
+router.get('/products', async (req, res) => {
+    await firestore.collection("offers").get()
+    .then(async offers => {
+        
+        await firestore.collection("products").get()
+        .then(async products => {
+            
+            var offerProductList = [];
+            offers.docs.forEach( offer => {
+                offer.data().products.forEach(async productId => {
+
+                    products.docs.forEach( productDoc => {
+                        if (productDoc.data().id == productId){
+                            var tempOfferObj = offer.data();
+                            delete tempOfferObj["createdOn"];
+                            delete tempOfferObj["updatedOn"];
+                            delete tempOfferObj["startDate"];
+                            delete tempOfferObj["endDate"];
+                            delete tempOfferObj["serllerId"];
+                            delete tempOfferObj["photoUrls"];
+
+                            var product = productDoc.data();
+                            product["offer"] = tempOfferObj;
+
+                            offerProductList.push(product);
+                        }
+                    });
+                });
+            });
+            console.log(offerProductList.length)
+            res.json({ products: offerProductList });
+            
+        })
+        .catch(error => console.log(error));
+        
+    })
+    .catch(error => console.log(error));
+    
+});
+
+// get stocks
+router.get('/offers', async (req, res) => {
+    console.log("offers")
+    console.log(req.params);
+    await firestore.collection("offers").get()
+    .then(docs => {
+        // console.log(response);
+        var data = [];
+
+        docs.docs.forEach( doc => {
+            data.push(doc.data());
+        });
+        // returning data
+        res.json({ products: data});
+
+    })
+    .catch(error => {
+        console.log(error);
+    });
+});
+
 // fetches the details of one stock
 router.get('/:id', async(req, res) => {
     console.log("here")
@@ -144,6 +206,7 @@ router.get('/:id', async(req, res) => {
         console.log(error);
     });
 });
+
 
 
 // save offers

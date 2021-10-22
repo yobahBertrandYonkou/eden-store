@@ -51,6 +51,15 @@ var Filter = ()=>{
                 }} className="reset-filter">CLEAR ALL</div>
             </div>
             <hr style={{ margin: "20px 20px 0 20px" }} />
+
+            {/* offers */}
+            <div className="filter-group brand-filter">
+                <div className="sub-filter-title">Available Offers</div>
+                <div className="brand-options available-offers">
+                    No Offers
+                </div>
+            </div>
+
             {/* Price filter */}
             <div className="filter-group price-filter">
                 <div className="sub-filter-title">Price (Rs)</div>
@@ -159,6 +168,7 @@ var Filter = ()=>{
                     <div className="high-text dis-high">100</div>
                 </div>
             </div>
+
         </div>
     );
 }

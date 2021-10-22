@@ -47,12 +47,12 @@ var ProductCard = ({ details })=>{
 
     }, []);
     return (
-        <div className="card-container">
+        <div className="card-container card border-0">
             <a href={`/accessories/${ details.category }/products/${ details.id }`} className="card-link">
-                <div className="card-photo">
+                <div className="card-photo card-img-top">
                     <img height="100%" width="100%" src={details.photoUrls['photo-1']} alt="" />
                 </div>
-                <div className="card-info">
+                <div className="card-info card-body">
                     <div className="card-title">{ details.name.substring(0, 25) }{ dots }</div>
                     <div className="pdt-seller-name">by BOLTZ</div>
                     <div className="rating">Rating here</div>

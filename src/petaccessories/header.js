@@ -105,7 +105,7 @@ var Header = ()=>{
                         <a href="/accessories/dogs" className="dogs"><FontAwesomeIcon icon={faDog} className="top-nav-icons"/>Dogs</a>
                         <a href="/accessories/birds" className="birds"><FontAwesomeIcon icon={faKiwiBird} className="top-nav-icons"/>Birds</a>
                         <a href="/accessories/hamsters" className="hamsters"><FontAwesomeIcon icon={faCheese} className="top-nav-icons"/>Hamsters</a>
-                        <a href="#" className="offers"><FontAwesomeIcon icon={faGift} className="top-nav-icons"/>Offers</a>
+                        <a href="/accessories/offers" className="offers"><FontAwesomeIcon icon={faGift} className="top-nav-icons"/>Offers</a>
                     </div>
                     <div className="cut-maker"></div>
                 </div>

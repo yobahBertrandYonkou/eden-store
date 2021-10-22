@@ -5,6 +5,7 @@ import ProdudctPage from "./petaccessories/productpage";
 import Dashboard from './sellers/dashboard'
 import Stocks from "./sellers/stocks";
 import Offers from "./sellers/offers";
+import { Offers as PgOffers } from "./petaccessories/offer";
 import { Switch, BrowserRouter, Route } from "react-router-dom";
 import ShoppingCart from "./petaccessories/shoppingcart";
 
@@ -30,6 +31,7 @@ ReactDOM.render(
             </Route>
             <Route exact path="/accessories/:category/products/:id" component={ProdudctPage}/>
             <Route exact path="/accessories/cart" component={ ShoppingCart }/>
+            <Route exact path="/accessories/offers" component={ PgOffers }/>
         </Switch>
     </BrowserRouter>
     , document.getElementById('root'))
