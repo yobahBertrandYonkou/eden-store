@@ -53,12 +53,12 @@ var Filter = ()=>{
             <hr style={{ margin: "20px 20px 0 20px" }} />
 
             {/* offers */}
-            <div className="filter-group brand-filter">
+            {window.location.pathname == '/accessories/offers' && <div className="filter-group brand-filter">
                 <div className="sub-filter-title">Available Offers</div>
                 <div className="brand-options available-offers">
                     No Offers
                 </div>
-            </div>
+            </div>}
 
             {/* Price filter */}
             <div className="filter-group price-filter">
