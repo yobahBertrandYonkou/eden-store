@@ -191,7 +191,7 @@ var Offers= ()=>{
                     if(cMenuOptionId == "cm-delete"){
                         currentActionOffer = "delete";
                         // deleting item
-                        await fetch("http://localhost:9000/stocks",{
+                        await fetch("http://localhost:9000/offers",{
                             method: "DELETE",
                             headers: {
                                 "Content-Type": "application/json",
@@ -256,7 +256,7 @@ var Offers= ()=>{
                         .catch(error => console.log(error));
                     }else if(cMenuOptionId == "cm-details"){
                         currentActionOffer = "details";
-                        await fetch(`http://localhost:9000/stocks/${selectedItem.id.toString()}`)
+                        await fetch(`http://localhost:9000/offers/${selectedItem.id.toString()}`)
                         .then(response => response.json())
                         .then(response => {
                             console.log(response);
@@ -267,16 +267,18 @@ var Offers= ()=>{
 
                             // getting ref of all fields
                             var fields = {
-                                "name": detailsContainer.querySelector("#name"),
+                                "title": detailsContainer.querySelector("#title"),
+                                "condition": detailsContainer.querySelector("#condition"),
                                 "quantity": detailsContainer.querySelector("#quantity"),
-                                "price": detailsContainer.querySelector("#price"),
+                                "discountType": document.querySelector("#discount-type"),
+                                "discountValue": detailsContainer.querySelector("#discount-value"),
                                 "description": detailsContainer.querySelector("#description"),
-                                "color": detailsContainer.querySelector("#color"),
-                                "unit": detailsContainer.querySelector("#unit"),
-                                "category": detailsContainer.querySelector("#category"),
-                                "brand": detailsContainer.querySelector("#brand"),
-                                "type": detailsContainer.querySelector("#type"),
+                                "startDate": detailsContainer.querySelector(".date-time-start > input"),
+                                "endDate": detailsContainer.querySelector(".date-time-end > input"),
+                                "products": detailsContainer.querySelector('.dpd-list'),
                             }
+                            fields['startDate'].hidden = false;
+                            fields['endDate'].hidden = false;
 
                             // removing upload btn from thumbnails
                             detailsContainer.querySelectorAll('.photo-thumbnail').forEach( thumbnail => {
@@ -284,7 +286,7 @@ var Offers= ()=>{
                             });
                             
                             // changing titles
-                            detailsContainer.querySelector(".title").textContent = "Photos";
+                            detailsContainer.querySelector(".title").textContent = "Photo";
                             detailsContainer.querySelector(".add-item-header").textContent = "Product Details";
 
                             //changing save/cancle btns
@@ -294,25 +296,26 @@ var Offers= ()=>{
                             // loading data for input controls
                             for (var field in fields){
 
-                                if (field == "category"){
-                                    detailsContainer.querySelector("#category").textContent = response[field].join(", ");
+                                if (field == "condition"){
+                                    detailsContainer.querySelector("#condition").value = Object.keys(response.product[field])[0];
+                                }else if (field == "startDate" || field == "endDate"){
+                                    fields[field].value = new Date(response.product[field]._seconds);
                                 }else{
-                                    fields[field].value = response[field];
+                                    fields[field].value = response.product[field];
                                 }
 
                                 // disabling field
                                 fields[field].disabled = true;
                             }
 
-                            
 
                             // loading images
-                            var images = response['photoUrls'];
+                            var images = response.product['photoUrls'];
 
                             for(var image in images){
                                 var thElement = detailsContainer.querySelector(`#${image.replace("-", "-th-")}`);
                                 thElement.src = images[image];
-
+                                detailsContainer.querySelector("#photo-preview").src = images[image];
                                 // onclick to preview image
                                 thElement.onclick = (event) => {
                                     detailsContainer.querySelector("#photo-preview").src = event.target.src;
@@ -752,19 +755,19 @@ var Offers= ()=>{
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="start-date">Start Date and Time</label>
-                                            <Datetime isValidDate={ validateStartDate } value= { startDate } onChange={ (newMoment) => {
+                                            <Datetime className="date-time-start" isValidDate={ validateStartDate } value= { startDate } onChange={ (newMoment) => {
                                                 setStartDate(newMoment);
                                                 document.getElementById("start-date").value = newMoment._d;
                                             } } />
-                                            <input defaultValue={ new Date() } type="datetime" name="" id="start-date" hidden/>
+                                            <input className="form-control" defaultValue={ new Date() } type="datetime" name="" id="start-date" hidden/>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
                                             <label htmlFor="end-date">End Date and Time</label>
-                                            <Datetime isValidDate = { validateEndDate }  value={ endDate } onChange={ (moment) => {
+                                            <Datetime className="date-time-end" isValidDate = { validateEndDate }  value={ endDate } onChange={ (moment) => {
                                                 setEndDate(moment)
                                                 document.getElementById("end-date").value = moment._d;    
                                             } } />
-                                            <input defaultValue={ new Date(new Date().setDate(new Date().getDate() + 1)) } type="datetime" name="" id="end-date" hidden/>
+                                            <input className="form-control" defaultValue={ new Date(new Date().setDate(new Date().getDate() + 1)) } type="datetime" name="" id="end-date" hidden/>
                                         </div>
                                         <div className="form-group col-12 add-item-labels">
                                             <label htmlFor="description">Description</label>

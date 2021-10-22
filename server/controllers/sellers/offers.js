@@ -50,11 +50,11 @@ router.ws('/', (ws, req) => {
         snapShotTracker = conditions.onSnapshot((docs)=>{
             // console.log(docs.docs);
 
-            // .where("category", "==", msg.category)
+            // .where("condition", "==", msg.condition)
             var data = [];
             if (msg.condition == "all"){
                 docs.docs.forEach(doc => {
-                    // filter category here
+                    // filter condition here
                     if (msg.search != ""){
                         if (doc.data().title.toLowerCase().includes(msg.search.toLowerCase())){
                             data.unshift(doc.data());
@@ -67,7 +67,7 @@ router.ws('/', (ws, req) => {
                 });
             }else{
                 docs.docs.forEach(doc => {
-                    // filter category here
+                    // filter condtion here
                     if (msg.search != ""){
                         if (Object.keys(doc.data().condition).includes(msg.condition) && doc.data().title.toLowerCase().includes(msg.search.toLowerCase())){
                             data.unshift(doc.data());
@@ -114,6 +114,37 @@ router.get('/stocks', async (req, res) => {
         console.log(error);
     });
 });
+
+// fetches the details of one stock
+router.get('/:id', async(req, res) => {
+    console.log("here")
+    console.log(req.params);
+    await firestore.collection("offers").where("id", "==", req.params.id).get()
+    .then(async response => {
+        // console.log(response);
+        // getting all stocks
+        await firestore.collection("products").get()
+        .then(docs => {
+            // console.log(response);
+            var data = [];
+
+            docs.docs.forEach( doc => {
+                data.push(doc.data());
+            });
+            // returning data
+            res.json({ products: data, product: response.docs[0].data() });
+
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+    })
+    .catch(error => {
+        console.log(error);
+    });
+});
+
 
 // save offers
 router.post('/', (req, res) => {
@@ -217,4 +248,34 @@ router.post('/', (req, res) => {
     // console.log(data);
 });
 
+// deleting offer
+router.delete('/', async (req, res) => {
+    // deleting offer
+    console.log(req.body.id);
+    await firestore.collection("offers").where("id", "==", req.body.id).get()
+    .then(response => {
+        // console.log(response);
+
+        //deleting files for the current offer item
+        response.docs.forEach(async (doc) => {
+            await firestore.collection("offers").doc(doc.id).delete()
+            .then(response => {
+                // console.log(response);
+                // delete from algolia
+                algoliaIndex.deleteObject(req.body.id)
+                .then( response => console.log(response))
+                .catch( error => console.log(error));
+
+                res.json({"respond": "Stock successfully deleted offer"});
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        });
+    })
+    .catch(error => {
+        console.log(error);
+    });
+    
+});
 module.exports = router;
