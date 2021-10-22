@@ -334,12 +334,12 @@ var Offers= ()=>{
         */
         
         // establishing a connection
-        var socket = new WebSocket("ws:localhost:9000/stocks");
+        var socket = new WebSocket("ws:localhost:9000/offers");
 
         // sending data to retrive data
         socket.onopen = (event)=>{
             // console.log(socket.readyState);
-            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
         }
         
         // receives data each time the database is updated
@@ -349,7 +349,7 @@ var Offers= ()=>{
              * so it has to be converted to json using JSON.parse(str)
              */
             var data = JSON.parse(dataString.data);
-            // console.log(data)
+            console.log(data)
             // reseting table body content
             tableBody.innerHTML = "";
 
@@ -360,17 +360,16 @@ var Offers= ()=>{
 
                 // publising data to table body
                 data.data.forEach( doc => {
-
                     // updating table
                     tableBody.insertAdjacentHTML('afterbegin', 
                         `
                             <tr title="Right Click for more options." id="${doc.id}">
-                                <td title="${ doc.name }">${doc.name.substring(0, 25)}...</td>
-                                <td>${doc.price}</td>
-                                <td>${doc.quantity} ${doc.unit}</td>
-                                <td>${doc.brand.substring(0, 1).toUpperCase() }${ doc.brand.slice(1) }</td>
-                                <td>${doc.category.join(", ")}</td>
-                                <td>${doc.color.substring(0, 1).toUpperCase() }${ doc.color.slice(1) }</td>
+                                <td title="${ doc.title }">${doc.title.substring(0, 25)}...</td>
+                                <td>${Object.values(doc.condition)[0] } (${doc.quantity})</td>
+                                <td>${doc.discountType}</td>
+                                <td>${doc.discountValue}</td>
+                                <td>${new Date(doc.startDate._seconds * 1000).toDateString()} ${new Date(doc.startDate._seconds * 1000).toLocaleTimeString()}</td>
+                                <td>${new Date(doc.endDate._seconds * 1000).toDateString()} ${new Date(doc.endDate._seconds * 1000).toLocaleTimeString()}</td>
                                 <td>${new Date(doc.updatedOn._seconds * 1000).toDateString()} ${new Date(doc.updatedOn._seconds * 1000).toLocaleTimeString()}</td>
                                 <td>${new Date(doc.createdOn._seconds * 1000).toDateString()} ${new Date(doc.createdOn._seconds * 1000).toLocaleTimeString()}</td>
                             </tr>
@@ -390,7 +389,7 @@ var Offers= ()=>{
             console.log(stkFrom.value);
             console.log(stkTo.value);
 
-            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
         }
 
         stkFrom.onchange = ()=>{
@@ -406,14 +405,14 @@ var Offers= ()=>{
             }
             
             // sending prameters to socket (server)
-            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
         }
 
         stkTo.onchange = ()=>{
             console.log(stkCategory.value);
             console.log(stkFrom.value);
             console.log(stkTo.value);
-            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
         }
 
         stkSearch.onkeyup = (event) => {
@@ -421,7 +420,7 @@ var Offers= ()=>{
             console.log(event.code.toString() == "Backspace")
             
             if(acceptedChars.includes(event.key.toString()) || event.code.toString() == "Backspace"){
-                socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+                socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
             }
         }
         
@@ -683,11 +682,9 @@ var Offers= ()=>{
                 {/* Filters */}
                 <div className="top-options-container">
                     <select name="" id="filter-drop">
-                        <option value="all">All Categories</option>
-                        <option value="cats">Cats</option>
-                        <option value="dogs">Dogs</option>
-                        <option value="birds">Birds</option>
-                        <option value="hamsters">Hamsters</option>
+                        <option value="all">All Offers</option>
+                        <option value="cond-1">At least N quantity of items.</option>
+                        <option value="cond-2">For each product.</option>
                     </select>
                     <input id="stk-search" type="search" placeholder="Search for items name" />
                     <div className="date-filter">

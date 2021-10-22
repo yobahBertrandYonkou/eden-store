@@ -15,6 +15,85 @@ router.use((req, res, next)=>{
     next();
 });
 
+var snapShotTracker = null;
+
+// fetches all stocks from the database (firebase/firestore) and handling searches
+router.ws('/', (ws, req) => {
+    console.log("New Socket created");
+    // receiving search filters
+    ws.on("message", async (message) => {
+        var msg = JSON.parse(message);
+        console.log(snapShotTracker)
+        console.log(msg)
+        // unsubscribe old data
+        if (snapShotTracker != null){
+            snapShotTracker();
+            console.log("Unsubscribed");
+        }
+        
+        // defining filter condition
+        var conditions;
+        if(msg.from == "" && msg.to == ""){
+            conditions = firestore.collection("offers").orderBy("updatedOn")
+        }else if(msg.from != "" && msg.to == ""){
+            conditions = firestore.collection("offers")
+            .where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).orderBy("updatedOn")
+        }else if (msg.from == "" && msg.to != ""){
+            conditions = firestore.collection("offers")
+            .where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).orderBy("updatedOn")
+        }else if(msg.from != "" && msg.to != ""){
+            conditions = firestore.collection("offers")
+            .where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).orderBy("updatedOn")
+        }
+        
+        // fetching all stocks according to filter condition
+        snapShotTracker = conditions.onSnapshot((docs)=>{
+            // console.log(docs.docs);
+
+            // .where("category", "==", msg.category)
+            var data = [];
+            if (msg.condition == "all"){
+                docs.docs.forEach(doc => {
+                    // filter category here
+                    if (msg.search != ""){
+                        if (doc.data().title.toLowerCase().includes(msg.search.toLowerCase())){
+                            data.unshift(doc.data());
+                        }
+                    }else{
+                        
+                        data.unshift(doc.data());
+                    }
+                    
+                });
+            }else{
+                docs.docs.forEach(doc => {
+                    // filter category here
+                    if (msg.search != ""){
+                        if (Object.keys(doc.data().condition).includes(msg.condition) && doc.data().title.toLowerCase().includes(msg.search.toLowerCase())){
+                            data.unshift(doc.data());
+                        }
+                    }else{
+                        if (Object.keys(doc.data().condition).includes(msg.condition)){
+                            data.unshift(doc.data());
+                        }
+                    }
+                    
+                });
+            }
+            ws.send(JSON.stringify({"data": data}));
+            // console.log(data);
+            // ws.send({"data": data});
+        });
+        // console.log(snapShotTracker)
+    });
+
+    // logging socket closed
+    ws.on("close", (ws)=>{
+        console.log("One socket closed");
+    })
+});
+
+
 // get stocks
 router.get('/stocks', async (req, res) => {
     console.log("offers")
