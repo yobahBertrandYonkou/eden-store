@@ -178,7 +178,19 @@ var Stocks= ()=>{
                             body: JSON.stringify({id: selectedItem.id.toString()})
                         })
                         .then(response => response.json())
-                        .then(response => console.log(response))
+                        .then(response => {
+                            console.log(response)
+                            document.querySelector('.show-notification').innerHTML = (
+                                `<div class="alert alert-danger alert-dismissible" role="alert">
+                                Item deleted Successfully.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                                </div>`
+                            );
+            
+                            setTimeout(() => {
+                                document.querySelector('.show-notification').innerHTML = "";
+                            }, 2000);
+                        })
                         .catch(error => console.log(error));
                     }else if(cMenuOptionId == "cm-edit"){
                         await fetch(`http://localhost:9000/stocks/${selectedItem.id.toString()}`)
