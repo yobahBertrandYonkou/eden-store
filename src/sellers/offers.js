@@ -202,7 +202,7 @@ var Offers= ()=>{
                         .then(response => console.log(response))
                         .catch(error => console.log(error));
                     }else if(cMenuOptionId == "cm-edit"){
-                        await fetch(`http://localhost:9000/stocks/${selectedItem.id.toString()}`)
+                        await fetch(`http://localhost:9000/offers/${selectedItem.id.toString()}`)
                         .then(response => response.json())
                         .then(response => {
                             console.log(response);
@@ -246,7 +246,7 @@ var Offers= ()=>{
                             }
                             
                             // triggering add stock
-                            addItemContainer.querySelector(".add-item-header").textContent = "New Stock";
+                            addItemContainer.querySelector(".add-item-header").textContent = "New Offer";
                             addItemBtn.click();
                             
                             setTimeout(() => {
@@ -435,10 +435,10 @@ var Offers= ()=>{
             currentActionOffer = "add";
             // changing titles
             setTimeout(() => {
-                if (addItemContainer.querySelector(".add-item-header").textContent == "Edit Stock"){
-                    addItemContainer.querySelector(".add-item-header").textContent = "New Stock";
+                if (addItemContainer.querySelector(".add-item-header").textContent == "Edit Offer" || currentActionOffer == "add"){
+                    addItemContainer.querySelector(".add-item-header").textContent = "New Offer";
                 }else{
-                    addItemContainer.querySelector(".add-item-header").textContent = "Edit Stock";
+                    addItemContainer.querySelector(".add-item-header").textContent = "Edit Offer";
                 }
             }, 100);
 
@@ -824,7 +824,7 @@ var Offers= ()=>{
             {/* Context menu */}
             <div id="c-menu" className="context-menu-container">
                 <div id="cm-delete" className="cm-option"><i style={{color: "white"}} className="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Delete</div>
-                <div id="cm-edit" className="cm-option"><i style={{color: "white"}} className="fas fa-pen-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Edit</div>
+                {/* <div id="cm-edit" className="cm-option"><i style={{color: "white"}} className="fas fa-pen-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Edit</div> */}
                 <div id="cm-details" className="cm-option"><i style={{color: "white"}} className="fas fa-ellipsis-h"></i>&nbsp;&nbsp;&nbsp;&nbsp; Details</div>
             </div>
             <div style={{ position: "fixed", top: "0", width: "100%", zIndex: 100}} className="show-notification"></div>
