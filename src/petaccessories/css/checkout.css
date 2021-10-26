@@ -40,12 +40,31 @@
 .payment-method-card{
     width: 100px;
     height: 60px;
-    background-color: #f5f5f8;
+    background-color: white;
     margin-right: 10px;
     padding: 5px;
     font-size: 12px;
     border-radius: 5px;
     margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--secondary-color);
+}
+
+.payment-method-card > img{
+    width: 100px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.payment-method-card > label{
+    position: absolute;
+    left: 2;
+    top: 2;
+}
+
+.payment-method-card:hover{
+    cursor: pointer;
 }
 
 .order-summary{

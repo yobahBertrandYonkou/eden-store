@@ -2,8 +2,11 @@ const { default: axios } = require('axios');
 const express = require('express');
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const now= require('nano-time');
+const razorpayKeys = require('../credentials/razorpay.json');
 
-const { firestore, firebaseAuth } = require('../initializers');
+
+const { firestore, firebaseAuth, razorpay } = require('../initializers');
 require("dotenv").config();
 
 
@@ -173,6 +176,44 @@ router.post('/accessories/login', (req, res) => {
         
     });
     
+});
+
+router.post('/orders/create', async (req, res) => {
+    
+    // checks whether user exist
+    firestore.collection("users").doc(req.body.uid)
+    .get().then( response => {
+        
+        if (response.exists){
+            // creating order
+            razorpay.orders.create({
+                amount: 100 * req.body.amount,
+                currency: "INR",
+                receipt: "order_rcptid_" + now()
+            }, (error, order) => {
+                if (error) throw error;
+
+                console.log(order)
+
+                res.json({ key_id: razorpayKeys.key_id, order: order, status: 200 });
+            });
+        }else{
+            res.json({"key_id": null, status: 404});
+        }
+    }).catch( error => console.log(error));
+});
+
+router.post('/orders/save', async (req, res) => {
+    
+    // checks whether user exist
+    firestore.collection("orders").add({
+        
+    })
+    .get().then( response => {
+        
+        console.log(response);
+
+    }).catch( error => console.log(error));
 });
 
 // TODO: Firebase Auth REST API
