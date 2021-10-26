@@ -13,7 +13,7 @@ router.ws("/cart", (ws, req) => {
     ws.on("message", async (msg) => {
         console.log("Cart count")
         await firestore.collection("users")
-        .doc("DSErqrq545dsDh").collection("cart")
+        .doc(localStorage.getItem("eden-pa-user-uid")).collection("cart")
         .onSnapshot((docs) => {
             console.log(docs.docs.length );
             ws.send(JSON.stringify(docs.docs.length))

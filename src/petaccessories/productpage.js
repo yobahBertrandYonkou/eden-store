@@ -40,7 +40,7 @@ var ProdudctPage = ()=>{
                     var temp = {};
                     temp['quantityNeeded'] = parseInt(quantity.value);
                     temp['id'] = data.id;
-                    temp['userId'] = "DSErqrq545dsDh";
+                    temp['userId'] = localStorage.getItem("eden-pa-user-uid");
                     await fetch("http://localhost:9000/user/cart", {
                         method: "POST",
                         headers: {

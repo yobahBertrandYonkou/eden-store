@@ -7,7 +7,7 @@ import ProductCard from './productcard';
 
 var ShoppingCart = ()=>{
     
-    const { data: userCart, isLoading, hasData } = useFetchAll("http://localhost:9000/user", "cart", "DSErqrq545dsDh")
+    const { data: userCart, isLoading, hasData } = useFetchAll("http://localhost:9000/user", "cart", localStorage.getItem("eden-pa-user-uid"))
 
     useEffect(() => {
         
@@ -43,7 +43,7 @@ var ShoppingCart = ()=>{
                             headers: {
                                 "Content-Type": "application/json"
                             },
-                            body: JSON.stringify({userId: "DSErqrq545dsDh", itemId: event.target.getAttribute("data-item-id")})
+                            body: JSON.stringify({userId: localStorage.getItem("eden-pa-user-uid"), itemId: event.target.getAttribute("data-item-id")})
                         })
                         .then(response => response.json())
                         .then(res => {
@@ -110,7 +110,7 @@ var ShoppingCart = ()=>{
                                                         headers: {
                                                             "Content-Type": "application/json"
                                                         },
-                                                        body: JSON.stringify({ userId: "DSErqrq545dsDh", itemId: event.target.getAttribute("data-item-id"), quantity: parseInt(event.target.value) })
+                                                        body: JSON.stringify({ userId: localStorage.getItem("eden-pa-user-uid"), itemId: event.target.getAttribute("data-item-id"), quantity: parseInt(event.target.value) })
                                                         })
                                                         .then(response => response.json())
                                                         .then(res => {
