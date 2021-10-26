@@ -42,7 +42,8 @@
     font-size: 18px;
 }
 
-::placeholder{font-size: 18px;}
+#email::placeholder{font-size: 18px;}
+#password::placeholder{font-size: 18px;}
 
 #login-btn{
     margin: 10px;

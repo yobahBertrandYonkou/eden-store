@@ -1,8 +1,12 @@
+import { useEffect } from 'react';
 import './css/checkout.css'
 import Footer from './footer';
 import Header from './header';
+import { useFetchAll } from './hooks/useFetch';
 
 var CheckOut = ()=>{
+    const { data: userCart, isLoading, hasData } = useFetchAll("http://localhost:9000/user", "cart", localStorage.getItem("eden-pa-user-uid"));
+
     return(
         <div className="checkout-page-container">
             <Header />
@@ -63,42 +67,67 @@ var CheckOut = ()=>{
                                     <div className="section-header">ITEMS SUMMARY</div>
                                 </div>
                                 <div className="section-item-summary">
-                                    {/* Item card */}
-                                    <div className="col-12 cart-item-card">
-                                        <div className="item-photo"></div>
-                                        <div className="item-details">
-                                            <div className="item-title">Boltz Bird Food for Budgies - Mix Seeds (1.2 KG)</div>
-                                            <div className="item-seller">Boltz Accessories</div>
-                                            <div className="item-price">Rs 300</div>
-                                            <div className="in-stock-status">In stock</div>
-                                            <div className="item-category">Cats accessories</div>
-                                            <div className="item-quantiy">Quantity</div>
+                                { 
+                                isLoading &&  
+
+                                <div className="col-12 text-center">
+                                    <div className="spinner-grow text-secondary" role="status"></div>
+                                </div>
+                            }
+                            
+                            {/* no data found */}
+                            { 
+                                !isLoading && !hasData  && 
+                                <div style={{ fontWeight: 'lighter'}} className="col-12 text-center">
+                                    Your cart is empty.
+                                </div>
+                            }
+
+                            {/* items */}
+                            { 
+                                !isLoading && hasData &&
+                                userCart.products.map((productDetails) => {
+                                    return (
+                                        <div className="col-12 cart-item-card" id={ `card-${ productDetails.id }`}>
+                                            <img src={ productDetails.photoUrl }  className="item-photo" alt={ productDetails.id } />
+                                            <div className="item-details">
+                                                <div className="item-title">{ productDetails.name } ({ productDetails.quantity } { productDetails.unit })</div>
+                                                <div className="item-seller">Boltz Accessories</div>
+                                                <div className="item-price">Price: Rs { productDetails.price }</div>
+                                                <div className="in-stock-status">In stock</div>
+                                                <div className="item-category">{ productDetails.category } accessories</div>
+                                                <div className="item-quantity">Quantity: <input onChange = { async (event) => {
+                                                    console.log(event.target.getAttribute("data-item-id"));
+                                                        await fetch("http://localhost:9000/user/cart", {
+                                                        method: "PUT",
+                                                        headers: {
+                                                            "Content-Type": "application/json"
+                                                        },
+                                                        body: JSON.stringify({ userId: localStorage.getItem("eden-pa-user-uid"), itemId: event.target.getAttribute("data-item-id"), quantity: parseInt(event.target.value) })
+                                                        })
+                                                        .then(response => response.json())
+                                                        .then(res => {
+                                                            console.log(res);
+                                                            
+                                                            document.querySelector('.show-notification').innerHTML = (
+                                                                `<div class="alert alert-info alert-dismissible" role="alert">
+                                                                    Please <button style="border: none;, background-color: white;" onclick="window.location.reload()" style="color: blue">reload</button> to reflect changes. Thank you.
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                                                                </div>`
+                                                            );
+                                                        })
+                                                        .catch(error => console.error(error)); 
+                                                        } 
+                                                    } data-item-id = { productDetails.id } min="1" type="number" defaultValue={ `${productDetails.quantityNeeded}` } className="scp-product-detials" /></div>
+                                            </div>
+                                            <div id="cart-action-btns">
+                                                <button className="scp-product-detials" onClick={ ()=> window.open(`/accessories/${ productDetails.category }/products/${ productDetails.id }`, "_self")} type = "button"><i className="fas fa-info scp-action-icons"></i></button>
+                                                <button className="scp-product-detials delete-cart-item" data-item-id = { productDetails.id }  type = "button"><i data-item-id = { productDetails.id } className="fas fa-trash-alt scp-action-icons"></i></button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    {/* Item card */}
-                                    <div className="col-12 cart-item-card">
-                                        <div className="item-photo"></div>
-                                        <div className="item-details">
-                                            <div className="item-title">Boltz Bird Food for Budgies - Mix Seeds (1.2 KG)</div>
-                                            <div className="item-seller">Boltz Accessories</div>
-                                            <div className="item-price">Rs 300</div>
-                                            <div className="in-stock-status">In stock</div>
-                                            <div className="item-category">Cats accessories</div>
-                                            <div className="item-quantiy">Quantity</div>
-                                        </div>
-                                    </div>
-                                    {/* Item card */}
-                                    <div className="col-12 cart-item-card">
-                                        <div className="item-photo"></div>
-                                        <div className="item-details">
-                                            <div className="item-title">Boltz Bird Food for Budgies - Mix Seeds (1.2 KG)</div>
-                                            <div className="item-seller">Boltz Accessories</div>
-                                            <div className="item-price">Rs 300</div>
-                                            <div className="in-stock-status">In stock</div>
-                                            <div className="item-category">Cats accessories</div>
-                                            <div className="item-quantiy">Quantity</div>
-                                        </div>
-                                    </div>
+                                    );
+                                })
+                            }
                                 </div>
                             </div>
                         </div>
@@ -107,7 +136,7 @@ var CheckOut = ()=>{
                                 <div className="sub-total-title order-summary">ORDER SUMMARY</div>
                                 <div className="list-item">
                                     <div className="item-name">Items:</div>
-                                    <div className="item-value">7</div>
+                                    <div className="item-value">{ !isLoading && userCart.products.length }</div>
                                 </div>
                                 <div className="list-item">
                                     <div className="item-name">Shipping:</div>
@@ -139,6 +168,7 @@ var CheckOut = ()=>{
                     </div>
                 </div>
             </div>
+            <div style={{ position: "fixed", top: "0", width: "100%"}} className="show-notification"></div>
             <Footer />
         </div>
     );

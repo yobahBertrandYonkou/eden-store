@@ -140,7 +140,7 @@ var ShoppingCart = ()=>{
                             <div className="items-summary-content">
                             <div className="sub-total-title">Subtotal (0 items)</div>
                             <div className="sub-total-value">Rs. 00</div>
-                            {hasData && <button type="button" className="add-to-cart-btn proceed-to-check-out">Proceed to buy</button>}
+                            {hasData && <button onClick = { () => window.location = "/accessories/checkout?count" } type="button" className="add-to-cart-btn proceed-to-check-out">Proceed to buy</button>}
                             {!hasData && <button style={{ width: "100%", borderRadius: "5px", border: "1px solid #d1d1d5", fontSize: "12px", padding: "3px", color: "#d1d1d5", backgroundColor: "white", cursor: "not-allowed"}} type="button" className="add-to-cart-btn" disabled>Proceed to buy</button>}
                             </div>
                         </div>

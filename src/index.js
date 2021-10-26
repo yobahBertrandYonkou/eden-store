@@ -9,6 +9,7 @@ import { Offers as PgOffers } from "./petaccessories/offer";
 import { Switch, BrowserRouter, Route } from "react-router-dom";
 import ShoppingCart from "./petaccessories/shoppingcart";
 import SignIn from "./petaccessories/signin";
+import CheckOut from "./petaccessories/checkout";
 
 
 ReactDOM.render(
@@ -34,6 +35,7 @@ ReactDOM.render(
             <Route exact path="/accessories/:category/products/:id" component={ProdudctPage}/>
             <Route exact path="/accessories/cart" component={ ShoppingCart }/>
             <Route exact path="/accessories/offers" component={ PgOffers }/>
+            <Route exact path="/accessories/checkout" component={ CheckOut }/>
         </Switch>
     </BrowserRouter>
     , document.getElementById('root'))

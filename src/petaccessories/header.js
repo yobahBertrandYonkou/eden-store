@@ -175,7 +175,7 @@ var Header = ()=>{
                 {/* Bottom row with categories */}
                 <div id="bottom-menu" className="bottom-row">
                     <div className="bottom-row-links">
-                        <a href="/accessories" className="home"><FontAwesomeIcon icon={faHome} className="top-nav-icons"/>Home</a>
+                        <a href="/accessories/home" className="home"><FontAwesomeIcon icon={faHome} className="top-nav-icons"/>Home</a>
                         <a href="/accessories/cats" className="cats"><FontAwesomeIcon icon={faCat} className="top-nav-icons"/>Cats</a>
                         <a href="/accessories/dogs" className="dogs"><FontAwesomeIcon icon={faDog} className="top-nav-icons"/>Dogs</a>
                         <a href="/accessories/birds" className="birds"><FontAwesomeIcon icon={faKiwiBird} className="top-nav-icons"/>Birds</a>
