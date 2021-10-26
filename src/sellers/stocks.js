@@ -726,7 +726,7 @@ var Stocks= ()=>{
                                             <input id="discount" defaultValue= { 0 } type="number" min={ 0 } max = { 100 } className="form-control" required/>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">
-                                            <label htmlFor="quantity">Quantity</label>
+                                            <label htmlFor="quantity">Weight</label>
                                             <input id="quantity" type="number" min="1" className="form-control" required/>
                                         </div>
                                         <div className="form-group col-md-6 add-item-labels">

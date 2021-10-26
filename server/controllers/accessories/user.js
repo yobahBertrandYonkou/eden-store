@@ -1,6 +1,11 @@
+const { default: axios } = require('axios');
 const express = require('express');
 const router = express.Router();
-const { firestore } = require('../initializers');
+const jwt = require("jsonwebtoken");
+
+const { firestore, firebaseAuth } = require('../initializers');
+require("dotenv").config();
+
 
 
 // cart count
@@ -110,4 +115,56 @@ router.put('/cart', async (req, res) => {
     .catch( error => console.error(error)); 
 });
 
+// authenticate users
+router.post('/authentication', async (req, res) => {
+    axios({
+        method: "POST",
+        url: `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${ process.env.WEP_API_KEY }`,
+        data: {
+            email: req.body.email,
+            password: req.body.password,
+            returnSecureToken: false
+        }
+    })
+   .then( response => {
+       var data = response.data;
+
+       // creating jwt
+       const accessToken = jwt.sign({
+           email: data.email,
+           uid: data.localId,
+       }, data.idToken, {
+           expiresIn: "10m"
+       });
+    
+    //    sending token
+       res.json({
+           token: accessToken,
+           secretKey: data.idToken
+       });
+       console.log("token sent");
+   })
+   .catch( error => console.log(error));
+});
+
+// login in users
+router.post('/accessories/login', (req, res) => {
+    jwt.verify(req.body.token, req.body.key, async (error, user) => {
+        if (error) throw error;
+
+        await firestore.collection("users")
+        .doc(user.uid).get()
+        .then( data => {
+            console.log(data.data());
+            var userData = data.data();
+            userData['uid'] = user.uid;
+            res.json(userData);
+        })
+        .catch( error => console.log(error));
+        
+    });
+    
+});
+
+// TODO: Firebase Auth REST API
 module.exports = router;

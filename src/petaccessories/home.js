@@ -9,20 +9,50 @@ import Cats from "./images/cats.jpg"
 import Dogs from "./images/dogs.jpg"
 import Birds from "./images/birds.jpg"
 import Hamsters from "./images/hamsters.jpg"
-import offer1 from "./images/offer1.jpg"
-import offer2 from "./images/offer2.jpg"
-import offer3 from "./images/offer3.jpg"
+import offer1 from "./images/p1.png"
+import offer2 from "./images/p2.png"
+import offer3 from "./images/p3.png"
 import offers3 from "./images/offers3.png"
 import offers4 from "./images/offers4.png"
 import offers2 from "./images/offers2.png"
 import offers1 from "./images/offers1.png"
 import howItsDone from "./images/how-its-done.png"
+import { useLocation, useParams } from "react-router";
+import querystring from "query-string";
+import { useEffect } from "react";
 
 var HomePage = ()=>{
     // fetching data for accessories
     const { data: accessories, isLoading, hasData: hasAccessories } = useFetchAll("http://localhost:9000/products", "all", "accessories");
     const { data: grooming, isLoading: isGroomingLoading, hasData: hasGrooming } = useFetchAll("http://localhost:9000/products", "all", "grooming");
+    
+    useEffect( () => {
+        const parsed = querystring.parse(window.location.search);
+        console.log(parsed);
 
+    if (Object.keys(parsed).length === 2){
+        fetch(`http://localhost:9000/user/accessories/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify( {
+                token: parsed.token,
+                key: parsed.key
+            })
+        })
+        .then( response => response.json())
+        .then( response => {
+            console.log(response);
+            // save user data
+            localStorage.setItem("eden-pa-user-name", response.name);
+            localStorage.setItem("eden-pa-user-email", response.email);
+            localStorage.setItem("eden-pa-user-uid", response.uid);
+            localStorage.setItem("eden-pa-user-photo", response.photoURL);
+            localStorage.setItem("eden-pa-user-logged-in", "true");
+            window.location = "/accessories";
+        })
+        .catch( error => console.log(error));
+    }
+    }, []);
     return (
         <div className="homepage-container">
             <Header />

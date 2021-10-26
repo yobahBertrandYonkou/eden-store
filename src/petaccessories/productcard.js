@@ -4,7 +4,6 @@ import './css/productcard.css'
 import cardPhoto from './images/product1.png'
 
 var ProductCard = ({ details })=>{
-    console.log(details);
     var dots = "";
     if (details.name.length > 25){
         dots = "...";

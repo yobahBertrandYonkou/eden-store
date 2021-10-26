@@ -8,6 +8,7 @@ firebase.initializeApp({
   });
 const firestore = firebase.firestore();
 const storage = firebase.storage();
+const firebaseAuth = firebase.auth();
 
 // initializing algolia
 const algoliasearch = require('algoliasearch');
@@ -16,4 +17,4 @@ const algoliaClient = algoliasearch(algoliaKeys.ApplicationId, algoliaKeys.Admin
 const algoliaIndex = algoliaClient.initIndex("eden_products");
 
 
-module.exports = { firestore, storage, algoliaClient, algoliaIndex }
+module.exports = { firestore, storage, algoliaClient, algoliaIndex, firebaseAuth }
