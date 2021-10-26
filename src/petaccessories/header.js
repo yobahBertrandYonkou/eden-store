@@ -95,7 +95,7 @@ var Header = ()=>{
         (async () => {
             var socket = new WebSocket("ws:localhost:9000/user/cart");
             socket.onopen = () => {
-                socket.send("ok")
+                socket.send(JSON.stringify({uid: localStorage.getItem("eden-pa-user-uid")}))
             };
             socket.onmessage = (msg) => {
                 

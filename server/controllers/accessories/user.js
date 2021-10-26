@@ -12,8 +12,9 @@ require("dotenv").config();
 router.ws("/cart", (ws, req) => {
     ws.on("message", async (msg) => {
         console.log("Cart count")
+        console.log(msg)
         await firestore.collection("users")
-        .doc(localStorage.getItem("eden-pa-user-uid")).collection("cart")
+        .doc(JSON.parse(msg).uid).collection("cart")
         .onSnapshot((docs) => {
             console.log(docs.docs.length );
             ws.send(JSON.stringify(docs.docs.length))
