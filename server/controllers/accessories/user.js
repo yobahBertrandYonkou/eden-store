@@ -118,6 +118,7 @@ router.put('/cart', async (req, res) => {
 
 // authenticate users
 router.post('/authentication', async (req, res) => {
+    console.log(req.body)
     axios({
         method: "POST",
         url: `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${ process.env.WEP_API_KEY }`,
@@ -141,11 +142,18 @@ router.post('/authentication', async (req, res) => {
     //    sending token
        res.json({
            token: accessToken,
-           secretKey: data.idToken
+           secretKey: data.idToken,
+           status: 200
        });
        console.log("token sent");
    })
-   .catch( error => console.log(error));
+   .catch( error => {
+       console.log(error.response.data)
+        res.json({
+            status: error.response.data.error.code,
+            message: error.response.data.error.message
+        });
+   });
 });
 
 // login in users

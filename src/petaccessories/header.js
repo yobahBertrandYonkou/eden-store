@@ -117,14 +117,14 @@ var Header = ()=>{
                             <option value="english"> English</option>
                         </select>
                     </div>
-                    {localStorage.getItem('eden-pa-user-logged-in') !== "true" && <a href="/" className="signin-btn">Sign in</a> }
+                    {localStorage.getItem('eden-pa-user-logged-in') !== "true" && <a href="/accessories/signin" className="signin-btn">Sign in</a> }
                     {localStorage.getItem('eden-pa-user-logged-in') === "true" && <div>Hello, {localStorage.getItem("eden-pa-user-name").split(' ')[0] }  <button onClick = { () => {
                         localStorage.removeItem("eden-pa-user-name");
                         localStorage.removeItem("eden-pa-user-email");
                         localStorage.removeItem("eden-pa-user-uid");
                         localStorage.removeItem("eden-pa-user-photo");
                         localStorage.setItem("eden-pa-user-logged-in", "false");
-                        window.location = "/accessories";
+                        window.location = "/accessories/home";
                     }} className="signin-btn">Sign Out</button> </div> }
                 </div>
                 {/* Top row with language and signin btn ends  */}

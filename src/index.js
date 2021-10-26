@@ -8,6 +8,7 @@ import Offers from "./sellers/offers";
 import { Offers as PgOffers } from "./petaccessories/offer";
 import { Switch, BrowserRouter, Route } from "react-router-dom";
 import ShoppingCart from "./petaccessories/shoppingcart";
+import SignIn from "./petaccessories/signin";
 
 
 ReactDOM.render(
@@ -16,7 +17,8 @@ ReactDOM.render(
             <Route exact path={["/", "/dashboard"]} component={Dashboard} />
             <Route exact path="/stocks" component={Stocks} />
             <Route exact path="/offers" component={Offers} />
-            <Route exact path="/accessories" component={HomePage} />
+            <Route exact path="/accessories/signin" component={SignIn} />
+            <Route exact path="/accessories/home" component={HomePage} />
             <Route exact path="/accessories/cats">
                 <OneAnimal animal="Cats" />
             </Route>

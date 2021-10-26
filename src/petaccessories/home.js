@@ -48,7 +48,7 @@ var HomePage = ()=>{
             localStorage.setItem("eden-pa-user-uid", response.uid);
             localStorage.setItem("eden-pa-user-photo", response.photoURL);
             localStorage.setItem("eden-pa-user-logged-in", "true");
-            window.location = "/accessories";
+            window.location = "/accessories/home";
         })
         .catch( error => console.log(error));
     }
