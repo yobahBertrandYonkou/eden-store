@@ -55,7 +55,7 @@ var ProductCard = ({ details })=>{
                     <div className="card-title">{ details.name.substring(0, 15) } <span style={{ color: "blueviolet"}}>More...</span></div>
                     <div className="pdt-seller-name">by { details.brand.toUpperCase() }</div>
                     {/* <div className="rating">Rating here</div> */}
-                    {details.discount !== 0 && <div className="card-price"><strike>₹ { details.price }</strike> <span style={{ marginLeft: "10px"}}>₹ { details.price * details.discount / 100 } ({ details.discount }% off)</span></div>}
+                    {details.discount !== 0 && <div className="card-price"><strike>₹ { details.price }</strike> <br /><span>₹ { (details.price - details.price * details.discount / 100).toFixed(2) } ({ details.discount }% off)</span></div>}
                     {details.discount === 0 && <div className="card-price"><strike>₹ { details.price }</strike></div>}
                 </div>
             </a>

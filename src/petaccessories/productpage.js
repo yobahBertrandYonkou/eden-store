@@ -97,8 +97,8 @@ var ProdudctPage = ()=>{
                         <div className="col-lg-4 col-xl-6 product-details-container">
                             <div className="product-detail-item product-title">{ !isLoading && data.name }</div>
                             <div className="product-detail-item product-rating">Rating: </div>
-                            <div className="product-detail-item product-price">Price: ₹ { !isLoading && data.price }</div>
-                            <div className="product-detail-item product-price">Discount: { !isLoading && data.discount }%. Saving Rs. { !isLoading && data.price * (data.discount/100) }</div>
+                            <div className="product-detail-item product-price">Price: <strike>₹ { !isLoading && data.price }</strike> <span style={{ marginLeft: "10px" }}>₹ { (data.price - data.price * data.discount / 100).toFixed(2) } </span></div>
+                            <div className="product-detail-item product-price">Discount: { !isLoading && data.discount }%. Saving Rs. { !isLoading && (data.price * (data.discount/100)).toFixed(2) }</div>
                             <div className="product-detail-item product-quantity">Weight: { !isLoading && data.quantity } { !isLoading && data.unit }</div>
                             <div className="product-detail-item available-product-colors">Color: { !isLoading && data.color }</div>
                             <div className="product-detail-item">
@@ -117,7 +117,7 @@ var ProdudctPage = ()=>{
                             </div><br />
                             <div className="product-description">
                                 <span style={{fontWeight: "bold"}}>About this Product</span><br />
-                                { !isLoading && data.description}
+                                <span style={{ fontSize: "12px" }}>{ !isLoading && data.description}</span>
                             </div>
                         </div>
                     </div>
