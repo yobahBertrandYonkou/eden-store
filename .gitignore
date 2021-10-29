@@ -15,7 +15,7 @@
 /vscode-root
 
 # others
-/server/controllers/credentails
+server/controllers/credentails
 server/controllers/sellers/temp
 .env
 

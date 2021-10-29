@@ -9,6 +9,46 @@ import cashOnDelivery from './images/cod.png';
 var CheckOut = ()=>{
     const { data: userCart, isLoading, hasData } = useFetchAll("http://localhost:9000/user", "cart", localStorage.getItem("eden-pa-user-uid"));
 
+    useEffect( () => {
+        
+        if(localStorage.getItem("recent-action") == "delete"){
+            document.querySelector('.show-notification').innerHTML = (
+                `<div class="alert alert-success alert-dismissible" role="alert">
+                    ${localStorage.getItem("recent-delete")} has been successfully deleted.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                </div>`
+            );
+            localStorage.removeItem("recent-action");
+            localStorage.removeItem("recent-delete");
+        }
+        setTimeout(() => {
+            
+            // cart item action btns
+            var deleteItem = document.querySelectorAll('.delete-cart-item');
+            
+            deleteItem.forEach(btn => {
+                btn.onclick = async (event) => {
+                    console.log("Clicked")
+                    await fetch("http://localhost:9000/user/cart", {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({userId: localStorage.getItem("eden-pa-user-uid"), itemId: event.target.getAttribute("data-item-id")})
+                    })
+                    .then(response => response.json())
+                    .then(res => {
+                        console.log(res);
+                        localStorage.setItem("recent-action", "delete");
+                        localStorage.setItem("recent-delete", res.name);
+                        window.location.reload();
+                    })
+                    .catch(error => console.error(error));
+                }
+            });
+
+        }, 1000);
+    }, []);
     return(
         <div className="checkout-page-container">
             <Header />
@@ -62,11 +102,6 @@ var CheckOut = ()=>{
                                             <input type="radio" name="payment-option" id="cash-on-delivery" />
                                         </label>
                                         <img src= { cashOnDelivery } alt="" />
-                                    </div>
-                                    <div className="payment-method-card">
-                                        <label htmlFor="">
-                                            <input type="radio" name="payment-option" id="" /> PAYTM
-                                        </label>
                                     </div>
                                 </div>
                             </div>
