@@ -26,8 +26,10 @@ var ShoppingCart = ()=>{
             var subTotal = 0
             userCart.products.forEach(item => {
                 if(item.hasOffer) subTotal += (parseFloat(item.offerPrice));
-                else subTotal += (parseFloat(item.price) * parseFloat(item.quantityNeeded));
+                else if(item.discount > 0) subTotal += (parseFloat(item.price) * parseFloat(item.quantityNeeded) - (parseFloat(item.price) * parseFloat(item.quantityNeeded) * (parseFloat(item.discount) / 100)));
+                else subTotal += parseFloat(item.price) * parseFloat(item.quantityNeeded);
             });
+            subTotal = subTotal.toFixed(2);
             document.querySelector('.sub-total-value').textContent = `Rs. ${ subTotal }`;
 
             
@@ -101,8 +103,8 @@ var ShoppingCart = ()=>{
                                             <div className="item-details">
                                                 <div className="item-title">{ productDetails.name } ({ productDetails.quantity } { productDetails.unit })</div>
                                                 <div className="item-seller">Boltz Accessories</div>
-                                                { productDetails.hasOffer && <div className="item-price">Price: <strike style={{marginRight: "5px"}}>Rs. { productDetails.quantityNeeded * productDetails.price }</strike> Rs { productDetails.offerPrice }</div>}
-                                                { !productDetails.hasOffer && <div className="item-price">Price: Rs { productDetails.price }</div>}
+                                                { productDetails.hasOffer && <div className="item-price">Price: <strike style={{marginRight: "5px"}}>Rs. { productDetails.quantityNeeded * productDetails.price }</strike> Rs { productDetails.offerPrice.toFixed(2) }</div>}
+                                                { !productDetails.hasOffer && <div className="item-price">Price: <strike style={{marginRight: "5px"}}>Rs. { productDetails.price }</strike> Rs. { (productDetails.price * productDetails.quantityNeeded) - (productDetails.price * productDetails.quantityNeeded * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>({ productDetails.discount }% off)</span></div>}
                                                 <div className="in-stock-status">In stock</div>
                                                 <div className="item-category">{ productDetails.category } accessories</div>
                                                 <div className="item-quantity">Quantity: <input onChange = { async (event) => {

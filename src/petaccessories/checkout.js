@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './css/checkout.css'
 import Footer from './footer';
 import Header from './header';
@@ -8,9 +8,13 @@ import cashOnDelivery from './images/cod.png';
 
 var CheckOut = ()=>{
     const { data: userCart, isLoading, hasData } = useFetchAll("http://localhost:9000/user", "cart", localStorage.getItem("eden-pa-user-uid"));
+    
 
     useEffect( () => {
-        
+        const perShipmentRate = 50;
+        const perKgRate = 25;
+        var discount = 0, totalAmount = 0, shipping = 0;
+
         if(localStorage.getItem("recent-action") == "delete"){
             document.querySelector('.show-notification').innerHTML = (
                 `<div class="alert alert-success alert-dismissible" role="alert">
@@ -22,6 +26,23 @@ var CheckOut = ()=>{
             localStorage.removeItem("recent-delete");
         }
         setTimeout(() => {
+            // calculating discount
+            if(userCart != null){
+                userCart.products.forEach(productDetails => {
+                    shipping = shipping + (perKgRate * productDetails.quantity);
+                    if(productDetails.hasOffer){
+                        discount = ( discount + ((productDetails.price * productDetails.quantityNeeded) - productDetails.offerPrice) );
+                        totalAmount = (totalAmount + productDetails.offerPrice);
+                    }else{
+                        discount = ( discount + (parseFloat(productDetails.price) * parseFloat(productDetails.quantityNeeded) * (parseFloat(productDetails.discount) / 100)));
+                        totalAmount = (totalAmount + (parseFloat(productDetails.price) * parseFloat(productDetails.quantityNeeded) - (parseFloat(productDetails.price) * parseFloat(productDetails.quantityNeeded) * (parseFloat(productDetails.discount) / 100))) );
+                    }
+                });
+                document.getElementById("co-shipping").textContent = shipping;
+                document.getElementById("co-discount").textContent = discount;
+                document.getElementById("co-amount").textContent = totalAmount;
+                document.getElementById("co-order").textContent = shipping + totalAmount;
+            }
             
             // cart item action btns
             var deleteItem = document.querySelectorAll('.delete-cart-item');
@@ -48,7 +69,73 @@ var CheckOut = ()=>{
             });
 
         }, 1000);
-    }, []);
+
+        // place order
+        document.getElementById('place-order-now').onclick = async () => {
+            var address = document.getElementById("shipping-address");
+            if (address.value.trim() === ""){
+                document.querySelector(".shipping-address-error-text").textContent = "Your shipping address is required."
+            }else{
+                // get razorpay key id
+                await fetch("http://localhost:9000/user/orders/create", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ uid: localStorage.getItem("eden-pa-user-uid"), amount: parseFloat(totalAmount + shipping).toFixed(2)})
+                })
+                .then( response => response.json())
+                .then( response => {
+                    console.log(response);
+                    // calling payment api
+                    if(response.status === 200){
+                        var options = {
+                            "key_id": response.key_id,
+                            "amount": parseFloat(totalAmount + shipping).toFixed(2),
+                            "currency": "INR",
+                            "name": "EDEN - PET ACCESSORIES SHOP",
+                            "description": "Purchasing products from the EDEN online shop",
+                            "order_id": response.order.id,
+                            "notes": {
+                                "address": address
+                            },
+                            "handler": async razorpayResponse => {
+                                console.log(razorpayResponse);
+                                await fetch("http://localhost:9000/user/orders/save", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ 
+                                        userId: localStorage.getItem("eden-pa-user-uid"),
+                                        order_id: response.order_id,
+                                        grandTotal: parseFloat(totalAmount + shipping),
+                                        discount: discount,
+                                        shippingAndHandling: shipping,
+                                        shippingAddress: address.value.trim(),
+                                        numberOfItems: userCart.products.length,
+                                        items: userCart.products
+                                    })
+                                })
+                                .then( response => response.json())
+                                .then( response => {
+                                    console.log(response)
+                                    window.location = "/accessories/cart";
+                                })
+                                .catch( error => console.log(error));
+                            },
+                            "theme": {
+                                "color": "#2F2F5F"
+                            }
+                        }
+
+                        var razorpay = new window.Razorpay(options);
+                        razorpay.on("payment.failed", ( error ) => {
+                            console.log(error);
+                        });
+                        razorpay.open();
+                    }
+                })
+                .catch (error => console.log(error));
+            }
+        }
+    }, [userCart]);
     return(
         <div className="checkout-page-container">
             <Header />
@@ -131,13 +218,15 @@ var CheckOut = ()=>{
                             { 
                                 !isLoading && hasData &&
                                 userCart.products.map((productDetails) => {
+                                    
                                     return (
                                         <div className="col-12 cart-item-card" id={ `card-${ productDetails.id }`}>
                                             <img src={ productDetails.photoUrl }  className="item-photo" alt={ productDetails.id } />
                                             <div className="item-details">
                                                 <div className="item-title">{ productDetails.name } ({ productDetails.quantity } { productDetails.unit })</div>
                                                 <div className="item-seller">Boltz Accessories</div>
-                                                <div className="item-price">Price: Rs { productDetails.price }</div>
+                                                { productDetails.hasOffer && <div className="item-price">Price: <strike style={{marginRight: "5px"}}>Rs. { productDetails.quantityNeeded * productDetails.price }</strike> Rs. { productDetails.offerPrice.toFixed(2) }</div>}
+                                                { !productDetails.hasOffer && <div className="item-price">Price: <strike style={{marginRight: "5px"}}>Rs. { productDetails.price }</strike> Rs. { (productDetails.price * productDetails.quantityNeeded) - (productDetails.price * productDetails.quantityNeeded * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>({ productDetails.discount }% off)</span></div>}
                                                 <div className="in-stock-status">In stock</div>
                                                 <div className="item-category">{ productDetails.category } accessories</div>
                                                 <div className="item-quantity">Quantity: <input onChange = { async (event) => {
@@ -184,69 +273,22 @@ var CheckOut = ()=>{
                                 </div>
                                 <div className="list-item">
                                     <div className="item-name">Shipping:</div>
-                                    <div className="item-value">Rs. 97</div>
+                                    <div className="item-value">Rs. <span id="co-shipping">0</span></div>
                                 </div>
                                 <div className="list-item">
                                     <div className="item-name">Discount:</div>
-                                    <div className="item-value">Rs. 500</div>
+                                    <div className="item-value">Rs. <span id="co-discount">0</span></div>
                                 </div>
                                 <div className="list-item">
-                                    <div className="item-name">Total before tax:</div>
-                                    <div className="item-value">Rs. 7</div>
-                                </div>
-                                <div className="list-item">
-                                    <div className="item-name">Estimated tax amount:</div>
-                                    <div className="item-value">Rs. 7</div>
+                                    <div className="item-name">Total amount:</div>
+                                    <div className="item-value">Rs. <span id="co-amount">0</span></div>
                                 </div>
                                 <hr />
                                 <div style={{fontWeight: "bold"}} className="list-item">
                                     <div className="item-name">Order total:</div>
-                                    <div className="item-value">Rs. 7</div>
+                                    <div className="item-value">Rs. <span id="co-order">0</span> </div>
                                 </div>
-                                <div className="add-to-cart-btn proceed-to-check-out" onClick = { async () => {
-                                    var address = document.getElementById("shipping-address");
-                                    if (address.value.trim() === ""){
-                                        document.querySelector(".shipping-address-error-text").textContent = "Your shipping address is required."
-                                    }else{
-                                        // get razorpay key id
-                                        await fetch("http://localhost:9000/user/orders/create", {
-                                            method: "POST",
-                                            headers: { "Content-Type": "application/json" },
-                                            body: JSON.stringify({ uid: localStorage.getItem("eden-pa-user-uid"), amount: 90000 })
-                                        })
-                                        .then( response => response.json())
-                                        .then( response => {
-                                            console.log(response);
-                                            // calling payment api
-                                            if(response.status === 200){
-                                                var options = {
-                                                    "key_id": response.key_id,
-                                                    "amount": 90000,
-                                                    "currency": "INR",
-                                                    "name": "EDEN - PET ACCESSORIES SHOP",
-                                                    "description": "Purchasing products from the EDEN online shop",
-                                                    "order_id": response.order.id,
-                                                    "notes": {
-                                                        "address": address
-                                                    },
-                                                    "handler": razorpayResponse => {
-                                                        console.log(razorpayResponse);
-                                                    },
-                                                    "theme": {
-                                                        "color": "#2F2F5F"
-                                                    }
-                                                }
-
-                                                var razorpay = new window.Razorpay(options);
-                                                razorpay.on("payment.failed", ( error ) => {
-                                                    console.log(error);
-                                                });
-                                                razorpay.open();
-                                            }
-                                        })
-                                        .catch (error => console.log(error));
-                                    }
-                                }}>Place your order</div>
+                                <div className="add-to-cart-btn proceed-to-check-out" id="place-order-now">Place your order</div>
                                 <div className="agreement-text">
                                     By placing this order, you have read, understood and accepted EDEN’s <span className="important-text">Terms and Conditions</span> of use and <span className="important-text">Privacy Policy</span>.
                                 </div>

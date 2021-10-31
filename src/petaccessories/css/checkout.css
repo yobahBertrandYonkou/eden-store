@@ -91,3 +91,8 @@
 .important-text{
     color: #0089FF;
 }
+
+.proceed-to-check-out:active{
+    background-color: white;
+    color: var(--secondary-color);
+}

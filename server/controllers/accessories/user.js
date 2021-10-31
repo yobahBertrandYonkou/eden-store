@@ -183,19 +183,27 @@ router.post('/accessories/login', (req, res) => {
 });
 
 router.post('/orders/create', async (req, res) => {
-    
-    // checks whether user exist
+    console.log("here 1")
+    console.log(req.body)
+    // checks whether user exist    
     firestore.collection("users").doc(req.body.uid)
     .get().then( response => {
+    console.log("here 2")
         
         if (response.exists){
+    console.log("here 3")
+
             // creating order
             razorpay.orders.create({
-                amount: 100 * req.body.amount,
+                amount: 100 * parseFloat(req.body.amount),
                 currency: "INR",
                 receipt: "order_rcptid_" + now()
             }, (error, order) => {
+    console.log("here 4")
+    console.log(error)
+
                 if (error) throw error;
+                console.log("here 5")
 
                 console.log(order)
 
@@ -208,15 +216,30 @@ router.post('/orders/create', async (req, res) => {
 });
 
 router.post('/orders/save', async (req, res) => {
-    
+    var data = req.body;
+    data['timeStamp'] = new Date();
     // checks whether user exist
-    firestore.collection("orders").add({
+    await firestore.collection("orders")
+    .doc("CompletedAndPending")
+    .collection("PendingOrders")
+    .add(data)
+    .then( response => {
         
-    })
-    .get().then( response => {
-        
-        console.log(response);
-
+        // deleting items from cart
+        req.body.items.forEach( async item => {
+            console.log(req.body.userId)
+            console.log(item.id)
+            await firestore.collection("users")
+            .doc(req.body.userId)
+            .collection('cart')
+            .where("id", "==", item.id)
+            .get()
+            .then( async docs => {
+                await firestore.collection("users").doc(req.body.userId).collection("cart").doc(docs.docs[0].id).delete();
+            })
+            .catch( error => console.log(error));
+        });
+        res.json({ status: 200, message: "Order completed" });
     }).catch( error => console.log(error));
 });
 
