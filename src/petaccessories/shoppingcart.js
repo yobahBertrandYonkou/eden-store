@@ -25,7 +25,8 @@ var ShoppingCart = ()=>{
             document.querySelector('.sub-total-title').textContent = `Subtotal (${ userCart.products.length } items)`;
             var subTotal = 0
             userCart.products.forEach(item => {
-                subTotal += (parseFloat(item.price) * parseFloat(item.quantityNeeded));
+                if(item.hasOffer) subTotal += (parseFloat(item.offerPrice));
+                else subTotal += (parseFloat(item.price) * parseFloat(item.quantityNeeded));
             });
             document.querySelector('.sub-total-value').textContent = `Rs. ${ subTotal }`;
 
@@ -100,7 +101,8 @@ var ShoppingCart = ()=>{
                                             <div className="item-details">
                                                 <div className="item-title">{ productDetails.name } ({ productDetails.quantity } { productDetails.unit })</div>
                                                 <div className="item-seller">Boltz Accessories</div>
-                                                <div className="item-price">Price: Rs { productDetails.price }</div>
+                                                { productDetails.hasOffer && <div className="item-price">Price: <strike style={{marginRight: "5px"}}>Rs. { productDetails.quantityNeeded * productDetails.price }</strike> Rs { productDetails.offerPrice }</div>}
+                                                { !productDetails.hasOffer && <div className="item-price">Price: Rs { productDetails.price }</div>}
                                                 <div className="in-stock-status">In stock</div>
                                                 <div className="item-category">{ productDetails.category } accessories</div>
                                                 <div className="item-quantity">Quantity: <input onChange = { async (event) => {

@@ -40,6 +40,41 @@ var ProdudctPage = ()=>{
                     temp['quantityNeeded'] = parseInt(quantity.value);
                     temp['id'] = data.id;
                     temp['userId'] = localStorage.getItem("eden-pa-user-uid");
+
+                    // offer calculation
+                    temp['hasOffer'] = false;
+                    if(hasOffer){
+                        console.log("Has offer")
+                        console.log(offer.condition)
+                        if(Object.keys(offer.condition)[0] == "cond-1"){
+                            if(offer.discountType == "percentage-of" && temp['quantityNeeded'] >= offer.quantity){
+                                temp['hasOffer'] = true;
+                                temp['condition'] = "cond-1";
+                                temp['minQuantity'] = offer.quantity;
+                                temp['discountType'] = "percentage-of";
+                                temp['offerPrice'] = (temp.quantityNeeded * data.price) -  ((temp.quantityNeeded * data.price) * (offer.discountValue / 100));
+                            }else if(offer.discountType == "fixed-price" && temp['quantityNeeded'] >= offer.quantity){
+                                temp['hasOffer'] = true;
+                                temp['condition'] = "cond-1";
+                                temp['minQuantity'] = offer.quantity;
+                                temp['discountType'] = "fixed-price";
+                                temp['offerPrice'] = (temp.quantityNeeded * data.price) -  offer.discountValue;
+                            }
+                        }else{
+                            if(offer.discountType == "percentage-of"){
+                                temp['hasOffer'] = true;
+                                temp['condition'] = "cond-2";
+                                temp['discountType'] = "percentage-of";
+                                temp['offerPrice'] = (temp.quantityNeeded * data.price) -  (((temp.quantityNeeded * data.price) * (offer.discountValue / 100)) * temp.quantityNeeded);
+                            }else{
+                                temp['hasOffer'] = true;
+                                temp['condition'] = "cond-2";
+                                temp['discountType'] = "fixed-price";
+                                temp['offerPrice'] = (temp.quantityNeeded * data.price) -  (offer.discountValue * temp.quantityNeeded);
+                            }
+                        }
+                    }
+                    console.log(temp)
                     await fetch("http://localhost:9000/user/cart", {
                         method: "POST",
                         headers: {
@@ -61,7 +96,7 @@ var ProdudctPage = ()=>{
                 }
             }
         }, 1000);
-    }, [data]);
+    }, [data, offer]);
 
     return(
        data && <div className="product-page-container">
@@ -107,20 +142,20 @@ var ProdudctPage = ()=>{
                                     { 
                                         Object.keys(offer.condition)[0] == "cond-1" && 
                                         offer.discountType == "percentage-of" &&
-                                        <span style={{ fontSize: "12px", marginLeft: "5px", color: "blue"}} className="text-black text-center" > Buy { offer.quantity } and get { offer.discountValue }% off the total amount.</span>
+                                        <span style={{ fontSize: "12px", marginLeft: "5px", color: "blue"}} className="text-black text-center" > Buy at least { offer.quantity } and get { offer.discountValue }% off the total amount.</span>
                                         
                                     }
                                     { 
                                         Object.keys(offer.condition)[0] == "cond-1" && 
                                         offer.discountType == "fixed-price" &&
-                                        <span style={{ fontSize: "12px", marginLeft: "5px", color: "blue"}} className="text-black text-center" > Get Rs. { offer.discountValue } off each purchase.</span>
+                                        <span style={{ fontSize: "12px", marginLeft: "5px", color: "blue"}} className="text-black text-center" > Buy at least { offer.quantity } and get Rs. { offer.discountValue } off your total purchase.</span>
                                         
                                     }
                                     {
                                     
                                         Object.keys(offer.condition)[0] == "cond-2" && 
                                         offer.discountType == "percentage-of" &&
-                                        <span style={{ fontSize: "12px", marginLeft: "5px", color: "blue"}} className="text-black text-center" > Buy { offer.quantity } and get { offer.discountValue }% off the total amount.</span>
+                                        <span style={{ fontSize: "12px", marginLeft: "5px", color: "blue"}} className="text-black text-center" > Get Rs. { offer.discountValue }% off each purchase.</span>
                                         
                                     }
                                     { 
@@ -133,8 +168,9 @@ var ProdudctPage = ()=>{
                             }
 
 
-                            <div className="product-detail-item product-price">Price: <strike>₹ { !isLoading && data.price }</strike> <span style={{ marginLeft: "10px" }}>₹ { (data.price - data.price * data.discount / 100).toFixed(2) } </span></div>
-                            <div className="product-detail-item product-price">Discount: { !isLoading && data.discount }%. Saving Rs. { !isLoading && (data.price * (data.discount/100)).toFixed(2) }</div>
+                            {!hasOffer && <div className="product-detail-item product-price">Price: <strike>₹ { !isLoading && data.price }</strike> <span style={{ marginLeft: "10px" }}>₹ { (data.price - data.price * data.discount / 100).toFixed(2) } </span></div>}
+                            {hasOffer && <div className="product-detail-item product-price">Price: ₹ { !isLoading && data.price }</div>}
+                            {!hasOffer && <div className="product-detail-item product-price">Discount: { !isLoading && data.discount }%. Saving Rs. { !isLoading && (data.price * (data.discount/100)).toFixed(2) }</div>}
                             <div className="product-detail-item product-quantity">Weight: { !isLoading && data.quantity } { !isLoading && data.unit }</div>
                             <div className="product-detail-item available-product-colors">Color: { !isLoading && data.color }</div>
                             <div className="product-detail-item">

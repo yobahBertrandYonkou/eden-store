@@ -99,20 +99,20 @@ var Offers = () => {
                                                 { 
                                                     Object.keys(productDetails.offer.condition)[0] == "cond-1" && 
                                                     productDetails.offer.discountType == "percentage-of" &&
-                                                    <div style={{color: "blue"}} className="text-black text-center" > Buy { productDetails.offer.quantity } and get { productDetails.offer.discountValue }% off the total amount.</div>
+                                                    <div style={{color: "blue"}} className="text-black text-center" > Buy at least { productDetails.offer.quantity } and get { productDetails.offer.discountValue }% off the total amount.</div>
                                                     
                                                 }
                                                 { 
                                                     Object.keys(productDetails.offer.condition)[0] == "cond-1" && 
                                                     productDetails.offer.discountType == "fixed-price" &&
-                                                    <div style={{color: "blue"}} className="text-black text-center" > Get Rs. { productDetails.offer.discountValue } off each purchase.</div>
+                                                    <div style={{color: "blue"}} className="text-black text-center" > Buy at least { productDetails.offer.quantity } and get Rs. { productDetails.offer.discountValue } off your total amount.</div>
                                                     
                                                 }
                                                 {
                                                 
                                                     Object.keys(productDetails.offer.condition)[0] == "cond-2" && 
                                                     productDetails.offer.discountType == "percentage-of" &&
-                                                    <div style={{color: "blue"}} className="text-black text-center" > Buy { productDetails.offer.quantity } and get { productDetails.offer.discountValue }% off the total amount.</div>
+                                                    <div style={{color: "blue"}} className="text-black text-center" > Get Rs. { productDetails.offer.discountValue }% off each purchase.</div>
                                                     
                                                 }
                                                 { 
