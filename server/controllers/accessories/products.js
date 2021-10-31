@@ -25,7 +25,7 @@ router.get('/:category/:type', async (req, res) => {
     }
     
     // fetching data
-    await conditions.get()
+    await conditions.limit(2).get()
     .then(docs => {
         var data = [];
 
@@ -48,21 +48,39 @@ router.get('/:id', async (req, res) => {
     .get()
     .then(async response => {
         // console.log(data)
-        // fetching related items
-        await firestore.collection("products")
-        .where("category", "array-contains", response.docs[0].data().category[0])
-        .limit(12)
+        // fetching offer for this product if any
+        await firestore.collection('offers')
+        .where("products", "array-contains", req.params.id)
         .get()
-        .then( docs => {
-            var related = [];
+        .then(async fDocs => {
+            var hasOffer = false;
 
-            docs.docs.forEach( doc => {
-                related.push(doc.data())
-            });
-            // returning data
-        res.json({data: response.docs[0].data(), related: related});
+            console.log(fDocs.docs)
+            if(fDocs.docs.length !=0){
+                hasOffer = true;
+            }
+
+            // fetching related items
+            await firestore.collection("products")
+            .where("category", "array-contains", response.docs[0].data().category[0])
+            .limit(12)
+            .get()
+            .then( docs => {
+                var related = [];
+
+                docs.docs.forEach( doc => {
+                    related.push(doc.data())
+                });
+                
+                // returning data
+            if(!hasOffer) res.json({data: response.docs[0].data(), related: related, hasOffer: hasOffer, offer: null });
+            else res.json({data: response.docs[0].data(), related: related, hasOffer: hasOffer, offer: fDocs.docs[0].data() });
+            })
+            .catch( error => console.log(error));
         })
         .catch( error => console.log(error));
+
+        
     })
     .catch( error => console.error(error));
 });

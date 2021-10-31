@@ -58,7 +58,7 @@ router.get('/cart/:userId', async (req, res) => {
     console.log("user cart")
     await firestore.collection("users")
     .doc(req.params.userId).collection("cart")
-    .orderBy('updatedOn', 'desc')
+    .orderBy('updatedOn', 'desc').limit(2)
     .get()
     .then(docs => {
         var data = [];

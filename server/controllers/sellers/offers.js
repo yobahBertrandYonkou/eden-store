@@ -128,7 +128,7 @@ router.get('/products/:animal', async (req, res) => {
             conditions = firestore.collection("products").where("category", "array-contains", req.params.animal);
         }
         
-        await conditions.get()
+        await conditions.limit(2).get()
         .then(async products => {
             
             var offerProductList = [];

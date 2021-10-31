@@ -34,6 +34,8 @@ const useFetchOne = (url, id) => {
     const [ data, setData ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ related, setRelated ] = useState(null);
+    const [ hasOffer, setHasOffer ] = useState(false);
+    const [ offer, setOffer ] = useState(null);
 
     console.log(id)
     // sending get request from server
@@ -43,16 +45,25 @@ const useFetchOne = (url, id) => {
             await fetch(`${ url }/${ id }`)
             .then(response => response.json())
             .then(data => {
-                console.log(data.related);
+                // console.log(data);
                 // data
                 setData(data.data);
                 setRelated(data.related);
+                
+
+                if (data.hasOffer){
+                    setHasOffer(true);
+                    setOffer(data.offer)
+                    console.log("kkkkkkkkkkk")
+                    console.log(data.offer)
+                }
+
                 setIsLoading(false);
             })
             .catch(error => console.error(error));
         })();
     }, []);
-    return { data, related, isLoading }
+    return { data, related, isLoading , offer, hasOffer}
 }
 
 export { useFetchAll, useFetchOne };

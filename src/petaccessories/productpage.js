@@ -9,8 +9,7 @@ import ProductCard from './productcard';
 
 var ProdudctPage = ()=>{
     const { id } = useParams();
-    const { data, related, isLoading } = useFetchOne("http://localhost:9000/products", id);
-    const [ itemAddedToCartStatus, setItemAddedToCartStatus ] = useState(false);
+    const { data, related, isLoading, offer, hasOffer } = useFetchOne("http://localhost:9000/products", id);
     
     useEffect(() => {
         var thumbnails = document.querySelectorAll('.photo-thumbnail');
@@ -97,6 +96,43 @@ var ProdudctPage = ()=>{
                         <div className="col-lg-4 col-xl-6 product-details-container">
                             <div className="product-detail-item product-title">{ !isLoading && data.name }</div>
                             <div className="product-detail-item product-rating">Rating: </div>
+
+
+                            {/* offer details */}
+                            {!isLoading && hasOffer && 
+                               
+                                <div style={{ marginBottom: "10px" }}>
+                                    <span style={ { padding: "2px",  fontSize: "12px", backgroundColor: "orange", textAlign: "center", marginBottom: "10px", color: "black"} } className="offer-name text-black">{ offer.title } </span>
+                            
+                                    { 
+                                        Object.keys(offer.condition)[0] == "cond-1" && 
+                                        offer.discountType == "percentage-of" &&
+                                        <span style={{ fontSize: "12px", marginLeft: "5px", color: "blue"}} className="text-black text-center" > Buy { offer.quantity } and get { offer.discountValue }% off the total amount.</span>
+                                        
+                                    }
+                                    { 
+                                        Object.keys(offer.condition)[0] == "cond-1" && 
+                                        offer.discountType == "fixed-price" &&
+                                        <span style={{ fontSize: "12px", marginLeft: "5px", color: "blue"}} className="text-black text-center" > Get Rs. { offer.discountValue } off each purchase.</span>
+                                        
+                                    }
+                                    {
+                                    
+                                        Object.keys(offer.condition)[0] == "cond-2" && 
+                                        offer.discountType == "percentage-of" &&
+                                        <span style={{ fontSize: "12px", marginLeft: "5px", color: "blue"}} className="text-black text-center" > Buy { offer.quantity } and get { offer.discountValue }% off the total amount.</span>
+                                        
+                                    }
+                                    { 
+                                        Object.keys(offer.condition)[0] == "cond-2" && 
+                                        offer.discountType == "fixed-price" &&
+                                        <span style={{ fontSize: "12px", marginLeft: "5px", color: "blue"}} className="text-black text-center" > Get Rs. { offer.discountValue } off each purchase.</span>
+                                        
+                                    }
+                                </div>
+                            }
+
+
                             <div className="product-detail-item product-price">Price: <strike>₹ { !isLoading && data.price }</strike> <span style={{ marginLeft: "10px" }}>₹ { (data.price - data.price * data.discount / 100).toFixed(2) } </span></div>
                             <div className="product-detail-item product-price">Discount: { !isLoading && data.discount }%. Saving Rs. { !isLoading && (data.price * (data.discount/100)).toFixed(2) }</div>
                             <div className="product-detail-item product-quantity">Weight: { !isLoading && data.quantity } { !isLoading && data.unit }</div>
