@@ -11,6 +11,7 @@ import ShoppingCart from "./petaccessories/shoppingcart";
 import SignIn from "./petaccessories/signin";
 import CheckOut from "./petaccessories/checkout";
 import Orders from "./petaccessories/orders";
+import sOrders from "./sellers/orders"
 
 
 ReactDOM.render(
@@ -37,6 +38,7 @@ ReactDOM.render(
             <Route exact path="/accessories/cart" component={ ShoppingCart }/>
             <Route exact path="/accessories/offers" component={ PgOffers }/>
             <Route exact path="/accessories/orders" component={ Orders }/>
+            <Route exact path="/orders" component={ sOrders }/>
             <Route exact path="/accessories/checkout" component={ CheckOut }/>
         </Switch>
     </BrowserRouter>

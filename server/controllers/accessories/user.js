@@ -82,7 +82,7 @@ router.get('/orders/:type/:userId', async (req, res) => {
     var conditions;
     if(req.params.type == "pending"){
         conditions = firestore.collection("orders/CompletedAndPending/PendingOrders")
-        .where("userId", "==", req.params.userId)
+        .where("userId", "==", req.params.userId).limit(2)
         
     }else{
         conditions = firestore.collection("orders/CompletedAndPending/CompletedOrders")
@@ -237,6 +237,7 @@ router.post('/orders/create', async (req, res) => {
 router.post('/orders/save', async (req, res) => {
     var data = req.body;
     data['timeStamp'] = new Date();
+    console.log(data)
     // checks whether user exist
     await firestore.collection("orders")
     .doc("CompletedAndPending")

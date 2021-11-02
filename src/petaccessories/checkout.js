@@ -38,10 +38,10 @@ var CheckOut = ()=>{
                         totalAmount = (totalAmount + (parseFloat(productDetails.price) * parseFloat(productDetails.quantityNeeded) - (parseFloat(productDetails.price) * parseFloat(productDetails.quantityNeeded) * (parseFloat(productDetails.discount) / 100))) );
                     }
                 });
-                document.getElementById("co-shipping").textContent = shipping;
-                document.getElementById("co-discount").textContent = discount;
-                document.getElementById("co-amount").textContent = totalAmount;
-                document.getElementById("co-order").textContent = shipping + totalAmount;
+                document.getElementById("co-shipping").textContent = shipping.toFixed(2);
+                document.getElementById("co-discount").textContent = discount.toFixed(2);
+                document.getElementById("co-amount").textContent = totalAmount.toFixed(2);
+                document.getElementById("co-order").textContent = (shipping + totalAmount).toFixed(2);
             }
             
             // cart item action btns
@@ -85,6 +85,7 @@ var CheckOut = ()=>{
                 .then( response => response.json())
                 .then( response => {
                     console.log(response);
+                    var orderId = response.order.id;
                     // calling payment api
                     if(response.status === 200){
                         var options = {
@@ -93,7 +94,7 @@ var CheckOut = ()=>{
                             "currency": "INR",
                             "name": "EDEN - PET ACCESSORIES SHOP",
                             "description": "Purchasing products from the EDEN online shop",
-                            "order_id": response.order.id,
+                            "order_id": orderId,
                             "notes": {
                                 "address": address
                             },
@@ -104,7 +105,7 @@ var CheckOut = ()=>{
                                     headers: { "Content-Type": "application/json" },
                                     body: JSON.stringify({ 
                                         userId: localStorage.getItem("eden-pa-user-uid"),
-                                        order_id: response.order_id,
+                                        orderId: orderId,
                                         grandTotal: parseFloat(totalAmount + shipping),
                                         discount: discount,
                                         shippingAndHandling: shipping,

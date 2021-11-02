@@ -3,10 +3,11 @@ const express = require('express');
 var app = express();
 // websocket
 const expressWS = require('express-ws')(app);
-const stocks = require("./controllers/sellers/stocks")
-const products = require("./controllers/accessories/products")
-const user = require("./controllers/accessories/user")
-const offers = require("./controllers/sellers/offers")
+const stocks = require("./controllers/sellers/stocks");
+const products = require("./controllers/accessories/products");
+const user = require("./controllers/accessories/user");
+const offers = require("./controllers/sellers/offers");
+const orders = require("./controllers/sellers/orders");
 const cors = require('cors');
 const fileUpload = require("express-fileupload");
 
@@ -30,7 +31,10 @@ app.use("/products", products);
 app.use("/user", user);
 
 // offers
-app.use("/offers", offers)
+app.use("/offers", offers);
+
+// orders
+app.use("/orders", orders);
 
 // starting server
 app.listen(9000, () => {
