@@ -1,3 +1,4 @@
+const { conditionalExpression } = require('@babel/types');
 const { default: axios } = require('axios');
 const express = require('express');
 const router = express.Router();
@@ -76,6 +77,31 @@ router.get('/cart/:userId', async (req, res) => {
     .catch( error => console.error(error));
 });
 
+// get cart items
+router.get('/orders/:type/:userId', async (req, res) => {
+    var conditions;
+    if(req.params.type == "pending"){
+        conditions = firestore.collection("orders/CompletedAndPending/PendingOrders")
+        .where("userId", "==", req.params.userId)
+        
+    }else{
+        conditions = firestore.collection("orders/CompletedAndPending/CompletedOrders")
+        .where("userId", "==", req.params.userId)
+    }
+
+    await conditions.get()
+    .then(docs => {
+        var data = [];
+
+        docs.docs.forEach(doc => {
+            data.push(doc.data());
+        });
+        // console.log(data)
+        res.json({ products: data});
+    })
+    .catch( error => console.error(error));
+});
+
 // delete cart items
 router.delete('/cart', async (req, res) => {
     console.log("deleting item")
@@ -84,7 +110,6 @@ router.delete('/cart', async (req, res) => {
     .where("id", "==", req.body.itemId)
     .get()
     .then(async docs => {
-        console.log("here");
         await firestore.collection("users")
         .doc(req.body.userId).collection("cart")
         .doc(docs.docs[0].id)
@@ -108,7 +133,6 @@ router.put('/cart', async (req, res) => {
     .where("id", "==", req.body.itemId)
     .get()
     .then(async docs => {
-        console.log("here");
         await firestore.collection("users")
         .doc(req.body.userId).collection("cart")
         .doc(docs.docs[0].id)
@@ -183,15 +207,12 @@ router.post('/accessories/login', (req, res) => {
 });
 
 router.post('/orders/create', async (req, res) => {
-    console.log("here 1")
     console.log(req.body)
     // checks whether user exist    
     firestore.collection("users").doc(req.body.uid)
     .get().then( response => {
-    console.log("here 2")
         
         if (response.exists){
-    console.log("here 3")
 
             // creating order
             razorpay.orders.create({
@@ -199,11 +220,9 @@ router.post('/orders/create', async (req, res) => {
                 currency: "INR",
                 receipt: "order_rcptid_" + now()
             }, (error, order) => {
-    console.log("here 4")
     console.log(error)
 
                 if (error) throw error;
-                console.log("here 5")
 
                 console.log(order)
 
@@ -242,6 +261,8 @@ router.post('/orders/save', async (req, res) => {
         res.json({ status: 200, message: "Order completed" });
     }).catch( error => console.log(error));
 });
+
+
 
 // TODO: Firebase Auth REST API
 module.exports = router;
