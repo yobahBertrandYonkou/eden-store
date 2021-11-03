@@ -108,7 +108,52 @@ var Dashboard= ()=>{
                     <div className="top-stats-bar">
                         {/* Stats card */}
                         <div className="stats-card">
-                            <div className="stats-icon"></div>
+                            <div className="stats-icon fa fa-cubes"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Items Sold</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon fa fa-truck"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Orders</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon fa fa-rupee-sign"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Sales</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon fa fa-coins"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Gross Sales</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon fa fa-users"></div>
+                            <div className="stats-values">
+                                <div className="stats-value">4</div>
+                                <div className="stats-name">Total Customers</div>
+                            </div>
+                        </div>
+                        {/* Stats ends */}
+                        {/* Stats card */}
+                        <div className="stats-card">
+                            <div className="stats-icon fa fa-layer-group"></div>
                             <div className="stats-values">
                                 <div className="stats-value">4</div>
                                 <div className="stats-name">Total Stock</div>
@@ -117,82 +162,37 @@ var Dashboard= ()=>{
                         {/* Stats ends */}
                         {/* Stats card */}
                         <div className="stats-card">
-                            <div className="stats-icon"></div>
+                            <div className="stats-icon far fa-hourglass"></div>
                             <div className="stats-values">
                                 <div className="stats-value">4</div>
-                                <div className="stats-name">Total Stock</div>
+                                <div className="stats-name">Out of Stock</div>
                             </div>
                         </div>
                         {/* Stats ends */}
                         {/* Stats card */}
                         <div className="stats-card">
-                            <div className="stats-icon"></div>
+                            <div className="stats-icon fa fa-gifts"></div>
                             <div className="stats-values">
                                 <div className="stats-value">4</div>
-                                <div className="stats-name">Total Stock</div>
+                                <div className="stats-name">Total Offers</div>
                             </div>
                         </div>
                         {/* Stats ends */}
                         {/* Stats card */}
                         <div className="stats-card">
-                            <div className="stats-icon"></div>
+                            <div className="stats-icon fa fa-gift"></div>
                             <div className="stats-values">
                                 <div className="stats-value">4</div>
-                                <div className="stats-name">Total Stock</div>
+                                <div className="stats-name">Active Offers</div>
                             </div>
                         </div>
                         {/* Stats ends */}
                         {/* Stats card */}
                         <div className="stats-card">
-                            <div className="stats-icon"></div>
+                            <div className="stats-icon fa fa-search"></div>
                             <div className="stats-values">
                                 <div className="stats-value">4</div>
-                                <div className="stats-name">Total Stock</div>
-                            </div>
-                        </div>
-                        {/* Stats ends */}
-                        {/* Stats card */}
-                        <div className="stats-card">
-                            <div className="stats-icon"></div>
-                            <div className="stats-values">
-                                <div className="stats-value">4</div>
-                                <div className="stats-name">Total Stock</div>
-                            </div>
-                        </div>
-                        {/* Stats ends */}
-                        {/* Stats card */}
-                        <div className="stats-card">
-                            <div className="stats-icon"></div>
-                            <div className="stats-values">
-                                <div className="stats-value">4</div>
-                                <div className="stats-name">Total Stock</div>
-                            </div>
-                        </div>
-                        {/* Stats ends */}
-                        {/* Stats card */}
-                        <div className="stats-card">
-                            <div className="stats-icon"></div>
-                            <div className="stats-values">
-                                <div className="stats-value">4</div>
-                                <div className="stats-name">Total Stock</div>
-                            </div>
-                        </div>
-                        {/* Stats ends */}
-                        {/* Stats card */}
-                        <div className="stats-card">
-                            <div className="stats-icon"></div>
-                            <div className="stats-values">
-                                <div className="stats-value">4</div>
-                                <div className="stats-name">Total Stock</div>
-                            </div>
-                        </div>
-                        {/* Stats ends */}
-                        {/* Stats card */}
-                        <div className="stats-card">
-                            <div className="stats-icon"></div>
-                            <div className="stats-values">
-                                <div className="stats-value">4</div>
-                                <div className="stats-name">Total Stock</div>
+                                <div className="stats-name">Searches</div>
                             </div>
                         </div>
                         {/* Stats ends */}
@@ -265,7 +265,7 @@ var Dashboard= ()=>{
                                     </div>
                                 </div>
                                 <div className="top-selling recent-card" >
-                                    <div className="recent-title">Recent Orders</div>
+                                    <div className="recent-title">Top 10 selling products</div>
                                     <div className="recent-content">
                                         <div className="ts-item"></div>
                                         <div className="ts-item"></div>

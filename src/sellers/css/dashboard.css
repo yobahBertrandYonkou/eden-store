@@ -225,6 +225,12 @@ hr {
     height: 97px;
     background-color: var(--secondary-color);
     border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 0;
+    font-size: 36px;
 }
 
 .stats-values{
