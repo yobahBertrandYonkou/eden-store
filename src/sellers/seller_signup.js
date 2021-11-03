@@ -61,6 +61,7 @@ var SignUp = ()=>{
                     
 
                 }} id="login-btn">SIGN UP</div>
+                <div className="form-text signin-from-signup" onClick = { () => window.location = "/seller/signin" }>Already have an account? <span style={{color: "blue"}}>Sign In</span></div>
                 <div id="login-toast"></div>
             </div>
         </div>   

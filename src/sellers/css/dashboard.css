@@ -162,6 +162,15 @@ hr {
     padding-right: 20px;
 }
 
+.signin-from-signup{
+    margin-bottom: 10px;
+}
+
+.signin-from-signup:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 .page-title{
     font-size: 24px;
     color: var(--text-color);
