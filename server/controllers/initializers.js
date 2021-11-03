@@ -2,6 +2,7 @@ const firebase = require('firebase-admin');
 const serviceAccount = require('./credentials/serviceAccountKey.json');
 const razorpayKeys = require("./credentials/razorpay.json");
 const Razorpay = require("razorpay");
+const insights = require("search-insights");
 
 // firebase  initialization
 firebase.initializeApp({
@@ -21,4 +22,10 @@ const algoliaIndex = algoliaClient.initIndex("eden_products");
 //  initstantiating razorpay
 const razorpay = new Razorpay( razorpayKeys );
 
-module.exports = { firestore, storage, algoliaClient, algoliaIndex, firebaseAuth, razorpay }
+// initializing search insights library
+insights("init", {
+  appId: algoliaKeys.ApplicationId,
+  apiKey: algoliaKeys.AdminAPIKey
+});
+
+module.exports = { firestore, storage, algoliaClient, algoliaIndex, firebaseAuth, razorpay, insights }

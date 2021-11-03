@@ -7,7 +7,7 @@ const now= require('nano-time');
 const razorpayKeys = require('../credentials/razorpay.json');
 
 
-const { firestore, firebaseAuth, razorpay } = require('../initializers');
+const { firestore, firebaseAuth, razorpay, insights } = require('../initializers');
 require("dotenv").config();
 
 
@@ -30,6 +30,17 @@ router.ws("/cart", (ws, req) => {
 // add to cart
 router.post('/cart', async (req, res) => {
     var data = req.body;
+
+    // sending click event
+    insights("clickedObjectIDsAfterSearch", {
+        userToken: req.body.userId,
+        index: "eden_products",
+        eventName: "Clicked Item",
+        objectIDs: [req.body.id]
+    });
+
+    console.log("Event registered");
+
     console.log(data)
     console.log("Adding to cart");
     await firestore.collection("products")
@@ -65,19 +76,39 @@ router.get('/cart/:userId', async (req, res) => {
     .doc(req.params.userId).collection("cart")
     .orderBy('updatedOn', 'desc').limit(2)
     .get()
-    .then(docs => {
+    .then(async docs => {
         var data = [];
+        var categories = [];
+        var itemIds = [];
 
         docs.docs.forEach(doc => {
             data.push(doc.data());
+            categories.push(...doc.data().category);
+            itemIds.push(doc.data().id)
         });
+        categories = [...new Set(categories)];
+        console.log(categories);
         // console.log(data)
-         res.json({ products: data});
+
+        await firestore.collection('products')
+        .where("category", "array-contains-any", categories)
+        .limit(12)
+        .get()
+        .then( docs => {
+            var related = [];
+            
+            docs.docs.forEach(doc => {
+                if (!itemIds.includes(doc.data().id)) related.push(doc.data());
+            });
+            res.json({ products: data, related: related });
+        })
+        .catch( error => console.error(error));
+        
     })
     .catch( error => console.error(error));
 });
 
-// get cart items
+// get orders items
 router.get('/orders/:type/:userId', async (req, res) => {
     var conditions;
     if(req.params.type == "pending"){
@@ -237,16 +268,19 @@ router.post('/orders/create', async (req, res) => {
 router.post('/orders/save', async (req, res) => {
     var data = req.body;
     data['timeStamp'] = new Date();
-    console.log(data)
+    console.log(data);
+
     // checks whether user exist
     await firestore.collection("orders")
     .doc("CompletedAndPending")
     .collection("PendingOrders")
     .add(data)
     .then( response => {
-        
+        var itemIds = [];
+
         // deleting items from cart
         req.body.items.forEach( async item => {
+            itemIds.push(item.id);
             console.log(req.body.userId)
             console.log(item.id)
             await firestore.collection("users")
@@ -259,6 +293,15 @@ router.post('/orders/save', async (req, res) => {
             })
             .catch( error => console.log(error));
         });
+        // sending click event
+        insights("convertedObjectIDsAfterSearch", {
+            userToken: req.body.userId,
+            index: "eden_products",
+            eventName: "Clicked Item",
+            objectIDs: itemIds
+        });
+        console.log("Event registered")
+
         res.json({ status: 200, message: "Order completed" });
     }).catch( error => console.log(error));
 });

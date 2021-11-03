@@ -30,7 +30,7 @@ const useFetchAll = (url, category, type) => {
     return { data, isLoading, hasData }
 }
 
-const useFetchOne = (url, id) => {
+const useFetchOne = (url, id, userId) => {
     const [ data, setData ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ related, setRelated ] = useState(null);
@@ -42,7 +42,7 @@ const useFetchOne = (url, id) => {
     useEffect(() => {
 
         (async () => {
-            await fetch(`${ url }/${ id }`)
+            await fetch(`${ url }/${ id }/${ userId }`)
             .then(response => response.json())
             .then(data => {
                 // console.log(data);

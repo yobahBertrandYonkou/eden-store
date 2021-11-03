@@ -9,7 +9,7 @@ import ProductCard from './productcard';
 
 var ProdudctPage = ()=>{
     const { id } = useParams();
-    const { data, related, isLoading, offer, hasOffer } = useFetchOne("http://localhost:9000/products", id);
+    const { data, related, isLoading, offer, hasOffer } = useFetchOne("http://localhost:9000/products/details", id, localStorage.getItem("eden-pa-user-uid"));
     
     useEffect(() => {
         var thumbnails = document.querySelectorAll('.photo-thumbnail');

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { firestore, algoliaIndex } = require('../initializers');
+const { firestore, algoliaIndex, insights } = require('../initializers');
 
 // logging
 router.use((req, res, next) => {
@@ -40,8 +40,19 @@ router.get('/:category/:type', async (req, res) => {
 });
 
 // details of a particular product
-router.get('/:id', async (req, res) => {
+router.get('/details/:id/:userId', async (req, res) => {
     console.log("Product detail request")
+
+    // sending click event
+    insights("clickedObjectIDsAfterSearch", {
+        userToken: req.params.userId,
+        index: "eden_products",
+        eventName: "Clicked Item",
+        objectIDs: [req.params.id]
+    });
+
+    console.log("Event registered");
+
     // fetching data
     await firestore.collection("products")
     .where("id" , "==", req.params.id )
@@ -55,7 +66,7 @@ router.get('/:id', async (req, res) => {
         .then(async fDocs => {
             var hasOffer = false;
 
-            console.log(fDocs.docs)
+            // console.log(fDocs.docs)
             if(fDocs.docs.length !=0){
                 hasOffer = true;
             }

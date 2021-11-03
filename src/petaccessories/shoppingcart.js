@@ -104,7 +104,7 @@ var ShoppingCart = ()=>{
                                                 <div className="item-title">{ productDetails.name } ({ productDetails.quantity } { productDetails.unit })</div>
                                                 <div className="item-seller">Boltz Accessories</div>
                                                 { productDetails.hasOffer && <div className="item-price">Price: <strike style={{marginRight: "5px"}}>Rs. { productDetails.quantityNeeded * productDetails.price }</strike> Rs { productDetails.offerPrice.toFixed(2) }</div>}
-                                                { !productDetails.hasOffer && <div className="item-price">Price: <strike style={{marginRight: "5px"}}>Rs. { productDetails.price }</strike> Rs. { (productDetails.price * productDetails.quantityNeeded) - (productDetails.price * productDetails.quantityNeeded * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>({ productDetails.discount }% off)</span></div>}
+                                                { !productDetails.hasOffer && <div className="item-price">Price: <strike style={{marginRight: "5px"}}>Rs. { productDetails.price }</strike> Rs. { ((productDetails.price * productDetails.quantityNeeded) - (productDetails.price * productDetails.quantityNeeded * productDetails.discount / 100)).toFixed(2) } <span style={{fontSize: "11px"}}>({ productDetails.discount }% off)</span></div>}
                                                 <div className="in-stock-status">In stock</div>
                                                 <div className="item-category">{ productDetails.category } accessories</div>
                                                 <div className="item-quantity">Quantity: <input onChange = { async (event) => {
@@ -155,24 +155,29 @@ var ShoppingCart = ()=>{
                 <div className="container best-selling">
                     <div style={{fontWeight: "normal", marginTop: "60px"}} className="home-section-title">Related products</div>
                     <div className="row best-selling-cards">
-                        {/* <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div>
-                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                            <ProductCard />
-                        </div> */}
+                        { 
+                            isLoading &&  
+
+                            <div className="col-12 text-center">
+                                <div className="spinner-grow text-secondary" role="status"></div>
+                            </div>
+                        }
+                        
+                        {/* no data found */}
+                        { 
+                            !isLoading && userCart.related.length == 0  && 
+                            <div style={{ fontWeight: 'lighter'}} className="col-12 text-center">
+                                No related items.
+                            </div>
+                        }
+                        {/* outputing accessores from useFetch */}
+                        { !isLoading && userCart.related.length != 0 && userCart.related.map((productDetails) => {
+                            return (
+                                <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                    <ProductCard details = { productDetails } />
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>
