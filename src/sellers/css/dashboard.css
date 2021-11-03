@@ -139,13 +139,15 @@ hr {
 .logout-seller{
     color: var(--secondary-color);
     font-weight: lighter;
+    padding: 0 0 0 40px;
 }
 
 
 .logout-seller:hover{
     color: var(--primary-color);
+    font-weight: bold;
     cursor: pointer;
-    text-decoration: underline;
+    transform: scale(1.1);
 }
 
 .logout-seller:active{
@@ -181,6 +183,7 @@ hr {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* font-size: 14px; */
 }
 
 .content-container{

@@ -655,17 +655,23 @@ var Stocks= ()=>{
         </div>
         <div id="body-container">
             <div id="action-bar-id" className="action-bar">
-                <div id="drawer-switch" style={{width: "fit-content"}}><i className="fa fa-bars"></i></div>
+                <div id="drawer-switch" style={{width: "fit-content"}}><i title="Pet accessories" className="fa fa-bars"></i></div>
                 <div className="title-profile">
                     <div className="page-title">Stocks </div>
                     <div className="profile-photo">
-                        <div title="Log out of your account" className="logout-seller" onClick = { () => {
+                        <div className="logout-seller fa fa-shopping-cart" onClick = { () => window.open("/accessories/home", "_blank")}></div>
+                        <div title="Log out of your account" className="logout-seller fa fa-sign-out-alt" onClick = { () => {
                             localStorage.removeItem("eden-sl-user-store");
                             localStorage.removeItem("eden-sl-user-email");
                             localStorage.removeItem("eden-sl-user-uid");
-                            localStorage.removeItem("eden-sl-user-logged-in");
+                            localStorage.setItem("eden-sl-user-logged-in", "false");
+                            localStorage.removeItem("eden-pa-user-name");
+                            localStorage.removeItem("eden-pa-user-email");
+                            localStorage.removeItem("eden-pa-user-uid");
+                            localStorage.removeItem("eden-pa-user-photo");
+                            localStorage.setItem("eden-pa-user-logged-in", "false");
                             window.location = "/seller/signin";
-                        }}>Sign Out</div>
+                        }}></div>
                     </div>
                 </div>
             </div>

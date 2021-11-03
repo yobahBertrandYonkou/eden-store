@@ -124,6 +124,13 @@ var Header = ()=>{
                         localStorage.removeItem("eden-pa-user-uid");
                         localStorage.removeItem("eden-pa-user-photo");
                         localStorage.setItem("eden-pa-user-logged-in", "false");
+
+                        if(localStorage.getItem("eden-sl-user-logged-in") === "true"){
+                            localStorage.removeItem("eden-sl-user-store");
+                            localStorage.removeItem("eden-sl-user-email");
+                            localStorage.removeItem("eden-sl-user-uid");
+                            localStorage.setItem("eden-sl-user-logged-in", "false");
+                        }
                         window.location = "/accessories/home";
                     }} className="signin-btn">Sign Out</button> </div> }
                 </div>
