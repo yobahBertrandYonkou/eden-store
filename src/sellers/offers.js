@@ -166,7 +166,7 @@ var Offers= ()=>{
                 // display c-menu
                 cMenu.style.display = "block";
 
-                // handler for no stocks displayed
+                // handler for no offers displayed
                 if (selectedItem.id.toString() == "no-stocks-msg"){
                     cMenu.style.display = "none";
                 }
@@ -354,7 +354,7 @@ var Offers= ()=>{
         // sending data to retrive data
         socket.onopen = (event)=>{
             // console.log(socket.readyState);
-            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value, uid: localStorage.getItem("eden-sl-user-uid") }));
         }
         
         // receives data each time the database is updated
@@ -370,7 +370,7 @@ var Offers= ()=>{
 
             if(data.data.length == 0){
                 console.log("No data");
-                tableBody.innerHTML = `<tr id="no-stocks-msg" style="border: none;"><td colspan="8" style="border: none; padding-top: 30px; text-align: center">No stocks</td></tr>`;
+                tableBody.innerHTML = `<tr id="no-stocks-msg" style="border: none;"><td colspan="8" style="border: none; padding-top: 30px; text-align: center">No Offers</td></tr>`;
             }
 
                 // publising data to table body
@@ -404,7 +404,7 @@ var Offers= ()=>{
             console.log(stkFrom.value);
             console.log(stkTo.value);
 
-            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value, uid: localStorage.getItem("eden-sl-user-uid") }));
         }
 
         stkFrom.onchange = ()=>{
@@ -420,14 +420,14 @@ var Offers= ()=>{
             }
             
             // sending prameters to socket (server)
-            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value, uid: localStorage.getItem("eden-sl-user-uid") }));
         }
 
         stkTo.onchange = ()=>{
             console.log(stkCategory.value);
             console.log(stkFrom.value);
             console.log(stkTo.value);
-            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value, uid: localStorage.getItem("eden-sl-user-uid") }));
         }
 
         stkSearch.onkeyup = (event) => {
@@ -435,7 +435,7 @@ var Offers= ()=>{
             console.log(event.code.toString() == "Backspace")
             
             if(acceptedChars.includes(event.key.toString()) || event.code.toString() == "Backspace"){
-                socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+                socket.send(JSON.stringify({condition: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value, uid: localStorage.getItem("eden-sl-user-uid") }));
             }
         }
         
@@ -543,7 +543,7 @@ var Offers= ()=>{
             // data to be sent
             var data = {
                 "id": null,
-                "sellerId": "DSErqrq545dsDh",
+                "sellerId": localStorage.getItem("eden-sl-user-uid"),
                 "title": document.getElementById("title").value.trim(),
                 "condition": document.getElementById("condition").value.trim(),
                 "quantity": parseFloat(document.getElementById("quantity").value.trim()),

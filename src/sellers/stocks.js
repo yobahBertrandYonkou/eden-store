@@ -331,7 +331,7 @@ var Stocks= ()=>{
         // sending data to retrive data
         socket.onopen = (event)=>{
             // console.log(socket.readyState);
-            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value, uid: localStorage.getItem("eden-sl-user-uid") }));
         }
         
         // receives data each time the database is updated
@@ -383,7 +383,7 @@ var Stocks= ()=>{
             console.log(stkFrom.value);
             console.log(stkTo.value);
 
-            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value, uid: localStorage.getItem("eden-sl-user-uid") }));
         }
 
         stkFrom.onchange = ()=>{
@@ -399,14 +399,14 @@ var Stocks= ()=>{
             }
             
             // sending prameters to socket (server)
-            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value, uid: localStorage.getItem("eden-sl-user-uid") }));
         }
 
         stkTo.onchange = ()=>{
             console.log(stkCategory.value);
             console.log(stkFrom.value);
             console.log(stkTo.value);
-            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+            socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value, uid: localStorage.getItem("eden-sl-user-uid") }));
         }
 
         stkSearch.onkeyup = (event) => {
@@ -414,7 +414,7 @@ var Stocks= ()=>{
             console.log(event.code.toString() == "Backspace")
             
             if(acceptedChars.includes(event.key.toString()) || event.code.toString() == "Backspace"){
-                socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value}));
+                socket.send(JSON.stringify({category: stkCategory.value, search: stkSearch.value, from: stkFrom.value, to: stkTo.value, uid: localStorage.getItem("eden-sl-user-uid") }));
             }
         }
         
@@ -506,7 +506,7 @@ var Stocks= ()=>{
             // data to be sent
             var data = {
                 "id": null,
-                "sellerId": "DSErqrq545dsDh",
+                "sellerId": localStorage.getItem("eden-sl-user-uid"),
                 "name": document.getElementById("name").value.trim(),
                 "quantity": parseFloat(document.getElementById("quantity").value.trim()),
                 "price": parseFloat(document.getElementById("price").value.trim()),
