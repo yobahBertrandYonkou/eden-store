@@ -155,7 +155,7 @@ var Orders= ()=>{
         }
 
         // loading data
-        fetch("http://localhost:9000/orders/pending/" + localStorage.getItem("eden-seller-user-uid"))
+        fetch("http://localhost:9000/orders/pending/" + localStorage.getItem("eden-sl-user-uid"))
         .then( response => response.json())
         .then( response => {
             var data = response.orders;
@@ -170,12 +170,23 @@ var Orders= ()=>{
 
                 // publising data to table body
                 data.forEach( doc => {
+                    var totalCostElement;
+                    if(doc.hasOffer){
+                        totalCostElement = `<td>Rs. ${doc.offerPrice}</td>`;
+                    }else{
+                        totalCostElement = `<td>Rs. ${ (doc.price * doc.quantityNeeded - ((doc.price * doc.quantityNeeded) * doc.discount / 100)).toFixed(2) }</td>`;
+                    }
 
-                    // updating table
+                    // updating table   
                     tableBody.insertAdjacentHTML('afterbegin', 
                         `
                             <tr title="Right Click for more options." id="${doc.orderId}">
-                                <td title="${ doc.orderId }">${doc.name.substring(0, 25)}...</td>
+                                <td>${ doc.orderId }</td>
+                                <td>${new Date(doc.timeStamp._seconds * 1000).toDateString()} ${new Date(doc.timeStamp._seconds * 1000).toLocaleTimeString()}</td>
+                                <td title="${ doc.name }">${doc.name.substring(0, 25)}...</td>
+                                <td title="${ doc.shippingAddress }">${doc.shippingAddress.substring(0, 25)}...</td>
+                                ${ totalCostElement }
+                                <td>${doc.status}</td>
                             </tr>
                         `
                     );
@@ -343,7 +354,6 @@ var Orders= ()=>{
                                 <th>Time</th>
                                 <th>Item</th>
                                 <th>Shipping address</th>
-                                <th>Shipping cost</th>
                                 <th>Total cost</th>
                                 <th>Status</th>
                             </tr>

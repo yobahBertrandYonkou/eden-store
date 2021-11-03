@@ -281,6 +281,7 @@ router.post('/orders/save', async (req, res) => {
     var itemIds = [];
     var tempData = {...data};
     delete tempData["items"];
+
     await firestore.collection("orders")
     .doc("CompletedAndPending")
     .collection("OrderSummaries")
@@ -298,7 +299,7 @@ router.post('/orders/save', async (req, res) => {
         await firestore.collection("orders")
         .doc("CompletedAndPending")
         .collection("PendingOrders")
-        .add({...item, orderId: data.orderId})
+        .add({...item, orderId: data.orderId, timeStamp: new Date(), shippingAddress: data.shippingAddress, status: "pending" })
         .then( response => {
             console.log(item.id + " saved");
         }).catch( error => console.log(error));
