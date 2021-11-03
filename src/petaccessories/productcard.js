@@ -14,6 +14,10 @@ var ProductCard = ({ details })=>{
         
         addToCart.forEach(btn => {
             btn.onclick = async (event) => {
+                if (!localStorage.getItem("eden-pa-user-uid")){
+                    window.location = "signin";
+                    return
+                }
                 console.log(event.target.id);
                 var quantity = document.getElementById(`quantity-${ event.target.id }`);
                 console.log(quantity.value)

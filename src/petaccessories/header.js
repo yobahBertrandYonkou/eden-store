@@ -181,7 +181,7 @@ var Header = ()=>{
                         <a href="/accessories/birds" className="birds"><FontAwesomeIcon icon={faKiwiBird} className="top-nav-icons"/>Birds</a>
                         <a href="/accessories/hamsters" className="hamsters"><FontAwesomeIcon icon={faCheese} className="top-nav-icons"/>Hamsters</a>
                         <a href="/accessories/offers" className="offers"><FontAwesomeIcon icon={faGift} className="top-nav-icons"/>Offers</a>
-                        <a href="/accessories/orders" className="orders"><FontAwesomeIcon icon={faTruck} className="top-nav-icons"/>Orders</a>
+                        { localStorage.getItem("eden-pa-user-uid") && <a href="/accessories/orders" className="orders"><FontAwesomeIcon icon={faTruck} className="top-nav-icons"/>Orders</a> }
                     </div>
                     <div className="cut-maker"></div>
                 </div>

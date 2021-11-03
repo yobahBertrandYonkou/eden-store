@@ -13,7 +13,7 @@ router.get('/:category/:type', async (req, res) => {
     console.log(req.params);
 
     var conditions;
-
+    
     if(req.params.category == "all"){
         conditions = firestore.collection("products")
         .where("type", "==", req.params.type.toLowerCase());

@@ -17,6 +17,8 @@ router.ws("/cart", (ws, req) => {
     ws.on("message", async (msg) => {
         console.log("Cart count")
         console.log(msg)
+        if(JSON.parse(msg).uid == null) return
+
         await firestore.collection("users")
         .doc(JSON.parse(msg).uid).collection("cart")
         .onSnapshot((docs) => {
@@ -89,7 +91,7 @@ router.get('/cart/:userId', async (req, res) => {
         categories = [...new Set(categories)];
         console.log(categories);
         // console.log(data)
-
+        if (categories.length == 0) categories = [null]
         await firestore.collection('products')
         .where("category", "array-contains-any", categories)
         .limit(12)
@@ -308,5 +310,4 @@ router.post('/orders/save', async (req, res) => {
 
 
 
-// TODO: Firebase Auth REST API
 module.exports = router;
