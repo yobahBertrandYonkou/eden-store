@@ -71,12 +71,12 @@ var Dashboard= ()=>{
             <div className="title-sec">EDEN<i id="close-drawer" className="fa fa-times"></i></div>
             <hr />
             <div className="side-nav-links">
-                <div className="side-nav-link seller-name">Seller's Name</div>
+                <div className="side-nav-link seller-name">{ localStorage.getItem("eden-sl-user-store") }</div>
                 <hr />
-                <div className="side-nav-link dashboard"><a className="active-side-link" href="/">  <i className="fa fa-tachometer-alt"></i> Dashboard</a></div>
-                <div className="side-nav-link stocks"><a href="/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
-                <div className="side-nav-link orders"><a href="/offers"> <i className="far fa-gifts"></i> Offers</a></div>
-                <div className="side-nav-link offers"><a href=""> <i className="fa fa-truck"></i> Orders</a></div>
+                <div className="side-nav-link dashboard"><a className="active-side-link" href="/seller/dashboard">  <i className="fa fa-tachometer-alt"></i> Dashboard</a></div>
+                <div className="side-nav-link stocks"><a href="/seller/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
+                <div className="side-nav-link offers"><a href="/seller/offers"> <i className="far fa-gifts"></i> Offers</a></div>
+                <div className="side-nav-link orders"><a href="/seller/orders"> <i className="fa fa-truck"></i> Orders</a></div>
                 <div className="side-nav-link reports"><a href=""> <i className="fa fa-chart-line"></i> Reports</a></div>
             </div>
             </div>
@@ -86,8 +86,14 @@ var Dashboard= ()=>{
                     <div className="title-profile">
                         <div className="page-title">Dashboard </div>
                         <div className="profile-photo">
-                            <img width="100%"  src="" alt="" />
-                        </div>
+                            <div title="Log out of your account" className="logout-seller" onClick = { () => {
+                                localStorage.removeItem("eden-sl-user-store");
+                                localStorage.removeItem("eden-sl-user-email");
+                                localStorage.removeItem("eden-sl-user-uid");
+                                localStorage.removeItem("eden-sl-user-logged-in");
+                                window.location = "/seller/signin";
+                            }}>Sign Out</div>
+                    </div>
                     </div>
                 </div>
                 <hr style={{border: "0", borderTop: "1px solid #6F62FC"}} />
