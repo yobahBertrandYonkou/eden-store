@@ -80,7 +80,7 @@ var CheckOut = ()=>{
                 await fetch("http://localhost:9000/user/orders/create", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ uid: localStorage.getItem("eden-pa-user-uid"), amount: parseFloat(totalAmount + shipping).toFixed(2)})
+                    body: JSON.stringify({ uid: localStorage.getItem("eden-pa-user-uid"), amount: parseFloat(totalAmount + shipping).toFixed(2), userType: localStorage.getItem("eden-pa-user-type")})
                 })
                 .then( response => response.json())
                 .then( response => {
@@ -111,13 +111,14 @@ var CheckOut = ()=>{
                                         shippingAndHandling: shipping,
                                         shippingAddress: address.value.trim(),
                                         numberOfItems: userCart.products.length,
-                                        items: userCart.products
+                                        items: userCart.products,
+                                        userType: localStorage.getItem("eden-pa-user-type")
                                     })
                                 })
                                 .then( response => response.json())
                                 .then( response => {
                                     console.log(response)
-                                    window.location = "/accessories/cart";
+                                    window.location = "/accessories/orders";
                                 })
                                 .catch( error => console.log(error));
                             },

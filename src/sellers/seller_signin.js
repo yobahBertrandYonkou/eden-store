@@ -50,6 +50,7 @@ var sSignIn = ()=>{
                                 localStorage.setItem("eden-pa-user-name", response.data.store);
                                 localStorage.setItem("eden-pa-user-email", response.data.email);
                                 localStorage.setItem("eden-pa-user-uid", response.uid);
+                                localStorage.setItem("eden-pa-user-type", "seller");
                                 localStorage.setItem("eden-pa-user-photo", null);
                                 localStorage.setItem("eden-pa-user-logged-in", "true");
                                 window.location = "/seller/dashboard";

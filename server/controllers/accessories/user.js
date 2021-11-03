@@ -240,12 +240,18 @@ router.post('/accessories/login', (req, res) => {
 });
 
 router.post('/orders/create', async (req, res) => {
-    console.log(req.body)
+    console.log(req.body);
+
+    var conditions;
+
+    if(req.body.userType === "seller") conditions = firestore.collection("sellers").doc(req.body.uid)
+    else conditions = firestore.collection("users").doc(req.body.uid)
     // checks whether user exist    
-    firestore.collection("users").doc(req.body.uid)
+    await conditions
     .get().then( response => {
         
         if (response.exists){
+            console.log("creating order")
 
             // creating order
             razorpay.orders.create({
@@ -253,10 +259,10 @@ router.post('/orders/create', async (req, res) => {
                 currency: "INR",
                 receipt: "order_rcptid_" + now()
             }, (error, order) => {
-    console.log(error)
 
                 if (error) throw error;
 
+                console.log("order")
                 console.log(order)
 
                 res.json({ key_id: razorpayKeys.key_id, order: order, status: 200 });
@@ -272,40 +278,55 @@ router.post('/orders/save', async (req, res) => {
     data['timeStamp'] = new Date();
     console.log(data);
 
-    // checks whether user exist
+    var itemIds = [];
+    var tempData = {...data};
+    delete tempData["items"];
     await firestore.collection("orders")
     .doc("CompletedAndPending")
-    .collection("PendingOrders")
-    .add(data)
+    .collection("OrderSummaries")
+    .add(tempData)
     .then( response => {
-        var itemIds = [];
-
-        // deleting items from cart
-        req.body.items.forEach( async item => {
-            itemIds.push(item.id);
-            console.log(req.body.userId)
-            console.log(item.id)
-            await firestore.collection("users")
-            .doc(req.body.userId)
-            .collection('cart')
-            .where("id", "==", item.id)
-            .get()
-            .then( async docs => {
-                await firestore.collection("users").doc(req.body.userId).collection("cart").doc(docs.docs[0].id).delete();
-            })
-            .catch( error => console.log(error));
-        });
-        // sending click event
-        insights("convertedObjectIDsAfterSearch", {
-            userToken: req.body.userId,
-            index: "eden_products",
-            eventName: "Clicked Item",
-            objectIDs: itemIds
-        });
-        console.log("Event registered")
-
-        res.json({ status: 200, message: "Order completed" });
+        console.log("Order summary saved");
     }).catch( error => console.log(error));
+
+    req.body.items.forEach( async item => {
+        itemIds.push(item.id);
+        console.log(req.body.userId)
+        console.log(item.id);
+
+        // save item to pending orders
+        await firestore.collection("orders")
+        .doc("CompletedAndPending")
+        .collection("PendingOrders")
+        .add({...item, orderId: data.orderId})
+        .then( response => {
+            console.log(item.id + " saved");
+        }).catch( error => console.log(error));
+
+        // deleting item from cart
+        await firestore.collection("users")
+        .doc(req.body.userId)
+        .collection('cart')
+        .where("id", "==", item.id)
+        .get()
+        .then( async docs => {
+            await firestore.collection("users").doc(req.body.userId).collection("cart").doc(docs.docs[0].id).delete();
+        })
+        .catch( error => console.log(error));
+    });
+
+
+    // sending click event
+    insights("convertedObjectIDsAfterSearch", {
+        userToken: req.body.userId,
+        index: "eden_products",
+        eventName: "Clicked Item",
+        objectIDs: itemIds
+    });
+
+    console.log("Event registered")
+
+    res.json({ status: 200, message: "Order completed" });
 });
 
 
