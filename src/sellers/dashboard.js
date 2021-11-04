@@ -9,6 +9,19 @@ var Dashboard= ()=>{
         var bodyContainer = document.getElementById("body-container");
         var actionBar = document.getElementById('action-bar-id');
 
+        // get totals
+        fetch("http://localhost:9000/stats/totals")
+        .then( response => response.json())
+        .then( totals => {
+            console.log(totals);
+            document.querySelector(".total-offers").textContent = totals.offers;
+            document.querySelector(".deliveries").textContent = totals.deliveries;
+            document.querySelector(".total-orders").textContent = totals.orders;
+            document.querySelector(".total-stocks").textContent = totals.stocks;
+            document.querySelector(".active-offers").textContent = totals.activeOffers;
+        })
+        .then( error => console.log(error));
+
         var showSideNav = ()=>{
             closeDrawer.style.display = "block";
             sideNav.style.left = 0;
@@ -110,8 +123,8 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-cubes"></div>
                             <div className="stats-values">
-                                <div className="stats-value">4</div>
-                                <div className="stats-name">Total Items Sold</div>
+                                <div className="stats-value total-orders">00</div>
+                                <div className="stats-name">Total Orders</div>
                             </div>
                         </div>
                         {/* Stats ends */}
@@ -119,7 +132,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-truck"></div>
                             <div className="stats-values">
-                                <div className="stats-value">4</div>
+                                <div className="stats-value deliveries">00</div>
                                 <div className="stats-name">Total Deliveries</div>
                             </div>
                         </div>
@@ -128,7 +141,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-rupee-sign"></div>
                             <div className="stats-values">
-                                <div className="stats-value">4</div>
+                                <div className="stats-value">00</div>
                                 <div className="stats-name">Total Sales</div>
                             </div>
                         </div>
@@ -137,7 +150,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-coins"></div>
                             <div className="stats-values">
-                                <div className="stats-value">4</div>
+                                <div className="stats-value">00</div>
                                 <div className="stats-name">Gross Sales</div>
                             </div>
                         </div>
@@ -146,7 +159,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-users"></div>
                             <div className="stats-values">
-                                <div className="stats-value">4</div>
+                                <div className="stats-value">00</div>
                                 <div className="stats-name">Total Customers</div>
                             </div>
                         </div>
@@ -155,7 +168,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-layer-group"></div>
                             <div className="stats-values">
-                                <div className="stats-value">4</div>
+                                <div className="stats-value total-stocks">00</div>
                                 <div className="stats-name">Total Stock</div>
                             </div>
                         </div>
@@ -164,7 +177,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon far fa-hourglass"></div>
                             <div className="stats-values">
-                                <div className="stats-value">4</div>
+                                <div className="stats-value">00</div>
                                 <div className="stats-name">Out of Stock</div>
                             </div>
                         </div>
@@ -173,7 +186,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-gifts"></div>
                             <div className="stats-values">
-                                <div className="stats-value">4</div>
+                                <div className="stats-value total-offers">00</div>
                                 <div className="stats-name">Total Offers</div>
                             </div>
                         </div>
@@ -182,7 +195,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-gift"></div>
                             <div className="stats-values">
-                                <div className="stats-value">4</div>
+                                <div className="stats-value active-offers">00</div>
                                 <div className="stats-name">Active Offers</div>
                             </div>
                         </div>
@@ -191,7 +204,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-search"></div>
                             <div className="stats-values">
-                                <div className="stats-value">4</div>
+                                <div className="stats-value">00</div>
                                 <div className="stats-name">Searches</div>
                             </div>
                         </div>
@@ -210,17 +223,17 @@ var Dashboard= ()=>{
                                         {/* today stats card */}
                                         <div className="stats-card today-stats-card">
                                             <div className="stats-name today-stats-name">Total sales for today</div>
-                                            <div className="stats-value today-stats-value">4</div>
+                                            <div className="stats-value today-stats-value">00</div>
                                         </div>
                                         {/* today stats card */}
                                         <div className="stats-card today-stats-card">
                                             <div className="stats-name today-stats-name">Total sales for today</div>
-                                            <div className="stats-value today-stats-value">4</div>
+                                            <div className="stats-value today-stats-value">00</div>
                                         </div>
                                         {/* today stats card */}
                                         <div className="stats-card today-stats-card">
                                             <div className="stats-name today-stats-name">Total sales for today</div>
-                                            <div className="stats-value today-stats-value">4</div>
+                                            <div className="stats-value today-stats-value">00</div>
                                         </div>
                                     </div>
                                 </div>

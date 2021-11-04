@@ -9,6 +9,7 @@ const user = require("./controllers/accessories/user");
 const offers = require("./controllers/sellers/offers");
 const orders = require("./controllers/sellers/orders");
 const seller = require("./controllers/sellers/seller");
+const statistics = require("./controllers/sellers/statistics");
 const cors = require('cors');
 const fileUpload = require("express-fileupload");
 
@@ -39,6 +40,9 @@ app.use("/offers", offers);
 
 // orders
 app.use("/orders", orders);
+
+// statistics
+app.use("/stats", statistics);
 
 // starting server
 app.listen(9000, () => {
