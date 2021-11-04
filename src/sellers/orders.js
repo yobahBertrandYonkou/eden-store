@@ -1,10 +1,6 @@
 /* eslint-disable eqeqeq */
 import { useEffect } from 'react';
-import { useFetchAll } from '../petaccessories/hooks/useFetch';
 import './css/dashboard.css'
-import imgPreviewHolder from "./images/preview-image.png"
-import imgUploadHolder from "./images/upload-image.png"
-
 var Orders= ()=>{
     // const { data: pendingOrders, isLoading, hasData } = useFetchAll("http://localhost:9000/orders", "pending", localStorage.getItem("eden-seller-user-uid"));
     useEffect(()=>{
@@ -19,7 +15,6 @@ var Orders= ()=>{
         var stkTo = document.getElementById('to-date');
         var stkSearch = document.getElementById('stk-search');
         var currentAction = null;
-        var selectedItemForProcessing = null;
         var categories = document.querySelectorAll('.category-item');
         var catView = document.getElementById("category");
 
@@ -56,101 +51,6 @@ var Orders= ()=>{
                 }
             }
         });
-
-        
-        /**
-         * Handling context menu for stock item
-         */
-        
-        tableBody.oncontextmenu = (itemEvent) => {
-            // checking whether user has made a right click on the mouse
-            if(itemEvent.button == 2){
-                itemEvent.preventDefault();
-                
-                // clear selected item 
-                for (var index = 0; index < tableBody.childElementCount; index++ ){
-                    tableBody.children[index].style.backgroundColor = "white";
-                }
-
-                // making sure a table data was clicked
-                if (itemEvent.target.nodeName.toString() != "TD"){
-                    return
-                }
-
-                // gets item id
-                // console.log(itemEvent.path[1])
-                var selectedItem = itemEvent.path[1];
-                selectedItem.style.backgroundColor = "rgba(106,121,183, 0.3)";
-                selectedItemForProcessing = selectedItem;
-                // ref to c-menu
-                var cMenu = document.getElementById('c-menu');
-
-                // closing any opened context menu
-                cMenu.style.display = "none";
-
-                // onclick record
-                var clientX = itemEvent.clientX;
-                var clientY = itemEvent.clientY;
-
-                // positioning c-menu
-                cMenu.style.transform = `translate(${clientX}px, ${clientY}px)`;
-
-                // display c-menu
-                cMenu.style.display = "block";
-
-                // handler for no stocks displayed
-                if (selectedItem.id.toString() == "no-stocks-msg"){
-                    cMenu.style.display = "none";
-                }
-
-                // close menu on left click or wheel click
-                window.onmouseup = (event) => {
-                    if (event.button != 2){
-                        cMenu.style.display = "none";
-
-                        // clear selected item 
-                        for (var index = 0; index < tableBody.childElementCount; index++ ){
-                            tableBody.children[index].style.backgroundColor = "white";
-                        }
-                    }
-                }
-                
-                // listeners for each menu item
-                cMenu.onclick = async (cEvent) => {
-                    // console.log(cEvent.target.id)
-                    var cMenuOptionId = cEvent.target.id;
-
-                    if(cMenuOptionId == "cm-delete"){
-                        currentAction = "delete";
-                        // deleting item
-                        await fetch("http://localhost:9000/stocks",{
-                            method: "DELETE",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({id: selectedItem.id.toString()})
-                        })
-                        .then(response => response.json())
-                        .then(response => {
-                            console.log(response)
-                            document.querySelector('.show-notification').innerHTML = (
-                                `<div class="alert alert-danger alert-dismissible" role="alert">
-                                Item deleted Successfully.
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                                </div>`
-                            );
-            
-                            setTimeout(() => {
-                                document.querySelector('.show-notification').innerHTML = "";
-                            }, 2000);
-                        })
-                        .catch(error => console.log(error));
-                    }
-                }
-
-                return false
-            }
-        }
 
         // loading data
         fetch("http://localhost:9000/orders/pending/" + localStorage.getItem("eden-sl-user-uid"))
@@ -198,7 +98,7 @@ var Orders= ()=>{
             if (from ==  "") from = " ";
             if (to ==  "") to = " ";
             // loading data
-            await fetch(`http://localhost:9000/orders/filter/${ localStorage.getItem("eden-sl-user-uid") }/${ category }/${ search }/${ from }/${ to }`)
+            await fetch(`http://localhost:9000/orders/filter/${ localStorage.getItem("eden-sl-user-uid") }/${ category }/${ search }/${ from }/${ to }/`)
             .then( response => response.json())
             .then( response => {
                 var data = response.orders;
@@ -411,11 +311,6 @@ var Orders= ()=>{
                 </div>
             </div>
         </div>
-            {/* Context menu */}
-            <div id="c-menu" className="context-menu-container">
-                <div id="cm-delete" className="cm-option"><i style={{color: "white"}} className="fas fa-trash-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp; Delete</div>
-            </div>
-            <div style={{ position: "fixed", top: "0", width: "100%", zIndex: 100}} className="show-notification"></div>
         </div>
     );
 }

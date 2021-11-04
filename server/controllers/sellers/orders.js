@@ -37,7 +37,7 @@ router.get('/:type/:sellerId', async (req, res) => {
     .catch( error => console.error(error));
 });
 
-router.get('/filter/:uid/:category/:search/:from/:to', async (req, res) => {
+router.get('/filter/:uid/:category/:search/:from/:to/', async (req, res) => {
     var msg = req.params
         console.log(msg.search == " ")
         var collection = "PendingOrders";
@@ -56,7 +56,7 @@ router.get('/filter/:uid/:category/:search/:from/:to', async (req, res) => {
         
         // fetching all stocks according to filter condition
         await conditions.get().then((docs)=>{
-            console.log(docs.docs);
+            // console.log(docs.docs);
 
             // .where("condition", "==", msg.condition)
             var data = [];
@@ -77,11 +77,11 @@ router.get('/filter/:uid/:category/:search/:from/:to', async (req, res) => {
                 docs.docs.forEach(doc => {
                     // filter category here
                     if (msg.search != " "){
-                        if (doc.data().status.includes(msg.category.substring(0, 1).toUpperCase() + msg.category.slice(1)) && doc.data().name.toLowerCase().includes(msg.search.toLowerCase())){
+                        if (doc.data().status == msg.category && doc.data().name.toLowerCase().includes(msg.search.toLowerCase())){
                             data.push(doc.data());
                         }
                     }else{
-                        if (doc.data().status.includes(msg.category.substring(0, 1).toUpperCase() + msg.category.slice(1))){
+                        if (doc.data().status == msg.category){
                             data.push(doc.data());
                         }
                     }
