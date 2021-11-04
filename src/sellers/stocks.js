@@ -347,7 +347,7 @@ var Stocks= ()=>{
 
             if(data.data.length == 0){
                 console.log("No data");
-                tableBody.innerHTML = `<tr id="no-stocks-msg" style="border: none;"><td colspan="8" style="border: none; padding-top: 30px; text-align: center">No stocks</td></tr>`;
+                tableBody.innerHTML = `<tr id="no-stocks-msg" style="border: none;"><td colspan="9" style="border: none; padding-top: 30px; text-align: center">No stocks</td></tr>`;
             }
 
                 // publising data to table body

@@ -18,8 +18,6 @@ var Orders= ()=>{
         var stkFrom = document.getElementById('from-date');
         var stkTo = document.getElementById('to-date');
         var stkSearch = document.getElementById('stk-search');
-        var photoPreview = document.getElementById('photo-preview');
-        var pdtPhotos = document.querySelectorAll(".photo-thumbnail");
         var currentAction = null;
         var selectedItemForProcessing = null;
         var categories = document.querySelectorAll('.category-item');
@@ -184,6 +182,7 @@ var Orders= ()=>{
                                 <td>${ doc.orderId }</td>
                                 <td>${new Date(doc.timeStamp._seconds * 1000).toDateString()} ${new Date(doc.timeStamp._seconds * 1000).toLocaleTimeString()}</td>
                                 <td title="${ doc.name }">${doc.name.substring(0, 25)}...</td>
+                                <td>${doc.quantityNeeded}</td>
                                 <td title="${ doc.shippingAddress }">${doc.shippingAddress.substring(0, 25)}...</td>
                                 ${ totalCostElement }
                                 <td>${doc.status}</td>
@@ -194,12 +193,57 @@ var Orders= ()=>{
         })
         .catch( error => console.log(error));
 
+        var filterRecords = async ({category, search, from, to}) => {
+            if (search ==  "") search = " ";
+            if (from ==  "") from = " ";
+            if (to ==  "") to = " ";
+            // loading data
+            await fetch(`http://localhost:9000/orders/filter/${ localStorage.getItem("eden-sl-user-uid") }/${ category }/${ search }/${ from }/${ to }`)
+            .then( response => response.json())
+            .then( response => {
+                var data = response.orders;
+                console.log(data)
+                // reseting table body content
+                tableBody.innerHTML = "";
+
+                if(data.length == 0){
+                    console.log("No data");
+                    tableBody.innerHTML = `<tr id="no-stocks-msg" style="border: none;"><td colspan="8" style="border: none; padding-top: 30px; text-align: center">No Orders</td></tr>`;
+                }
+
+                    // publising data to table body
+                    data.forEach( doc => {
+                        var totalCostElement;
+                        if(doc.hasOffer){
+                            totalCostElement = `<td>Rs. ${doc.offerPrice}</td>`;
+                        }else{
+                            totalCostElement = `<td>Rs. ${ (doc.price * doc.quantityNeeded - ((doc.price * doc.quantityNeeded) * doc.discount / 100)).toFixed(2) }</td>`;
+                        }
+
+                        // updating table   
+                        tableBody.insertAdjacentHTML('afterbegin', 
+                            `
+                                <tr title="Right Click for more options." id="${doc.orderId}">
+                                    <td>${ doc.orderId }</td>
+                                    <td>${new Date(doc.timeStamp._seconds * 1000).toDateString()} ${new Date(doc.timeStamp._seconds * 1000).toLocaleTimeString()}</td>
+                                    <td title="${ doc.name }">${doc.name.substring(0, 25)}...</td>
+                                    <td>${doc.quantityNeeded}</td>
+                                    <td title="${ doc.shippingAddress }">${doc.shippingAddress.substring(0, 25)}...</td>
+                                    ${ totalCostElement }
+                                    <td>${doc.status}</td>
+                                </tr>
+                            `
+                        );
+                    });
+            })
+            .catch( error => console.log(error));
+        }
         // filtering
         stkCategory.onchange = ()=>{
             console.log(stkCategory.value);
             console.log(stkFrom.value);
             console.log(stkTo.value);
-
+            filterRecords({category: stkCategory.value, search: stkSearch.value.trim(), from: stkFrom.value, to: stkTo.value});
         }
 
         stkFrom.onchange = ()=>{
@@ -215,12 +259,14 @@ var Orders= ()=>{
             }
             
             // sending prameters to socket (server)
+            filterRecords({category: stkCategory.value, search: stkSearch.value.trim(), from: stkFrom.value, to: stkTo.value});
         }
 
         stkTo.onchange = ()=>{
             console.log(stkCategory.value);
             console.log(stkFrom.value);
             console.log(stkTo.value);
+            filterRecords({category: stkCategory.value, search: stkSearch.value.trim(), from: stkFrom.value, to: stkTo.value});
         }
 
         stkSearch.onkeyup = (event) => {
@@ -228,6 +274,7 @@ var Orders= ()=>{
             console.log(event.code.toString() == "Backspace")
             
             if(acceptedChars.includes(event.key.toString()) || event.code.toString() == "Backspace"){
+                filterRecords({category: stkCategory.value, search: stkSearch.value.trim(), from: stkFrom.value, to: stkTo.value});
             }
         }
         
@@ -331,12 +378,11 @@ var Orders= ()=>{
             <div className="content-container">
                 {/* Filters */}
                 <div className="top-options-container">
-                    <select name="" id="filter-drop">
-                        <option value="all">All Categories</option>
-                        <option value="cats">Cats</option>
-                        <option value="dogs">Dogs</option>
-                        <option value="birds">Birds</option>
-                        <option value="hamsters">Hamsters</option>
+                    <select defaultValue="all" name="" id="filter-drop">
+                        <option value="all">All Orders</option>
+                        <option value="pending">Pending</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="dispatched">Dispatched</option>
                     </select>
                     <input id="stk-search" type="search" placeholder="Search for items name" />
                     <div className="date-filter">
@@ -353,6 +399,7 @@ var Orders= ()=>{
                                 <th>ID</th>
                                 <th>Time</th>
                                 <th>Item</th>
+                                <th>Quantity</th>
                                 <th>Shipping address</th>
                                 <th>Total cost</th>
                                 <th>Status</th>

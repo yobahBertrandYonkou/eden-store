@@ -120,7 +120,7 @@ var Dashboard= ()=>{
                             <div className="stats-icon fa fa-truck"></div>
                             <div className="stats-values">
                                 <div className="stats-value">4</div>
-                                <div className="stats-name">Total Orders</div>
+                                <div className="stats-name">Total Deliveries</div>
                             </div>
                         </div>
                         {/* Stats ends */}

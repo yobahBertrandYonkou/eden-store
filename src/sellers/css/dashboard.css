@@ -139,7 +139,8 @@ hr {
 .logout-seller{
     color: var(--secondary-color);
     font-weight: lighter;
-    padding: 0 0 0 40px;
+    padding: 0;
+    margin-left: 40px;
 }
 
 

@@ -35,17 +35,20 @@ router.ws('/', (ws, req) => {
         // defining filter condition
         var conditions;
         if(msg.from == "" && msg.to == ""){
-            conditions = firestore.collection("products").where("sellerId", "==", msg.uid)
-        }else if(msg.from != "" && msg.to == ""){
+            conditions = firestore.collection("products").where("sellerId", "==", msg.uid).orderBy("updatedOn")
+        }else{
             conditions = firestore.collection("products")
-            .where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).where("sellerId", "==", msg.uid)
-        }else if (msg.from == "" && msg.to != ""){
-            conditions = firestore.collection("products")
-            .where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).where("sellerId", "==", msg.uid)
-        }else if(msg.from != "" && msg.to != ""){
-            conditions = firestore.collection("products")
-            .where("sellerId", "==", msg.uid).where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM"))
+            .where("sellerId", "==", msg.uid).where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM"))
+            .where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).orderBy("updatedOn")
         }
+
+        // else if(msg.from != "" && msg.to == ""){
+        //     conditions = firestore.collection("products")
+        //     .where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).where("sellerId", "==", msg.uid)
+        // }else if (msg.from == "" && msg.to != ""){
+        //     conditions = firestore.collection("products")
+        //     .where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).where("sellerId", "==", msg.uid)
+        // }else if(msg.from != "" && msg.to != "")
         
         // fetching all stocks according to filter condition
         snapShotTracker = conditions.onSnapshot((docs)=>{
