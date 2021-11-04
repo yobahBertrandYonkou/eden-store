@@ -41,5 +41,21 @@ router.get('/totals', async (req, res) => {
     .catch( error => console.log(error));
 });
 
+router.get('/recent/orders', async (req, res) => {
+    await firestore.collection("orders")
+    .doc("CompletedAndPending").collection("PendingOrders")
+    .orderBy("timeStamp", "desc")
+    .limit(10)
+    .get().then((response) => {
+        var orders = [];
+
+        response.docs.forEach(order => {
+            orders.push(order.data());
+        });
+         res.json({ orders: orders });
+    })
+    .catch( error => console.log(error));
+});
+
 module.exports = router;
 

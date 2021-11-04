@@ -20,7 +20,42 @@ var Dashboard= ()=>{
             document.querySelector(".total-stocks").textContent = totals.stocks;
             document.querySelector(".active-offers").textContent = totals.activeOffers;
         })
-        .then( error => console.log(error));
+        .catch( error => console.log(error));
+
+        // recent orders
+        fetch("http://localhost:9000/stats/recent/orders")
+        .then( response => response.json())
+        .then( orders => {
+            console.log(orders);
+            if(orders.orders.length == 0){
+                document.querySelector(".recent-orders").insertAdjacentHTML("afterbegin", 
+                `<div style="display: flex; justify-content: center; align-items: center;" className="recent-item">No Orders</div>`)
+            }
+            orders.orders.forEach(productDetails => {
+                var priceHTML;
+                if(productDetails.hasOffer){
+                    priceHTML = `<div style="font-size: 12px;" class="item-price">Price: Rs. ${ productDetails.offerPrice.toFixed(2) }</div>`;
+                }else{
+                    priceHTML = `<div style="font-size: 12px;" class="item-price">Price: Rs. ${ (productDetails.price * productDetails.quantityNeeded) - (productDetails.price * productDetails.quantityNeeded * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>(${ productDetails.discount }% off)</span></div>`;
+                }
+
+                document.querySelector(".recent-orders").insertAdjacentHTML("afterbegin", 
+                `
+                <div style="display: flex; align-items: center; padding: 5px" class="col-12 recent-item" id=card-${ productDetails.id }>
+                    <img width="56px" height="56px" style="object-fit: contain; margin-right: 10px; margin-top: 7px" src="${ productDetails.photoUrl }" alt="${ productDetails.id }" />
+                    <div class="item-details">
+                        <div style="font-size: 12px;" class="item-title">${ productDetails.name } (${ productDetails.quantity } ${ productDetails.unit })</div>
+                        ${ priceHTML }
+                        <div style="font-size: 12px;" class="item-category">${ productDetails.category } accessories</div>
+                        <div style="font-size: 12px;" class="item-quantity">Quantity: ${ productDetails.quantityNeeded }</div>
+                    </div>
+                </div>
+                `);
+            
+            });
+        })
+        .catch( error => console.log(error));
+
 
         var showSideNav = ()=>{
             closeDrawer.style.display = "block";
@@ -271,10 +306,7 @@ var Dashboard= ()=>{
                             <div className="col-lg-4 right-side row">
                                 <div className="recent-card" >
                                     <div className="recent-title">Recent Orders</div>
-                                    <div className="recent-content">
-                                        <div className="recent-item"></div>
-                                        <div className="recent-item"></div>
-                                        <div className="recent-item"></div>
+                                    <div className="recent-content recent-orders">
                                     </div>
                                 </div>
                                 <div className="top-selling recent-card" >

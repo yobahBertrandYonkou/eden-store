@@ -317,6 +317,13 @@ hr {
 
 .recent-content{
     padding: 20px 0 20px 0;
+    margin-bottom: 15px;
+    height: 400px;
+    overflow: auto;
+}
+
+.recent-content::-webkit-scrollbar{
+    display: none;
 }
 
 .recent-item, .ts-item{
