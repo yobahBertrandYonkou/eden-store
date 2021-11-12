@@ -30,7 +30,17 @@ router.get('/:category/:type', async (req, res) => {
         var data = [];
 
         docs.docs.forEach(doc => {
-            data.push(doc.data());
+            var details = doc.data();
+            var value = 0;
+            var rating;
+            for(const key in details.rating){
+                if (details.rating[key] > value) {
+                    rating = key;
+                    value = details.rating[key];
+                };
+            }
+            details['topRating'] = rating;
+            data.push(details);
         });
         // console.log(data)
          res.json({ products: data});

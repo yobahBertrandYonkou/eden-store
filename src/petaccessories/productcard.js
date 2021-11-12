@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import './css/productcard.css'
-import cardPhoto from './images/product1.png'
+import RatingStars from "react-rating-stars-component";
 
 var ProductCard = ({ details })=>{
     var dots = "";
@@ -9,6 +8,7 @@ var ProductCard = ({ details })=>{
         dots = "...";
     }
 
+    
     useEffect(() => {
         var addToCart = document.querySelectorAll('.pdt-cart-btn');
         
@@ -58,7 +58,16 @@ var ProductCard = ({ details })=>{
                 <div className="card-info ">
                     <div className="card-title">{ details.name.substring(0, 15) } <span style={{ color: "blueviolet"}}>More...</span></div>
                     <div className="pdt-seller-name">by { details.brand.toUpperCase() }</div>
-                    {/* <div className="rating">Rating here</div> */}
+                    <div style={{ display: "flex", alignItems: "center" }} className="rating">
+                        <RatingStars
+                            edit={false}
+                            value= { parseInt(details.topRating) }
+                            count={ 5 }
+                            activeColor="orange"
+                            color="#d1d1d5"
+                         />
+                         <span style={{marginLeft: "5px", fontSize: "12px"}}> ({ details.rating[details.topRating] }) </span>
+                    </div>
                     {details.discount !== 0 && <div className="card-price"><strike>₹ { details.price }</strike> <br /><span>₹ { (details.price - details.price * details.discount / 100).toFixed(2) } ({ details.discount }% off)</span></div>}
                     {details.discount === 0 && <div className="card-price"><strike>₹ { details.price }</strike></div>}
                 </div>

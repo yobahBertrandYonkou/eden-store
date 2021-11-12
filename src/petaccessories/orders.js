@@ -141,6 +141,7 @@ var Orders = ()=>{
                         value= { 1 }
                             count={ 5 }
                             size={ 50 }
+                            color="#d1d1d5"
                             activeColor="#2F2F5F"
                             emptyIcon={<i className="far fa-star"></i>}
                             onChange= { (newRating) => setReviewProductStars(newRating) }

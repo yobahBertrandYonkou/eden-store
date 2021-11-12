@@ -58,6 +58,7 @@ var OneAnimal = ({animal})=>{
 
                             {/* outputing accessores from useFetch */}
                             { !isOfferLoading && offerHasData && offerProductList.products.map((productDetails) => {
+                                
                                 return (
                                     <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                         <a className="card" href={`/accessories/offers/products/${ productDetails.id }`}>
