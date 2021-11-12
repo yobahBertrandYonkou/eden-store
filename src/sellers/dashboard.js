@@ -19,6 +19,7 @@ var Dashboard= ()=>{
             document.querySelector(".total-orders").textContent = totals.orders;
             document.querySelector(".total-stocks").textContent = totals.stocks;
             document.querySelector(".active-offers").textContent = totals.activeOffers;
+            document.querySelector(".total-sales").textContent = totals.totalSales;
         })
         .catch( error => console.log(error));
 
@@ -47,7 +48,7 @@ var Dashboard= ()=>{
                         <div style="font-size: 12px;" class="item-title">${ productDetails.name } (${ productDetails.quantity } ${ productDetails.unit })</div>
                         ${ priceHTML }
                         <div style="font-size: 12px;" class="item-category">${ productDetails.category } accessories</div>
-                        <div style="font-size: 12px;" class="item-quantity">Quantity: ${ productDetails.quantityNeeded }</div>
+                        <div style="font-size: 12px;" class="item-quantity">Quantity: ${ productDetails.quantityNeeded } <br>Date: ${new Date(productDetails.timeStamp._seconds * 1000).toDateString()} ${new Date(productDetails.timeStamp._seconds * 1000).toLocaleTimeString()}</div>
                     </div>
                 </div>
                 `);
@@ -176,7 +177,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-rupee-sign"></div>
                             <div className="stats-values">
-                                <div className="stats-value">00</div>
+                                <div className="stats-value total-sales">00</div>
                                 <div className="stats-name">Total Sales</div>
                             </div>
                         </div>

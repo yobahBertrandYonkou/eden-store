@@ -329,7 +329,7 @@ hr {
 .recent-item, .ts-item{
     border-radius: 10px;
     background-color: white;
-    height: 90px;
+    /* height: 90px; */
     margin-bottom: 10px;
 }
 

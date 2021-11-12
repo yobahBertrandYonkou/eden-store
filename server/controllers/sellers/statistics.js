@@ -30,7 +30,16 @@ router.get('/totals', async (req, res) => {
                 .doc("CompletedAndPending").collection("CompletedOrders").get()
                 .then( async docs => {
                     var deliveries = docs.docs.length;
-                    res.json({ stocks: stocks, offers: offers, deliveries: deliveries, activeOffers: activeOffers, orders: orders });
+                    var totalSales = 0;
+
+                    docs.docs.forEach(delivery => {
+                        if(delivery.hasOffer){
+                            totalSales += delivery.offerPrice;
+                        }else{
+                            totalSales += (delivery.price * delivery.quantityNeeded) - (delivery.price * delivery.quantityNeeded * delivery.discount / 100).toFixed(2);
+                        }
+                    });
+                    res.json({ stocks: stocks, offers: offers, deliveries: deliveries, activeOffers: activeOffers, orders: orders, totalSales: totalSales });
                 })
                 .catch( error => console.log(error));
             })

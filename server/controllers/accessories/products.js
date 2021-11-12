@@ -117,4 +117,33 @@ router.post('/search', (req, res) => {
     }
 });
 
+router.post('/rating', async (req, res) => {
+   console.log(req.body);
+
+   // get product
+    firestore.collection("products").where("id", "==", req.body.id).get()
+    .then( response => {
+        // get current rating
+        var rating = response.docs[0].data().rating;
+
+        // increase rating count
+        rating[`${ req.body.rating }`] += 1;
+
+        // save new rating
+        firestore.collection("products").doc(response.docs[0].id).update({ rating: rating })
+        .then( (response) => res.json({status: 200}))
+        .catch( error => console.log(error));
+    }).catch( error => console.log(error));
+
+    await firestore.collection("orders").doc("CompletedAndPending").collection("PendingOrders")
+    .where("id", "==", req.body.id).where("userId", "==", req.body.uid).get()
+    .then( (response) => {
+        firestore.collection("orders").doc("CompletedAndPending").collection("PendingOrders")
+        .doc(response.docs[0].id).update({ reviewed: true })
+        .then( (response) => console.log("reviewed"))
+        .catch( error => console.log(error));
+    })
+    .catch( error => console.log(error));
+    
+});
 module.exports = router;

@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './css/shoppingcart.css'
 import Footer from './footer';
-import Header from './header'
+import Header from './header';
+import RatingStars from "react-rating-stars-component";
 import { useFetchAll } from './hooks/useFetch';
 
 var Orders = ()=>{
     
     const { data: pendingOrders, isLoading, hasData } = useFetchAll("http://localhost:9000/user", "orders/pending", localStorage.getItem("eden-pa-user-uid"));
-
+    const [ reviewProduct, setReviewProduct] = useState(null);
+    const [ reviewProductStars, setReviewProductStars ] = useState(1);
     // useEffect(() => {
     //     var cardContainer = document.getElementById('items-card-container');
     //     if(pendingOrders != null){
@@ -82,29 +84,13 @@ var Orders = ()=>{
                                                 { !productDetails.hasOffer && <div className="item-price">Price: <strike style={{marginRight: "5px"}}>Rs. { productDetails.price }</strike> Rs. { (productDetails.price * productDetails.quantityNeeded) - (productDetails.price * productDetails.quantityNeeded * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>({ productDetails.discount }% off)</span></div>}
                                                 <div className="in-stock-status">In stock</div>
                                                 <div className="item-category">{ productDetails.category } accessories</div>
-                                                <div className="item-quantity">Quantity: <input onChange = { async (event) => {
-                                                    console.log(event.target.getAttribute("data-item-id"));
-                                                        await fetch("http://localhost:9000/user/cart", {
-                                                        method: "PUT",
-                                                        headers: {
-                                                            "Content-Type": "application/json"
-                                                        },
-                                                        body: JSON.stringify({ userId: localStorage.getItem("eden-pa-user-uid"), itemId: event.target.getAttribute("data-item-id"), quantity: parseInt(event.target.value) })
-                                                        })
-                                                        .then(response => response.json())
-                                                        .then(res => {
-                                                            console.log(res);
-                                                            
-                                                            document.querySelector('.show-notification').innerHTML = (
-                                                                `<div class="alert alert-info alert-dismissible" role="alert">
-                                                                    Please <button style="border: none;, background-color: white;" onclick="window.location.reload()" style="color: blue">reload</button> to reflect changes. Thank you.
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                                                                </div>`
-                                                            );
-                                                        })
-                                                        .catch(error => console.error(error)); 
-                                                        } 
-                                                    } data-item-id = { productDetails.id } min="1" type="number" defaultValue={ `${productDetails.quantityNeeded}` } className="scp-product-detials" /></div>
+                                                <div style={{display: "flex", justifyContent: "space-between"}} >
+                                                    <div className="item-quantity">Quantity: {productDetails.quantityNeeded}</div>
+                                                    { !productDetails.reviewed && <div style={{width: "fit-content"}} data-item-id={ productDetails.id } data-item-url={ productDetails.photoUrl } className="review-btn proceed-to-check-out" onClick={ (event) => {
+                                                        setReviewProduct({ photoUrl: event.target.dataset.itemUrl, id: event.target.dataset.itemId });
+                                                        document.querySelector(".review-modal-container").style.display = "flex";
+                                                    } }>Review item</div> }
+                                                </div>
                                             </div>
                                         </div>
                                     );
@@ -143,6 +129,46 @@ var Orders = ()=>{
                 </div>
             </div>
             <div style={{ position: "fixed", top: "0", width: "100%"}} className="show-notification"></div>
+            <div className="review-modal-container">
+                <div className="review-content">
+                    <div className="review-control review-title">Thanks for shopping with us</div>
+                    <div className="review-control review-subtitle">Please rate and review this product.</div>
+                    <div className="product">
+                        {reviewProduct != null && <img src={ reviewProduct.photoUrl }  className="item-photo" alt="" />}
+                    </div>
+                    <div className="review-control rating-stars">
+                        <RatingStars
+                        value= { 1 }
+                            count={ 5 }
+                            size={ 50 }
+                            activeColor="#2F2F5F"
+                            emptyIcon={<i className="far fa-star"></i>}
+                            onChange= { (newRating) => setReviewProductStars(newRating) }
+                        />
+                    </div>
+                    <textarea placeholder={"Comment if any..."} rows={5} className="review-control review-comment-box form-control">
+                    
+                    </textarea>
+                    <button className="review-control form-control btn btn-danger" onClick={ () => document.querySelector(".review-modal-container").style.display = "none" }>Cancel</button>
+                    <button className="review-control form-control btn btn-success" onClick = { async () => {
+                        await fetch("http://localhost:9000/products/rating", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ 
+                                rating: reviewProductStars, 
+                                id: reviewProduct.id, 
+                                comment: document.querySelector('.review-comment-box').value,
+                                uid: localStorage.getItem("eden-pa-user-uid")
+                         })
+                        })
+                        .then(response => response.json())
+                        .then(response => {
+                            console.log(response);
+                            window.location.reload();
+                        }).catch(error => console.error(error));
+                    }}>Submit Review</button>
+                </div>
+            </div>
             <Footer />
         </div>
     );
