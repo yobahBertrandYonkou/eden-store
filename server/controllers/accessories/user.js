@@ -17,13 +17,16 @@ router.ws("/cart", (ws, req) => {
     ws.on("message", async (msg) => {
         console.log("Cart count")
         console.log(msg)
-        if(JSON.parse(msg).uid == null) return
+        if(JSON.parse(msg).uid == null) return;
 
         await firestore.collection("users")
         .doc(JSON.parse(msg).uid).collection("cart")
         .onSnapshot((docs) => {
-            console.log(docs.docs.length );
-            ws.send(JSON.stringify(docs.docs.length))
+            var count = 0;
+            docs.docs.forEach(doc => {
+                count += doc.data().quantityNeeded;
+            });
+            ws.send(JSON.stringify(count))
         });
     });
 });

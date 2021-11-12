@@ -22,14 +22,17 @@ var ShoppingCart = ()=>{
             localStorage.removeItem("recent-delete");
         }
         if(userCart != null){
-            document.querySelector('.sub-total-title').textContent = `Subtotal (${ userCart.products.length } items)`;
+            
             var subTotal = 0
+            var itemCount = 0
             userCart.products.forEach(item => {
+                itemCount += item.quantityNeeded;
                 if(item.hasOffer) subTotal += (parseFloat(item.offerPrice));
                 else if(item.discount > 0) subTotal += (parseFloat(item.price) * parseFloat(item.quantityNeeded) - (parseFloat(item.price) * parseFloat(item.quantityNeeded) * (parseFloat(item.discount) / 100)));
                 else subTotal += parseFloat(item.price) * parseFloat(item.quantityNeeded);
             });
             subTotal = subTotal.toFixed(2);
+            document.querySelector('.sub-total-title').textContent = `Subtotal (${ itemCount} items)`;
             document.querySelector('.sub-total-value').textContent = `Rs. ${ subTotal }`;
 
             
