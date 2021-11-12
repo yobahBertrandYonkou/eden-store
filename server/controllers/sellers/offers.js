@@ -93,21 +93,32 @@ router.ws('/', (ws, req) => {
 router.get('/stocks', async (req, res) => {
     console.log("offers")
     console.log(req.params);
-    await firestore.collection("products").get()
-    .then(docs => {
-        // console.log(response);
-        var data = [];
+    
+    await firestore.collection("offers").get()
+    .then( async docs => {
+        // existing offer ids
+        var existingProductIds = [];
+        docs.docs.forEach(doc => existingProductIds.push(...doc.data().products));
+        
+        // products that do not have any offer associated with them
 
-        docs.docs.forEach( doc => {
-            data.push(doc.data());
-        });
-        // returning data
-        res.json({ products: data});
+        await firestore.collection("products")
+        .where("id", "not-in", existingProductIds).get()
+        .then(docs => {
+            // console.log(response);
+            var data = [];
 
-    })
-    .catch(error => {
-        console.log(error);
-    });
+            docs.docs.forEach( doc => {
+                data.push(doc.data());
+            });
+
+            // returning data
+            res.json({ products: data});
+
+        }).catch( error => console.log(error));
+
+    }).catch( error => console.log(error));
+    
 });
 
 // all products associated with offers
