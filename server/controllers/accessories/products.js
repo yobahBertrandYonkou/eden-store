@@ -127,6 +127,35 @@ router.post('/search', (req, res) => {
     }
 });
 
+router.get('/filters', async (req, res) => {
+    await firestore.collection("products").get()
+    .then( response => {
+    
+        var minPrice = response.docs[0].data().price;
+        var maxPrice = response.docs[0].data().price;
+        var sellerIds = [];
+        var brands = [];
+        response.docs.forEach( doc => {
+            var price = parseFloat(doc.data().price);
+            if (minPrice > price) minPrice = price;
+            if (maxPrice < price) maxPrice = price;
+            console.log(price)
+            brands.push(doc.data().brand);
+            sellerIds.push(doc.data().sellerId)
+        });
+         
+        res.json({
+            prices: { min: minPrice, max: maxPrice },
+            brands: Array.from(new Set(brands)),
+            rates: { min: 0, max: 5 },
+            sellers: Array.from(new Set(sellerIds)),
+            discounts: { min: 1, max: 100 }
+        });
+
+    })
+    .catch( error => console.log(error));
+});
+
 router.post('/rating', async (req, res) => {
    console.log(req.body);
 

@@ -7,6 +7,7 @@ import Header from './header';
 import { useFetchOne } from './hooks/useFetch';
 import ProductCard from './productcard';
 import RatingStars from 'react-rating-stars-component';
+import { useSelector } from 'react-redux';
 
 var ProdudctPage = ()=>{
     const { id } = useParams();
@@ -15,7 +16,6 @@ var ProdudctPage = ()=>{
     useEffect(() => {
         var thumbnails = document.querySelectorAll('.photo-thumbnail');
         var photoPreview = document.getElementById('photo-preview');
-
         // display thumb to preview container
         thumbnails.forEach(thumbnail => {
             console.log("sdf")

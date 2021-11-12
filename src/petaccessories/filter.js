@@ -1,14 +1,16 @@
 import "./css/filter.css"
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFilters } from "./hooks/useFilters";
 
 var Filter = ()=>{
     // slider value
-    const [price, setPrice] = useState([0, 100]);
+    const [price, setPrice] = useState([0, 1000]);
     const [rate, setRate] = useState([0, 100]);
     const [discount, setDiscount] = useState([0, 100]);
-
+    const { filters } = useFilters();
+    
     var updatePriceSlider = (event, newPrice) => {
         setPrice(newPrice);
         document.querySelector('.low-text').textContent = newPrice[0];
@@ -31,6 +33,20 @@ var Filter = ()=>{
         return price;
     }
 
+    useEffect(() => {
+        if(filters != null){
+            // set default filter values
+            setPrice([filters.prices.min, filters.prices.max]);
+            setRate([filters.rates.min * 20, filters.rates.max * 20]);
+        }
+
+        fetch("http://localhost:9000/products/filters")
+        .then( response => response.json() )
+        .then( filters =>  {
+            console.log(filters);
+        })
+        .catch( error => console.log(error) );
+    },[filters]);
 
     return (
         <div style={{top: 0, position: "sticky"}} className="filter-container">
@@ -38,15 +54,16 @@ var Filter = ()=>{
             <div className="filter-title-bar">
                 <div className="filter-title">Filters</div>
                 <div onClick = { () => {
-                    setDiscount([0, 100]);
-                    setPrice([0, 100]);
+
+                    setDiscount([filters.discounts.min, filters.discounts.max]);
+                    setPrice([filters.prices.min, filters.prices.max]);
                     setRate([0, 100]);
-                    document.querySelector('.low-text').textContent = 0;
-                    document.querySelector('.high-text').textContent = 100;
+                    document.querySelector('.low-text').textContent = filters.prices.min;
+                    document.querySelector('.high-text').textContent = filters.prices.max;
                     document.querySelector('.rate-low').textContent = 0;
                     document.querySelector('.rate-high').textContent = 5;
-                    document.querySelector('.dis-low').textContent = 0;
-                    document.querySelector('.dis-high').textContent = 100;
+                    document.querySelector('.dis-low').textContent = filters.discounts.min;
+                    document.querySelector('.dis-high').textContent = filters.discounts.max;
 
                 }} className="reset-filter">CLEAR ALL</div>
             </div>
@@ -63,64 +80,89 @@ var Filter = ()=>{
             {/* Price filter */}
             <div className="filter-group price-filter">
                 <div className="sub-filter-title">Price (Rs)</div>
-                <div className="price-slider">
-                    <div className="low-text">0</div>
-                    <Box sx={{width: 130 }}>
-                        <Slider
-                            size="small"
-                            getAriaLabel = { () => "Price" } 
-                            value = { price }
-                            onChange = { updatePriceSlider }
-                            getAriaValueText = { valuetext }
-                            valueLabelDisplay = "auto"
-                        />
-                    </Box>
-                    <div className="high-text">100</div>
-                </div>
+                
+                    
+                    { 
+                        filters === null &&  
+
+                        <div className="col-12 text-center">
+                            <div className="spinner-grow text-secondary" role="status"></div>
+                        </div>
+                    }
+                    { filters !== null &&
+                        <div className="price-slider">
+                            <div className="low-text">{ filters.prices.min }</div>
+                                <Box sx={{width: 130 }}>
+                                    <Slider
+                                        min={ filters.prices.min }
+                                        max={ filters.prices.max }
+                                        size="small"
+                                        getAriaLabel = { () => "Price" } 
+                                        value = { price }
+                                        onChange = { updatePriceSlider }
+                                        getAriaValueText = { valuetext }
+                                        valueLabelDisplay = "auto"
+                                    />
+                                </Box>
+                                <div className="high-text">{ filters.prices.max }</div>
+                        </div>
+                    }
+                    
+                
             </div>
 
             {/* Brand filter */}
             <div className="filter-group brand-filter">
                 <div className="sub-filter-title">Brands</div>
-                <div className="brand-options">
-                    <div className="from-group brand-option">
-                        <label htmlFor="brand1">
-                            <input id="brand1" name="brand1" type="checkbox" /> Brand 1
-                        </label>
-                    </div>
-                    <div className="from-group brand-option">
-                        <label htmlFor="brand12">
-                            <input id="brand12" name="brand1" type="checkbox" /> Brand 1
-                        </label>
-                    </div>
-                    <div className="from-group brand-option">
-                        <label htmlFor="brand13">
-                            <input id="brand13" name="brand1" type="checkbox" /> Brand 1
-                        </label>
-                    </div>
-                    <div className="from-group brand-option">
-                        <label htmlFor="brand14">
-                            <input id="brand14" name="brand1" type="checkbox" /> Brand 1
-                        </label>
-                    </div>
-                </div>
+                    { 
+                        filters === null &&  
+                        <div className="col-12 text-center">
+                            <div className="spinner-grow text-secondary" role="status"></div>
+                        </div>
+                    }
+                    { filters !== null &&
+                        <div className="brand-options">
+                            {
+                                filters.brands.map( (brand) => {
+                                    return (
+                                        <div className="from-group brand-option">
+                                            <label htmlFor="brand1">
+                                                <input id={ brand } name= { brand } type="checkbox" /> {' '}
+                                                { brand.substring(0,1).toUpperCase() }{ brand.slice(1, ) }
+                                            </label>
+                                        </div>
+                                    );
+                                })
+                            }
+                        </div>
+                    }
+                
             </div>
             {/* Rating filter */}
             <div className="filter-group rating-filter">
                 <div className="sub-filter-title">Ratings</div>
                 <div className="rating-slider">
                     <div className="low-text rate-low">0</div>
-                    <Box sx={{width: 130 }}>
-                        <Slider 
-                            size="small"
-                            getAriaLabel = { () => "Price" } 
-                            step = { 20 }
-                            value = { rate }
-                            onChange = { updateRateSlider }
-                            getAriaValueText = { valuetext }
-                            valueLabelDisplay = "auto"
-                        />
-                    </Box>
+                    { 
+                        filters === null &&  
+
+                        <div className="col-12 text-center">
+                            <div className="spinner-grow text-secondary" role="status"></div>
+                        </div>
+                    }
+                    { filters !== null &&
+                        <Box sx={{width: 130 }}>
+                            <Slider 
+                                size="small"
+                                getAriaLabel = { () => "Price" } 
+                                step = { 20 }
+                                value = { rate }
+                                onChange = { updateRateSlider }
+                                getAriaValueText = { valuetext }
+                                valueLabelDisplay = "auto"
+                            />
+                        </Box>
+                    }
                     <div className="high-text rate-high">5</div>
                 </div>
             </div>
@@ -128,26 +170,18 @@ var Filter = ()=>{
             <div className="filter-group brand-filter">
                 <div className="sub-filter-title">Sellers</div>
                 <div className="brand-options">
-                    <div className="from-group brand-option">
-                        <label htmlFor="brand1">
-                            <input id="brand1" name="brand1" type="checkbox" /> Seller 1
-                        </label>
-                    </div>
-                    <div className="from-group brand-option">
-                        <label htmlFor="brand12">
-                            <input id="brand12" name="brand1" type="checkbox" /> Seller 1
-                        </label>
-                    </div>
-                    <div className="from-group brand-option">
-                        <label htmlFor="brand13">
-                            <input id="brand13" name="brand1" type="checkbox" /> Seller 1
-                        </label>
-                    </div>
-                    <div className="from-group brand-option">
-                        <label htmlFor="brand14">
-                            <input id="brand14" name="brand1" type="checkbox" /> Seller 1
-                        </label>
-                    </div>
+                    { filters !== null &&
+                        filters.sellers.map( (seller) => {
+                            return (
+                                <div className="from-group brand-option">
+                                    <label htmlFor="brand1">
+                                        <input id={ seller } name= { seller } type="checkbox" /> {' '}
+                                        { seller.substring(0, 10) }
+                                    </label>
+                                </div>
+                            );
+                        })
+                    }
                 </div>
             </div>
             {/* Discount filter  */}
@@ -155,16 +189,28 @@ var Filter = ()=>{
                 <div className="sub-filter-title">Discount (%)</div>
                 <div className="discount-slider">
                     <div className="low-text dis-low">0</div>
-                    <Box sx={{width: 130 }}>
-                        <Slider 
-                            size="small"
-                            getAriaLabel = { () => "Price" } 
-                            value = { discount }
-                            onChange = { updateDiscountSlider }
-                            getAriaValueText = { valuetext }
-                            valueLabelDisplay = "auto"
-                        />
-                    </Box>
+                    { 
+                        filters === null &&  
+
+                        <div className="col-12 text-center">
+                            <div className="spinner-grow text-secondary" role="status"></div>
+                        </div>
+                    }
+                    { filters !== null &&
+                        <Box sx={{width: 130 }}>
+                            <Slider 
+                                min={ filters.discounts.min }
+                                max={ filters.discounts.max }
+                                size="small"
+                                getAriaLabel = { () => "Price" } 
+                                value = { discount }
+                                onChange = { updateDiscountSlider }
+                                getAriaValueText = { valuetext }
+                                valueLabelDisplay = "auto"
+                            />
+                        </Box>
+                    }
+                    
                     <div className="high-text dis-high">100</div>
                 </div>
             </div>
