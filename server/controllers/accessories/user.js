@@ -41,33 +41,59 @@ router.post('/cart', async (req, res) => {
         objectIDs: [req.body.id]
     });
 
-    console.log("Event registered");
-
-    console.log(data)
-    console.log("Adding to cart");
-    await firestore.collection("products")
+    // increment quantity if user already has it in cart
+    console.log("Started");
+    await firestore.collection("users")
+    .doc(req.body.userId).collection("cart")
     .where("id", "==", req.body.id).get()
-    .then( async docs => {
-        var data = {
-            ...docs.docs[0].data(),
-            ...req.body
+    .then( async response => { 
+        console.log("Checking");
+        if(response.docs.length > 0){console.log("exists");
+            var newQuantity = response.docs[0].data().quantityNeeded;
+            newQuantity += req.body.quantityNeeded;
+
+            // update quantity needed
+            await firestore.collection("users")
+            .doc(req.body.userId).collection("cart")
+            .doc(response.docs[0].id).update({ quantityNeeded: newQuantity })
+            .then(  docs => {
+                console.log("Updated");
+                res.json({ status: "updated" });
+            }).catch( error => console.error(error));;
+        }else{
+            console.log("new item");
+            // make new entry
+            await firestore.collection("products")
+            .where("id", "==", req.body.id).get()
+            .then( async docs => {
+                var data = {
+                    ...docs.docs[0].data(),
+                    ...req.body
+                }
+                data['photoUrl'] = data.photoUrls['photo-1'];
+                delete data.photoUrls;
+                data['createdOn'] = new Date();
+                data['updatedOn'] = new Date();
+                data['quantityNeeded'] = req.body.quantityNeeded;
+                
+                await firestore.collection("users")
+                .doc(req.body.userId).collection("cart")
+                .add(data)
+                .then( response =>{
+                    console.log("added to card")
+                    res.json({ status: "added" });
+                })
+                .catch( error => console.error(error));
+            })
+            .catch( error => console.error(error));
         }
-        data['photoUrl'] = data.photoUrls['photo-1'];
-        delete data.photoUrls;
-        data['createdOn'] = new Date();
-        data['updatedOn'] = new Date();
-        data['quantityNeeded'] = req.body.quantityNeeded;
-        
-        await firestore.collection("users")
-        .doc(req.body.userId).collection("cart")
-        .add(data)
-        .then( response =>{
-            console.log("added to card")
-             res.json({ status: "item added" });
-        })
-        .catch( error => console.error(error));
     })
     .catch( error => console.error(error));
+
+    console.log("Event registered");
+
+    console.log("Adding to cart");
+    
     
 });
 

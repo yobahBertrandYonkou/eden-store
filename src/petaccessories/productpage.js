@@ -6,6 +6,7 @@ import Footer from './footer';
 import Header from './header';
 import { useFetchOne } from './hooks/useFetch';
 import ProductCard from './productcard';
+import RatingStars from 'react-rating-stars-component';
 
 var ProdudctPage = ()=>{
     const { id } = useParams();
@@ -85,9 +86,15 @@ var ProdudctPage = ()=>{
                     .then(response => response.json())
                     .then(res => {
                         console.log(res);
+                        var status;
+                        if(res.status == "added"){
+                            status = "added to";
+                        }else{
+                            status = "updated in";
+                        }
                         document.querySelector('.product-overview-container').insertAdjacentHTML('afterbegin',
                             `<div class="alert alert-success alert-dismissible" role="alert">
-                                ${ data.name.substring(0, 25) }... successfully added to cart.
+                                ${ data.name.substring(0, 25) }... successfully ${ status } cart.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                             </div>`
                         );
@@ -130,7 +137,17 @@ var ProdudctPage = ()=>{
                         </div>
                         <div className="col-lg-4 col-xl-6 product-details-container">
                             <div className="product-detail-item product-title">{ !isLoading && data.name }</div>
-                            <div className="product-detail-item product-rating">Rating: </div>
+                            <div style={{display: 'flex', alignItems: "center"}} className="product-detail-item product-rating">Rating: <span style={{width: "5px"}}></span> 
+                            {<RatingStars
+                                value= { parseInt(data.topRating) }
+                                size={24}
+                                count={ 5 }
+                                color="#d1d1d5"
+                                activeColor="orange"
+                                edit= {false}
+                                emptyIcon={<i className="far fa-star"></i>}
+                                /> }
+                            </div>
 
 
                             {/* offer details */}
