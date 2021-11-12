@@ -126,7 +126,7 @@ var Filter = ()=>{
                                 filters.brands.map( (brand) => {
                                     return (
                                         <div className="from-group brand-option">
-                                            <label htmlFor="brand1">
+                                            <label htmlFor={ brand }>
                                                 <input id={ brand } name= { brand } type="checkbox" /> {' '}
                                                 { brand.substring(0,1).toUpperCase() }{ brand.slice(1, ) }
                                             </label>
@@ -174,7 +174,7 @@ var Filter = ()=>{
                         filters.sellers.map( (seller) => {
                             return (
                                 <div className="from-group brand-option">
-                                    <label htmlFor="brand1">
+                                    <label htmlFor={ seller }>
                                         <input id={ seller } name= { seller } type="checkbox" /> {' '}
                                         { seller.substring(0, 10) }
                                     </label>
