@@ -28,7 +28,7 @@ var Dashboard= ()=>{
         .then( response => response.json())
         .then( orders => {
             console.log(orders);
-            if(orders.orders.length == 0){
+            if(orders.orders.length === 0){
                 document.querySelector(".recent-orders").insertAdjacentHTML("afterbegin", 
                 `<div style="display: flex; justify-content: center; align-items: center;" className="recent-item">No Orders</div>`)
             }
@@ -78,7 +78,7 @@ var Dashboard= ()=>{
             localStorage.setItem("side-bar-state", "false");
         }
         switcher.onclick = ()=>{
-            if(sideNav.style.left == "-320px"){
+            if(sideNav.style.left === "-320px"){
                 showSideNav();
             }else{
                 hideSideNav();
@@ -95,7 +95,7 @@ var Dashboard= ()=>{
                 localStorage.setItem("side-bar-state", "true");
             }
 
-            if(localStorage.getItem("side-bar-state") == "true" && window.innerWidth > 1200){
+            if(localStorage.getItem("side-bar-state") === "true" && window.innerWidth > 1200){
                 showSideNav();
             }else{
                 hideSideNav();
@@ -104,10 +104,10 @@ var Dashboard= ()=>{
 
         window.onresize = ()=>{
             console.log(sideNav.style.left)
-            if (window.innerWidth > 1200 && sideNav.style.left == "0px"){
+            if (window.innerWidth > 1200 && sideNav.style.left === "0px"){
                 bodyContainer.style.marginLeft = "280px";
                 closeDrawer.style.display = "none";
-            }else if(window.innerWidth < 1200 && sideNav.style.left == "0px"){
+            }else if(window.innerWidth < 1200 && sideNav.style.left === "0px"){
                 bodyContainer.style.marginLeft = "0px";
                 closeDrawer.style.display = "block";
             }
@@ -126,7 +126,7 @@ var Dashboard= ()=>{
                 <div className="side-nav-link stocks"><a href="/seller/stocks"> <i className="fa fa-layer-group"></i> Stocks</a></div>
                 <div className="side-nav-link offers"><a href="/seller/offers"> <i className="far fa-gifts"></i> Offers</a></div>
                 <div className="side-nav-link orders"><a href="/seller/orders"> <i className="fa fa-truck"></i> Orders</a></div>
-                <div className="side-nav-link reports"><a href=""> <i className="fa fa-chart-line"></i> Reports</a></div>
+                <div className="side-nav-link reports"><a href="/seller/reports"> <i className="fa fa-chart-line"></i> Reports</a></div>
             </div>
             </div>
             <div id="body-container">

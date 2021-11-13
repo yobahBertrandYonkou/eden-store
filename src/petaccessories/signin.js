@@ -36,7 +36,7 @@ var SignIn = ()=>{
                         .then( response => {
                             console.log(response);
 
-                            if (response.status != 200){
+                            if (response.status !== 200){
                                 toast.textContent = response.message.split("_").join(" ");
                                 toast.style.display = "block";
                                 setTimeout( () => toast.style.display = "none", 5000);

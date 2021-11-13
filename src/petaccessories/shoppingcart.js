@@ -11,7 +11,7 @@ var ShoppingCart = ()=>{
 
     useEffect(() => {
         
-        if(localStorage.getItem("recent-action") == "delete"){
+        if(localStorage.getItem("recent-action") === "delete"){
             document.querySelector('.show-notification').innerHTML = (
                 `<div class="alert alert-success alert-dismissible" role="alert">
                     ${localStorage.getItem("recent-delete")} has been successfully deleted.
@@ -101,7 +101,7 @@ var ShoppingCart = ()=>{
                                 !isLoading && hasData &&
                                 userCart.products.map((productDetails) => {
                                     return (
-                                        <div className="col-12 cart-item-card" id={ `card-${ productDetails.id }`}>
+                                        <div key={ productDetails.id } className="col-12 cart-item-card" id={ `card-${ productDetails.id }`}>
                                             <img src={ productDetails.photoUrl }  className="item-photo" alt={ productDetails.id } />
                                             <div className="item-details">
                                                 <div className="item-title">{ productDetails.name } ({ productDetails.quantity } { productDetails.unit })</div>
@@ -168,15 +168,15 @@ var ShoppingCart = ()=>{
                         
                         {/* no data found */}
                         { 
-                            !isLoading && userCart.related.length == 0  && 
+                            !isLoading && userCart.related.length === 0  && 
                             <div style={{ fontWeight: 'lighter'}} className="col-12 text-center">
                                 No related items.
                             </div>
                         }
                         {/* outputing accessores from useFetch */}
-                        { !isLoading && userCart.related.length != 0 && userCart.related.map((productDetails) => {
+                        { !isLoading && userCart.related.length !== 0 && userCart.related.map((productDetails) => {
                             return (
-                                <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                <div key={ productDetails.id } className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                     <ProductCard details = { productDetails } />
                                 </div>
                             );

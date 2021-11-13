@@ -17,7 +17,6 @@ import offers4 from "./images/offers4.png"
 import offers2 from "./images/offers2.png"
 import offers1 from "./images/offers1.png"
 import howItsDone from "./images/how-its-done.png"
-import { useLocation, useParams } from "react-router";
 import querystring from "query-string";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -185,7 +184,7 @@ var HomePage = ()=>{
                                 !isLoading && hasAccessories &&
                                 accessories.products.map((productDetails) => {
                                     return (
-                                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                        <div key={ productDetails.id } className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                             <ProductCard details = { productDetails } />
                                         </div>
                                     );
@@ -213,7 +212,7 @@ var HomePage = ()=>{
                                 !isGroomingLoading && hasGrooming &&
                                 grooming.products.map((productDetails) => {
                                     return (
-                                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 grooming-card-container">
+                                        <div key={ productDetails.id } className="col-6 col-md-4 col-lg-3 col-xl-2 grooming-card-container">
                                             <ProductCard details = { productDetails } />
                                         </div>
                                     );

@@ -24,7 +24,7 @@ var SignUp = ()=>{
                         toast.style.display = "block";
                         toast.textContent = "Password is required";
                         setTimeout( () => toast.style.display = "none", 2000);
-                    }else if(store.value.trim() == "" || contact.value.trim() == ""){
+                    }else if(store.value.trim() === "" || contact.value.trim() === ""){
                         toast.style.display = "block";
                         toast.textContent = "All fields required";
                         setTimeout( () => toast.style.display = "none", 2000);
@@ -43,7 +43,7 @@ var SignUp = ()=>{
                         .then( response => response.json())
                         .then( response => {
                             console.log(response);
-                            if (response.status != 200){
+                            if (response.status !== 200){
                                 toast.textContent = response.message.split("_").join(" ");
                                 toast.style.display = "block";
                                 setTimeout( () => toast.style.display = "none", 5000);

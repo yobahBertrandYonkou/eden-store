@@ -38,7 +38,7 @@ var Offers = () => {
     
     useEffect(() => {  
         var availableOffers = document.querySelector(".available-offers");
-        if (offerList != null && offerList.products.length != 0){
+        if (offerList != null && offerList.products.length !== 0){
             availableOffers.innerHTML = "";
             offerList.products.forEach( offer => {
                 availableOffers.insertAdjacentHTML("beforeend", 
@@ -89,7 +89,7 @@ var Offers = () => {
                             {/* outputing accessores from useFetch */}
                             { !isOfferLoading && offerHasData && offerProductList.products.map((productDetails) => {
                                 return (
-                                    <div style={{ marginBottom: "20px"}} className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                    <div key={ productDetails.id } style={{ marginBottom: "20px"}} className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                         <a className="card" href={`/accessories/offers/products/${ productDetails.id }`}>
                                             <div style={{height: "200px", display: "flex", justifyContent: "center"}} className="card-img-top">
                                             <img height="200px" width="80%" style={{ objectFit: "contain"}} src={ productDetails.photoUrls['photo-1'] } alt="" />
@@ -99,27 +99,27 @@ var Offers = () => {
                                                 <div style={ { fontSize: "12px", backgroundColor: "orange", textAlign: "center", marginBottom: "10px", color: "black"} } className="offer-name text-black">{ productDetails.offer.title } </div>
                                         
                                                 { 
-                                                    Object.keys(productDetails.offer.condition)[0] == "cond-1" && 
-                                                    productDetails.offer.discountType == "percentage-of" &&
+                                                    Object.keys(productDetails.offer.condition)[0] === "cond-1" && 
+                                                    productDetails.offer.discountType === "percentage-of" &&
                                                     <div style={{color: "blue"}} className="text-black text-center" > Buy at least { productDetails.offer.quantity } and get { productDetails.offer.discountValue }% off the total amount.</div>
                                                     
                                                 }
                                                 { 
-                                                    Object.keys(productDetails.offer.condition)[0] == "cond-1" && 
-                                                    productDetails.offer.discountType == "fixed-price" &&
+                                                    Object.keys(productDetails.offer.condition)[0] === "cond-1" && 
+                                                    productDetails.offer.discountType === "fixed-price" &&
                                                     <div style={{color: "blue"}} className="text-black text-center" > Buy at least { productDetails.offer.quantity } and get Rs. { productDetails.offer.discountValue } off your total amount.</div>
                                                     
                                                 }
                                                 {
                                                 
-                                                    Object.keys(productDetails.offer.condition)[0] == "cond-2" && 
-                                                    productDetails.offer.discountType == "percentage-of" &&
+                                                    Object.keys(productDetails.offer.condition)[0] === "cond-2" && 
+                                                    productDetails.offer.discountType === "percentage-of" &&
                                                     <div style={{color: "blue"}} className="text-black text-center" > Get Rs. { productDetails.offer.discountValue }% off each purchase.</div>
                                                     
                                                 }
                                                 { 
-                                                    Object.keys(productDetails.offer.condition)[0] == "cond-2" && 
-                                                    productDetails.offer.discountType == "fixed-price" &&
+                                                    Object.keys(productDetails.offer.condition)[0] === "cond-2" && 
+                                                    productDetails.offer.discountType === "fixed-price" &&
                                                     <div style={{color: "blue"}} className="text-black text-center" > Get Rs. { productDetails.offer.discountValue } off each purchase.</div>
                                                     
                                                 }

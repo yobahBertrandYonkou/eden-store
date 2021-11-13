@@ -16,7 +16,7 @@ const useFetchAll = (url, category, type) => {
                 console.log(data);
 
                 // no data
-                if (data.products.length == 0) {
+                if (data.products.length === 0) {
                     setHasData(false);
                 }
 
@@ -26,7 +26,7 @@ const useFetchAll = (url, category, type) => {
             })
             .catch(error => console.error(error));
         })();
-    }, []);
+    }, [category, type, url]);
     return { data, isLoading, hasData }
 }
 
@@ -62,7 +62,7 @@ const useFetchOne = (url, id, userId) => {
             })
             .catch(error => console.error(error));
         })();
-    }, []);
+    }, [id, url, userId]);
     return { data, related, isLoading , offer, hasOffer}
 }
 

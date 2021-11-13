@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './css/checkout.css'
 import Footer from './footer';
 import Header from './header';
@@ -11,11 +11,10 @@ var CheckOut = ()=>{
     
 
     useEffect( () => {
-        const perShipmentRate = 50;
         const perKgRate = 25;
         var discount = 0, totalAmount = 0, shipping = 0;
 
-        if(localStorage.getItem("recent-action") == "delete"){
+        if(localStorage.getItem("recent-action") === "delete"){
             document.querySelector('.show-notification').innerHTML = (
                 `<div class="alert alert-success alert-dismissible" role="alert">
                     ${localStorage.getItem("recent-delete")} has been successfully deleted.
@@ -143,7 +142,7 @@ var CheckOut = ()=>{
             <Header />
             <div className="checkout-page-content">
                 <div className="container">
-                    <div className="scp-title">Checking out { !isLoading && hasData && userCart.products.length } { isLoading || !hasData && 0 } items</div>
+                    <div className="scp-title">Checking out { !isLoading && hasData && userCart.products.length } { isLoading || (!hasData && 0 )} items</div>
                     <div className="line scp-line"></div>
                     <div className="row">
                         <div className="col-lg-8 section-container">
@@ -222,7 +221,7 @@ var CheckOut = ()=>{
                                 userCart.products.map((productDetails) => {
                                     
                                     return (
-                                        <div className="col-12 cart-item-card" id={ `card-${ productDetails.id }`}>
+                                        <div key={ productDetails.id } className="col-12 cart-item-card" id={ `card-${ productDetails.id }`}>
                                             <img src={ productDetails.photoUrl }  className="item-photo" alt={ productDetails.id } />
                                             <div className="item-details">
                                                 <div className="item-title">{ productDetails.name } ({ productDetails.quantity } { productDetails.unit })</div>

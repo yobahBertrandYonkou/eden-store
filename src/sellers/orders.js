@@ -14,7 +14,6 @@ var Orders= ()=>{
         var stkFrom = document.getElementById('from-date');
         var stkTo = document.getElementById('to-date');
         var stkSearch = document.getElementById('stk-search');
-        var currentAction = null;
         var categories = document.querySelectorAll('.category-item');
         var catView = document.getElementById("category");
 

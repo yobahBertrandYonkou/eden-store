@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './css/shoppingcart.css'
 import Footer from './footer';
 import Header from './header';
@@ -75,7 +75,7 @@ var Orders = ()=>{
                                 pendingOrders.products.map((productDetails) => {
                                     
                                     return (
-                                        <div className="col-12 cart-item-card" id={ `card-${ productDetails.id }`}>
+                                        <div key={ productDetails.id } className="col-12 cart-item-card" id={ `card-${ productDetails.id }`}>
                                             <img src={ productDetails.photoUrl }  className="item-photo" alt={ productDetails.id } />
                                             <div className="item-details">
                                                 <div className="item-title">{ productDetails.name } ({ productDetails.quantity } { productDetails.unit })</div>

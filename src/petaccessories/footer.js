@@ -11,20 +11,20 @@ var Footer = ()=>{
                     </div>
                     <div className="footer-section col-lg-4">
                         <div className="section-title">Quick Links</div>
-                        <a href="#" className="home footer-links">Home</a>
-                        <a href="#" className="cats footer-links">Cats</a>
-                        <a href="#" className="dogs footer-links">Dogs</a>
-                        <a href="#" className="birds footer-links">Birds</a>
-                        <a href="#" className="hamsters footer-links">Hamsters</a>
+                        <a href="/accessories/home" className="home footer-links">Home</a>
+                        <a href="/accessories/cats" className="cats footer-links">Cats</a>
+                        <a href="/accessories/dogs" className="dogs footer-links">Dogs</a>
+                        <a href="/accessories/birds" className="birds footer-links">Birds</a>
+                        <a href="/accessories/hamsters" className="hamsters footer-links">Hamsters</a>
                     </div>
                     <div className="footer-section col-lg-4">
                         <div className="section-title">Legal</div>
-                        <a className="footer-links" href="#">Terms and Conditions</a>
-                        <a className="footer-links" href="#">Privacy Policy</a>
+                        <a className="footer-links" href={ window.location}>Terms and Conditions</a>
+                        <a className="footer-links" href={ window.location}>Privacy Policy</a>
                     </div>
                     <div className="col-sm-12 extra-info">
                         <div className="copy-write">© 2021 EDEN. All rights reserved.</div>
-                        <a href="#" className="back-to-top footer-links">Back to top</a>
+                        <a href={ window.location} className="back-to-top footer-links">Back to top</a>
                     </div>
                 </div>
             </div>

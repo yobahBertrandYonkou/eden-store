@@ -1,13 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import './css/productcard.css'
 import RatingStars from "react-rating-stars-component";
 
 var ProductCard = ({ details })=>{
-    var dots = "";
-    if (details.name.length > 25){
-        dots = "...";
-    }
-
     
     useEffect(() => {
         var addToCart = document.querySelectorAll('.pdt-cart-btn');

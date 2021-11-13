@@ -764,11 +764,11 @@ var Stocks= ()=>{
                                             <ul onMouseLeave = { () => {
                                                 document.querySelector(".dpd-list").style.display = "none";
                                             }} className="dpd-list">
-                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="all" value="all" /> <label htmlFor="all"> All Categories</label></li>
-                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="cats" value="cats" /> <label htmlFor="cats"> Cats</label></li>
-                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="dogs" value="dogs" /> <label htmlFor="dogs"> Dogs</label></li>
-                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="birds" value="birds" /> <label htmlFor="birds"> Birds</label></li>
-                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" id="hamsters" value="hamsters" /> <label htmlFor="hamsters"> Hamsters</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" key="all" id="all" value="all" /> <label htmlFor="all"> All Categories</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" key="cats" id="cats" value="cats" /> <label htmlFor="cats"> Cats</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" key="dogs" id="dogs" value="dogs" /> <label htmlFor="dogs"> Dogs</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" key="birds" id="birds" value="birds" /> <label htmlFor="birds"> Birds</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="category-item" key="hamsters" id="hamsters" value="hamsters" /> <label htmlFor="hamsters"> Hamsters</label></li>
                                             </ul>
                                             {/* <label htmlFor="category">Category</label>
                                             <select defaultValue="all" name="category" id="category" className="form-control" required>

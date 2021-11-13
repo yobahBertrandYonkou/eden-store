@@ -71,7 +71,7 @@ var Filter = ()=>{
             <hr style={{ margin: "20px 20px 0 20px" }} />
 
             {/* offers */}
-            {window.location.pathname == '/accessories/offers' && <div className="filter-group brand-filter">
+            {window.location.pathname === '/accessories/offers' && <div className="filter-group brand-filter">
                 <div className="sub-filter-title">Available Offers</div>
                 <div className="brand-options available-offers">
                     No Offers
@@ -125,7 +125,7 @@ var Filter = ()=>{
                             {
                                 filters.brands.map( (brand) => {
                                     return (
-                                        <div className="from-group brand-option">
+                                        <div key={ brand } className="from-group brand-option">
                                             <label htmlFor={ brand }>
                                                 <input className="brand-controls" id={ brand } name= { brand } type="checkbox" /> {' '}
                                                 { brand.substring(0,1).toUpperCase() }{ brand.slice(1, ) }
@@ -173,8 +173,8 @@ var Filter = ()=>{
                     { filters !== null &&
                         filters.sellers.map( (seller) => {
                             return (
-                                <div className="from-group brand-option">
-                                    <label htmlFor={ seller }>
+                                <div key={ seller } className="from-group brand-option">
+                                    <label key={ seller } htmlFor={ seller }>
                                         <input className="seller-controls" id={ seller } name= { seller } type="checkbox" /> {' '}
                                         { seller.substring(0, 10) }
                                     </label>

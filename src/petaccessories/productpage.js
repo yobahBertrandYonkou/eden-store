@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import './css/productpage.css'
 import Footer from './footer';
@@ -7,7 +7,6 @@ import Header from './header';
 import { useFetchOne } from './hooks/useFetch';
 import ProductCard from './productcard';
 import RatingStars from 'react-rating-stars-component';
-import { useSelector } from 'react-redux';
 
 var ProdudctPage = ()=>{
     const { id } = useParams();
@@ -103,7 +102,7 @@ var ProdudctPage = ()=>{
                 }
             }
         }, 1000);
-    }, [data, offer]);
+    }, [data, offer, hasOffer]);
 
     return(
        data && <div className="product-page-container">
@@ -191,7 +190,7 @@ var ProdudctPage = ()=>{
                             <div className="product-detail-item product-quantity">Weight: { !isLoading && data.quantity } { !isLoading && data.unit }</div>
                             <div className="product-detail-item available-product-colors">Color: { !isLoading && data.color }</div>
                             <div className="product-detail-item">
-                                Quantity: <input className="onea-pdt-qty" style={{ width: "100px" }} min="1" defaultValue="1" id="pdt-quantity" type="number" name="" id=""/>
+                                Quantity: <input className="onea-pdt-qty" style={{ width: "100px" }} min="1" defaultValue="1" id="pdt-quantity" type="number" name="" />
                             </div>
                             <div className="product-detail-item buy-add-to-cart-btns">
                                 <div className="product-add-to-cart-btn">Add to cart</div>
@@ -266,7 +265,7 @@ var ProdudctPage = ()=>{
                                 !isLoading && related.length != 0 &&
                                 related.map((productDetails) => {
                                     return (
-                                        <div className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                        <div key={ productDetails.id } className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                             <ProductCard details = { productDetails } />
                                         </div>
                                     );

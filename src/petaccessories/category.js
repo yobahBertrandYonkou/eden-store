@@ -1,5 +1,4 @@
 import './css/category.css'
-import CategoryPhoto from './images/product1.jpg'
 var CategoryCard = ( { name, photoURL })=>{
     return (
         <div style={{ boxShadow: "none"}} className="category-container">

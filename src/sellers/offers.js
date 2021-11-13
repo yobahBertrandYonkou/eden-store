@@ -50,7 +50,7 @@ var Offers= ()=>{
             productList.products.forEach( product => {
                 list.insertAdjacentHTML("beforeend", 
                 `
-                    <li class = "dpd-item" ><input data-item-name=${ product.name } type="checkbox" class="product-item" id="${ product.id }" value="${ product.id }" /> <label for="${ product.id }"> ${ product.name }</label></li>
+                    <li class = "dpd-item" ><input data-item-name=${ product.name } type="checkbox" class="product-item" key="${ product.id }" id="${ product.id }" value="${ product.id }" /> <label for="${ product.id }"> ${ product.name }</label></li>
                 `);
             });
         }
@@ -812,7 +812,7 @@ var Offers= ()=>{
                                             <ul onMouseLeave = { () => {
                                                 document.querySelector(".dpd-list").style.display = "none";
                                             }} className="dpd-list">
-                                                <li className = "dpd-item" ><input type="checkbox" className="product-item" id="all" value="all" /> <label htmlFor="all"> All Products</label></li>
+                                                <li className = "dpd-item" ><input type="checkbox" className="product-item" key="all" id="all" value="all" /> <label htmlFor="all"> All Products</label></li>
                                                 <div className="temp-list"></div>
                                             </ul>
                                         </div>

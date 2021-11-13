@@ -24,7 +24,7 @@ var Header = ()=>{
         .then( response => response.json() )
         .then( result => {
             var resultCardHolder = document.querySelector(".search-result");
-            if(searchBox.value.trim() == ""){
+            if(searchBox.value.trim() === ""){
                 resultCardHolder.innerHTML = "";
                 document.getElementById("number-of-hits").textContent = "0";
                 return
@@ -32,12 +32,12 @@ var Header = ()=>{
             console.log(result.result);
             document.getElementById("number-of-hits").textContent = result.result.nbHits;
             
-            if (result.result.nbHits == 0){
+            if (result.result.nbHits === 0){
                 resultCardHolder.textContent = "No items found";
             }else{
                 resultCardHolder.innerHTML = "";
                 result.result.hits.forEach( hit => {
-                    if (hit.name == undefined){
+                    if (hit.name === undefined){
                         resultCardHolder.insertAdjacentHTML('beforeend', 
                         `
                         <div style="margin-bottom: 20px" class="col-xs-6 col-sm-5 col-md-4 col-lg-4 col-xl-3">
@@ -150,7 +150,7 @@ var Header = ()=>{
                         <input onFocus = { () => {
                             var searchResult = document.querySelector(".search-result");
                             console.log(document.querySelector(".search-result-container").style.display)
-                            if (document.querySelector(".search-result-container").style.display != "block"){
+                            if (document.querySelector(".search-result-container").style.display !== "block"){
                                 searchResult.innerHTML= "";
                                 document.querySelector(".search-result-container").style.display = "block";
                             }
