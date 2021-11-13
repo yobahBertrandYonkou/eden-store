@@ -3,6 +3,7 @@ import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
 import { useEffect, useState } from "react";
 import { useFilters } from "./hooks/useFilters";
+import { useDispatch } from "react-redux";
 
 var Filter = ()=>{
     // slider value
@@ -10,6 +11,7 @@ var Filter = ()=>{
     const [rate, setRate] = useState([0, 100]);
     const [discount, setDiscount] = useState([0, 100]);
     const { filters } = useFilters();
+    var dispatch = useDispatch();
     
     var updatePriceSlider = (event, newPrice) => {
         setPrice(newPrice);
@@ -43,7 +45,7 @@ var Filter = ()=>{
         fetch("http://localhost:9000/products/filters")
         .then( response => response.json() )
         .then( filters =>  {
-            console.log(filters);
+            // console.log(filters);
         })
         .catch( error => console.log(error) );
     },[filters]);
@@ -54,7 +56,6 @@ var Filter = ()=>{
             <div className="filter-title-bar">
                 <div className="filter-title">Filters</div>
                 <div onClick = { () => {
-
                     setDiscount([filters.discounts.min, filters.discounts.max]);
                     setPrice([filters.prices.min, filters.prices.max]);
                     setRate([0, 100]);
@@ -80,7 +81,6 @@ var Filter = ()=>{
             {/* Price filter */}
             <div className="filter-group price-filter">
                 <div className="sub-filter-title">Price (Rs)</div>
-                
                     
                     { 
                         filters === null &&  
@@ -127,7 +127,7 @@ var Filter = ()=>{
                                     return (
                                         <div className="from-group brand-option">
                                             <label htmlFor={ brand }>
-                                                <input id={ brand } name= { brand } type="checkbox" /> {' '}
+                                                <input className="brand-controls" id={ brand } name= { brand } type="checkbox" /> {' '}
                                                 { brand.substring(0,1).toUpperCase() }{ brand.slice(1, ) }
                                             </label>
                                         </div>
@@ -175,7 +175,7 @@ var Filter = ()=>{
                             return (
                                 <div className="from-group brand-option">
                                     <label htmlFor={ seller }>
-                                        <input id={ seller } name= { seller } type="checkbox" /> {' '}
+                                        <input className="seller-controls" id={ seller } name= { seller } type="checkbox" /> {' '}
                                         { seller.substring(0, 10) }
                                     </label>
                                 </div>
@@ -213,8 +213,29 @@ var Filter = ()=>{
                     
                     <div className="high-text dis-high">100</div>
                 </div>
-            </div>
+                <div onClick = { () => {
 
+                    // get filters
+                    var brandFilter = Array.from(document.querySelectorAll(".brand-controls")).filter( (brand) => brand.checked ).map( brand => brand.id);
+                    var sellerFilter = Array.from(document.querySelectorAll(".seller-controls")).filter( (seller) => seller.checked ).map( seller => seller.id);
+                    var offerFilter = Array.from(document.querySelectorAll(".offer-controls")).filter( (offer) => offer.checked ).map( offer => offer.id);
+                    var filters = {};
+
+                    // setting check boxes
+                    if( brandFilter.length !== 0 )  filters['brands'] = brandFilter;
+                    if( sellerFilter.length !== 0 )  filters['sellers'] = sellerFilter;
+                    if( offerFilter.length !== 0 )  filters['offers'] = offerFilter;
+
+                    // setting ranges
+                    filters['prices'] = price;
+                    filters['rates'] = [rate[0] / 20, rate[1] / 20];
+                    filters['discounts'] = discount;
+
+                    // disptaching action
+                    dispatch({ type: "FILTER", filters: filters });
+
+                } } className="reset-filter">Filter</div>
+            </div>
         </div>
     );
 }

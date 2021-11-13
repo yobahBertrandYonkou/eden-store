@@ -11,14 +11,15 @@ const FILTER_ALL = "FILTER_ALL";
 var filter = (state={}, action) => {
     switch( action.type ){
         case "FILTER":
-            break;
+            // console.log(action.filters);
+            return action.filters;
         default:
             return {};
     }
 }
 
 var filterApp = combineReducers({
-    filter
+    filters: filter
 });
 
 export { FILTER_ALL, FILTER_BIRDS, FILTER_CATS, FILTER_DOGS, FILTER_OFFERS, FILTER_HAMSTERS, filterApp };

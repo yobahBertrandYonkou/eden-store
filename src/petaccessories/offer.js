@@ -35,6 +35,7 @@ var OfferCard = () => {
 var Offers = () => {
     const { data: offerList } = useFetchAll("http://localhost:9000", "offers", "offers");
     const { data: offerProductList, isLoading: isOfferLoading, hasData: offerHasData } = useFetchAll("http://localhost:9000", "offers", "products/all");
+    
     useEffect(() => {  
         var availableOffers = document.querySelector(".available-offers");
         if (offerList != null && offerList.products.length != 0){
@@ -42,9 +43,9 @@ var Offers = () => {
             offerList.products.forEach( offer => {
                 availableOffers.insertAdjacentHTML("beforeend", 
                 `
-                    <div className="from-group brand-option">
-                        <label htmlFor="${ offer.id }">
-                            <input id="${ offer.id }" name="${ offer.id }" type="checkbox" /> ${ offer.title }
+                    <div class="from-group brand-option">
+                        <label for="${ offer.id }">
+                            <input class="offer-controls" id="${ offer.id }" name="${ offer.id }" type="checkbox" /> ${ offer.title }
                         </label>
                     </div>
                 `);
@@ -52,6 +53,7 @@ var Offers = () => {
         }
 
     },[offerList]);
+
     return (
         <div style={{ position: "relative" }} className="oneanimal-container">
             <Header />
@@ -133,7 +135,6 @@ var Offers = () => {
                         </div>
                     </div>
                    
-                    
                 </div>
             </div>
             <div style={{ position: "fixed", top: "0", width: "100%"}} className="show-notification"></div>

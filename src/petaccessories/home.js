@@ -20,39 +20,44 @@ import howItsDone from "./images/how-its-done.png"
 import { useLocation, useParams } from "react-router";
 import querystring from "query-string";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 var HomePage = ()=>{
     // fetching data for accessories
     const { data: accessories, isLoading, hasData: hasAccessories } = useFetchAll("http://localhost:9000/products", "all", "accessories");
     const { data: grooming, isLoading: isGroomingLoading, hasData: hasGrooming } = useFetchAll("http://localhost:9000/products", "all", "grooming");
-    
+    const filters = useSelector( (state) => {
+        console.log("State");
+        console.log(state);
+        return 0;
+    } );
     useEffect( () => {
         const parsed = querystring.parse(window.location.search);
-        console.log(parsed);
+        console.log(filters);
 
-    if (Object.keys(parsed).length === 2){
-        fetch(`http://localhost:9000/user/accessories/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify( {
-                token: parsed.token,
-                key: parsed.key
+        if (Object.keys(parsed).length === 2){
+            fetch(`http://localhost:9000/user/accessories/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify( {
+                    token: parsed.token,
+                    key: parsed.key
+                })
             })
-        })
-        .then( response => response.json())
-        .then( response => {
-            console.log(response);
-            // save user data
-            localStorage.setItem("eden-pa-user-name", response.name);
-            localStorage.setItem("eden-pa-user-email", response.email);
-            localStorage.setItem("eden-pa-user-uid", response.uid);
-            localStorage.setItem("eden-pa-user-photo", response.photoURL);
-            localStorage.setItem("eden-pa-user-logged-in", "true");
-            window.location = "/accessories/home";
-        })
-        .catch( error => console.log(error));
-    }
-    }, []);
+            .then( response => response.json())
+            .then( response => {
+                console.log(response);
+                // save user data
+                localStorage.setItem("eden-pa-user-name", response.name);
+                localStorage.setItem("eden-pa-user-email", response.email);
+                localStorage.setItem("eden-pa-user-uid", response.uid);
+                localStorage.setItem("eden-pa-user-photo", response.photoURL);
+                localStorage.setItem("eden-pa-user-logged-in", "true");
+                window.location = "/accessories/home";
+            })
+            .catch( error => console.log(error));
+        }
+    }, [filters]);
     return (
         <div className="homepage-container">
             <Header />
