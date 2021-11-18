@@ -13,6 +13,9 @@ var ProdudctPage = ()=>{
     const { data, related, isLoading, offer, hasOffer } = useFetchOne("http://localhost:9000/products/details", id, localStorage.getItem("eden-pa-user-uid"));
     
     useEffect(() => {
+        // doc title
+        document.title = "EDEN - Product";
+
         var thumbnails = document.querySelectorAll('.photo-thumbnail');
         var photoPreview = document.getElementById('photo-preview');
         // display thumb to preview container

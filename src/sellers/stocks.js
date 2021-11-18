@@ -7,6 +7,9 @@ import imgUploadHolder from "./images/upload-image.png"
 var Stocks= ()=>{
 
     useEffect(()=>{
+        // doc title
+        document.title = "EDEN - Stocks";
+
         var switcher = document.getElementById("drawer-switch");
         var closeDrawer = document.getElementById("close-drawer");
         var sideNav = document.getElementById("sidenav-id");

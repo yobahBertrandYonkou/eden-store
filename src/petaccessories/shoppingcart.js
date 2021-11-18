@@ -10,7 +10,9 @@ var ShoppingCart = ()=>{
     const { data: userCart, isLoading, hasData } = useFetchAll("http://localhost:9000/user", "cart", localStorage.getItem("eden-pa-user-uid"))
 
     useEffect(() => {
-        
+        // doc title
+        document.title = "EDEN - Shopping Cart";
+
         if(localStorage.getItem("recent-action") === "delete"){
             document.querySelector('.show-notification').innerHTML = (
                 `<div class="alert alert-success alert-dismissible" role="alert">

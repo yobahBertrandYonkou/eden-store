@@ -11,6 +11,9 @@ var CheckOut = ()=>{
     
 
     useEffect( () => {
+        // doc title
+        document.title = "EDEN - Checkout";
+
         const perKgRate = 25;
         var discount = 0, totalAmount = 0, shipping = 0;
 

@@ -3,6 +3,9 @@ import './css/dashboard.css'
 var Dashboard= ()=>{
 
     useEffect(()=>{
+        // doc title
+        document.title = "EDEN - Dashboard";
+
         var switcher = document.getElementById("drawer-switch");
         var closeDrawer = document.getElementById("close-drawer");
         var sideNav = document.getElementById("sidenav-id");

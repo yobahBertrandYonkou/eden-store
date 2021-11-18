@@ -22,6 +22,9 @@ var Offers= ()=>{
         return current.isAfter(moment( startDate ));
     }
     useEffect(()=>{
+        // doc title
+        document.title = "EDEN - Offers";
+
         var switcher = document.getElementById("drawer-switch");
         var closeDrawer = document.getElementById("close-drawer");
         var sideNav = document.getElementById("sidenav-id");

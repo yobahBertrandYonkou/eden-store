@@ -4,6 +4,9 @@ import './css/dashboard.css'
 var Orders= ()=>{
     // const { data: pendingOrders, isLoading, hasData } = useFetchAll("http://localhost:9000/orders", "pending", localStorage.getItem("eden-seller-user-uid"));
     useEffect(()=>{
+        // doc title
+        document.title = "EDEN - Orders";
+        
         var switcher = document.getElementById("drawer-switch");
         var closeDrawer = document.getElementById("close-drawer");
         var sideNav = document.getElementById("sidenav-id");

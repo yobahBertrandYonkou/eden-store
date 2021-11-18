@@ -31,6 +31,9 @@ var HomePage = ()=>{
         return 0;
     } );
     useEffect( () => {
+        // doc title
+        document.title = "EDEN - Home";
+
         const parsed = querystring.parse(window.location.search);
         console.log(filters);
 

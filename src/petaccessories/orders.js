@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './css/shoppingcart.css'
 import Footer from './footer';
 import Header from './header';
@@ -10,38 +10,10 @@ var Orders = ()=>{
     const { data: pendingOrders, isLoading, hasData } = useFetchAll("http://localhost:9000/user", "orders/pending", localStorage.getItem("eden-pa-user-uid"));
     const [ reviewProduct, setReviewProduct] = useState(null);
     const [ reviewProductStars, setReviewProductStars ] = useState(1);
-    // useEffect(() => {
-    //     var cardContainer = document.getElementById('items-card-container');
-    //     if(pendingOrders != null){
-    //         console.log("in here");
-    //         pendingOrders.products.forEach((orders) => {
-    //             orders.items.forEach( productDetails => {
-    //                 var priceHTML;
-    //                 if(productDetails.hasOffer){
-    //                     priceHTML = `<div class="item-price">Price: <strike style="margin-right: 5px">Rs. ${ productDetails.quantityNeeded * productDetails.price }</strike> Rs ${ productDetails.offerPrice.toFixed(2) }</div>`;
-    //                 }else{
-    //                     priceHTML = `<div class="item-price">Price: <strike style="margin-right: 5px">Rs. ${ productDetails.price }</strike> Rs. ${ (productDetails.price * productDetails.quantityNeeded) - (productDetails.price * productDetails.quantityNeeded * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>(${ productDetails.discount }% off)</span></div>`;
-    //                 }
-
-    //                 cardContainer.insertAdjacentHTML("beforebegin", 
-    //                 `
-    //                 <div class="col-12 cart-item-card" id=card-${ productDetails.id }>
-    //                     <img src="${ productDetails.photoUrl }"  class="item-photo" alt="${ productDetails.id }" />
-    //                     <div class="item-details">
-    //                         <div class="item-title">${ productDetails.name } (${ productDetails.quantity } ${ productDetails.unit })</div>
-    //                         <div class="item-seller">Boltz Accessories</div>
-    //                         ${ priceHTML }
-    //                         <div class="in-stock-status">In stock</div>
-    //                         <div class="item-category">${ productDetails.category } accessories</div>
-    //                         <div class="item-quantity">Quantity: ${ productDetails.quantityNeeded }</div>
-    //                     </div>
-    //                 </div>
-    //                 `);
-                
-    //             });
-    //         })
-    //     }
-    // }, [pendingOrders]);
+    useEffect(() => {
+        // doc title
+        document.title = "EDEN - Orders";
+    }, []);
 
     return (
         <div className="shopping-cart-page-container">

@@ -37,6 +37,9 @@ var Offers = () => {
     const { data: offerProductList, isLoading: isOfferLoading, hasData: offerHasData } = useFetchAll("http://localhost:9000", "offers", "products/all");
     
     useEffect(() => {  
+        // doc title
+        document.title = "EDEN - Offers";
+
         var availableOffers = document.querySelector(".available-offers");
         if (offerList != null && offerList.products.length !== 0){
             availableOffers.innerHTML = "";
