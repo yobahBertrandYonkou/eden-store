@@ -155,7 +155,7 @@ router.post('/', async (req, res) => {
     data['updatedOn'] = new Date();
     data["price"] = parseFloat(data["price"])
     data["discount"] = parseFloat(data["discount"])
-
+    data["purchases"] = 0;
     data['rating'] = {
         "1": 0,
         "2": 0,

@@ -20,7 +20,7 @@ router.post('/signup', (req, res) => {
    .then( async response => {
 
         console.log(response.data)
-        await firestore.collection("sellers").doc(response.data.localId).set(req.body)
+        await firestore.collection("sellers").doc(response.data.localId).set({ ...req.body, customers: [], searches: 0 })
         .then( docResponse => {
              res.json({ status: 200, uid: response.data.localId });
         })

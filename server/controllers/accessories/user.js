@@ -310,7 +310,9 @@ router.post('/orders/save', async (req, res) => {
     var itemIds = [];
     var sellerIds = [];
     var tempData = {...data};
+    var idFrequencies = {};
     delete tempData["items"];
+
 
     await firestore.collection("orders")
     .doc("CompletedAndPending")
@@ -325,6 +327,7 @@ router.post('/orders/save', async (req, res) => {
         sellerIds.push(item.sellerId);
         console.log(req.body.userId)
         console.log(item.id);
+        idFrequencies[item.id] = item.quantityNeeded;
 
         // save item to pending orders
         await firestore.collection("orders")
@@ -356,6 +359,17 @@ router.post('/orders/save', async (req, res) => {
         objectIDs: itemIds
     });
 
+    // increase product purchase count
+
+    for( var itemId in idFrequencies){
+        await firestore.collection("products").where("id", "==", itemId).get()
+        // eslint-disable-next-line no-loop-func
+        .then( async doc => {
+            if (doc.docs[0].data().purchases === undefined) await firestore.collection("products").doc(doc.docs[0].id).update({ purchases: idFrequencies[itemId] })
+            else await firestore.collection("products").doc(doc.docs[0].id).update({ purchases: doc.docs[0].data().purchases + idFrequencies[itemId] })
+        }).catch( error => console.log(error));
+    }
+
     // register customer count
     sellerIds = Array.from(new Set(sellerIds));
     sellerIds.forEach( async (seller) => {
@@ -363,7 +377,7 @@ router.post('/orders/save', async (req, res) => {
         .doc(seller).get()
         .then( async (doc) => {
             var newCustomerSet = [
-                ...doc.customers,
+                ...doc.data().customers,
                 data.userId
             ]
             await firestore.collection("sellers")
