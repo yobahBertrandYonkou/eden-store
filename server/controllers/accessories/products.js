@@ -119,8 +119,16 @@ router.post('/:category/:type/:filters', async (req, res) => {
             }
             details['topRating'] = rating;
 
+            // discount and rating filtering
             if(Object.keys(filters).length !== 0){
-                if(details.discount >= filters.discounts[0] && details.discount <= filters.discounts[1]){
+                var hasVaidRating = false;
+                for(var key = filters.rates[0]; key <= filters.rates[1]; key++ ){
+                    if(details.rating[key] > 0){
+                        hasVaidRating = true;
+                    }
+                }
+                console.log(hasVaidRating)
+                if(details.discount >= filters.discounts[0] && details.discount <= filters.discounts[1] && hasVaidRating){
                     data.push(details);
                 }
             }else{
@@ -191,22 +199,39 @@ router.get('/details/:id/:userId', async (req, res) => {
     .catch( error => console.error(error));
 });
 
+var registerSearch = (sellerIds) => {
+    Array.from(new Set(sellerIds)).forEach( async seller => {
+        await firestore.collection("sellers").doc(seller).get()
+        .then( async doc => {
+            await firestore.collection("sellers").doc(seller).update({ searches: doc.data().searches + 1 });
+        })
+    });
+}
 // search
 router.post('/search', (req, res) => {
-    
+    var sellerIds = [];
     // for all categories
     if (req.body.category === "all"){
         algoliaIndex.search(req.body.searchText)
         .then( hits => {
-            console.log(hits);
-             res.json({ result: hits });
+            res.json({ result: hits });
+            
+            // register search
+            hits.hits.forEach( hit => {
+                sellerIds.push(hit.sellerId);
+            });
+            registerSearch(sellerIds);
         })
         .catch( error => console.log(error));
     }else{
         algoliaIndex.search(req.body.searchText, { filters: `category:${ req.body.category.substring(0, 1).toUpperCase() + req.body.category.slice(1) }`})
         .then( hits => {
-            console.log(hits);
-             res.json({ result: hits });
+            res.json({ result: hits });
+            // register search
+            hits.hits.forEach( hit => {
+                sellerIds.push(hit.sellerId);
+            });
+            registerSearch(sellerIds);
         })
         .catch( error => console.log(error));
     }

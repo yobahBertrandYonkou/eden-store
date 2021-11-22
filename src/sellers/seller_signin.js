@@ -46,6 +46,8 @@ var sSignIn = ()=>{
                                 localStorage.setItem("eden-sl-user-store", response.data.store);
                                 localStorage.setItem("eden-sl-user-email", response.data.email);
                                 localStorage.setItem("eden-sl-user-uid", response.uid);
+                                localStorage.setItem("eden-sl-customer-count", response.data.customers.length);
+                                localStorage.setItem("eden-sl-search-count", response.data.searches);
                                 localStorage.setItem("eden-sl-user-logged-in", "true");
                                 localStorage.setItem("eden-pa-user-name", response.data.store);
                                 localStorage.setItem("eden-pa-user-email", response.data.email);

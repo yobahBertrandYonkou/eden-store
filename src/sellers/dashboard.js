@@ -198,7 +198,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-users"></div>
                             <div className="stats-values">
-                                <div className="stats-value">00</div>
+                                <div className="stats-value"> { localStorage.getItem("eden-sl-customer-count") }</div>
                                 <div className="stats-name">Total Customers</div>
                             </div>
                         </div>
@@ -243,7 +243,7 @@ var Dashboard= ()=>{
                         <div className="stats-card">
                             <div className="stats-icon fa fa-search"></div>
                             <div className="stats-values">
-                                <div className="stats-value">00</div>
+                                <div className="stats-value">{ localStorage.getItem("eden-sl-search-count") }</div>
                                 <div className="stats-name">Searches</div>
                             </div>
                         </div>

@@ -308,6 +308,7 @@ router.post('/orders/save', async (req, res) => {
     console.log(data);
 
     var itemIds = [];
+    var sellerIds = [];
     var tempData = {...data};
     delete tempData["items"];
 
@@ -321,6 +322,7 @@ router.post('/orders/save', async (req, res) => {
 
     req.body.items.forEach( async item => {
         itemIds.push(item.id);
+        sellerIds.push(item.sellerId);
         console.log(req.body.userId)
         console.log(item.id);
 
@@ -352,6 +354,22 @@ router.post('/orders/save', async (req, res) => {
         index: "eden_products",
         eventName: "Clicked Item",
         objectIDs: itemIds
+    });
+
+    // register customer count
+    sellerIds = Array.from(new Set(sellerIds));
+    sellerIds.forEach( async (seller) => {
+        await firestore.collection("sellers")
+        .doc(seller).get()
+        .then( async (doc) => {
+            var newCustomerSet = [
+                ...doc.customers,
+                data.userId
+            ]
+            await firestore.collection("sellers")
+            .doc(seller).update({ customers: Array.from(newCustomerSet)});
+        })
+        .catch( error => console.log(error))
     });
 
     console.log("Event registered")

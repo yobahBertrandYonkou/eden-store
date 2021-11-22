@@ -214,7 +214,6 @@ router.post('/', async (req, res) => {
                 delete algoliaData['color'];
                 delete algoliaData['photoUrls'];
                 delete algoliaData['rating'];
-                delete algoliaData['sellerId'];
                 delete algoliaData['updatedOn'];
                 algoliaData['objectID'] = algoliaData['id'];
                 delete algoliaData['id'];

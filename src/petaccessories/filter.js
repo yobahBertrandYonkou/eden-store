@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 var Filter = ()=>{
     // slider value
     const [price, setPrice] = useState([0, 1000]);
-    const [rate, setRate] = useState([0, 100]);
+    const [rate, setRate] = useState([1, 100]);
     const [discount, setDiscount] = useState([0, 100]);
     const { filters } = useFilters();
     var dispatch = useDispatch();
@@ -21,7 +21,8 @@ var Filter = ()=>{
 
     var updateRateSlider = (event, newRate) => {
         setRate(newRate);
-        document.querySelector('.rate-low').textContent = newRate[0] / 20;
+        if (newRate[0] === 0) document.querySelector('.rate-low').textContent = 1;
+        else document.querySelector('.rate-low').textContent = newRate[0] / 20;
         document.querySelector('.rate-high').textContent = newRate[1] / 20;
     }
 
@@ -61,7 +62,7 @@ var Filter = ()=>{
                     setRate([0, 100]);
                     document.querySelector('.low-text').textContent = filters.prices.min;
                     document.querySelector('.high-text').textContent = filters.prices.max;
-                    document.querySelector('.rate-low').textContent = 0;
+                    document.querySelector('.rate-low').textContent = 1;
                     document.querySelector('.rate-high').textContent = 5;
                     document.querySelector('.dis-low').textContent = filters.discounts.min;
                     document.querySelector('.dis-high').textContent = filters.discounts.max;
@@ -143,7 +144,7 @@ var Filter = ()=>{
             <div className="filter-group rating-filter">
                 <div className="sub-filter-title">Ratings</div>
                 <div className="rating-slider">
-                    <div className="low-text rate-low">0</div>
+                    <div className="low-text rate-low">1</div>
                     { 
                         filters === null &&  
 
