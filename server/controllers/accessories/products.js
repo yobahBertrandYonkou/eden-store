@@ -8,6 +8,22 @@ router.use((req, res, next) => {
     next();
 });
 
+//best selling
+router.get('/best', async (req, res) => {
+    await firestore.collection("products")
+    .orderBy("purchases")
+    .limit(10)
+    .get().then((response) => {
+        var products = [];
+
+        response.docs.forEach(product => {
+            products.push(product.data());
+        });
+         res.json({ products: products });
+    })
+    .catch( error => console.log(error));
+});
+
 // fetching data
 router.get('/:category/:type', async (req, res) => {
     console.log(req.params);

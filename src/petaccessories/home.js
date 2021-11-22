@@ -4,7 +4,7 @@ import './css/home.css'
 import CategoryCard from "./category";
 import ProductCard from "./productcard";
 import Footer from "./footer";
-import { useFetchAll } from "./hooks/useFetch";
+import { useFetchAll, useFetchBest } from "./hooks/useFetch";
 import Cats from "./images/cats.jpg"
 import Dogs from "./images/dogs.jpg"
 import Birds from "./images/birds.jpg"
@@ -25,6 +25,7 @@ var HomePage = ()=>{
     // fetching data for accessories
     const { data: accessories, isLoading, hasData: hasAccessories } = useFetchAll("http://localhost:9000/products", "all", "accessories");
     const { data: grooming, isLoading: isGroomingLoading, hasData: hasGrooming } = useFetchAll("http://localhost:9000/products", "all", "grooming");
+    const { data: bestSelling, isLoading: isbestSellingLoading, hasData: hasBestSelling } = useFetchBest("http://localhost:9000/products/best");
     const filters = useSelector( (state) => {
         console.log("State");
         console.log(state);
@@ -134,25 +135,34 @@ var HomePage = ()=>{
                     <div className="container best-selling">
                         <div className="home-section-title">Best selling items</div>
                         <div className="row best-selling-cards">
-                        <div className="col-12">Comming Soon ...</div>
-                            {/* <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                                <ProductCard />
-                            </div>
-                            <div className="col-6 col-md-4 col-lg-3 col-xl-2 best-selling-card-container">
-                                <ProductCard />
-                            </div> */}
+                            {/* Loading... */}
+                            { 
+                                isbestSellingLoading &&  
+
+                                <div className="col-12 text-center">
+                                    <div className="spinner-grow text-secondary" role="status"></div>
+                                </div>
+                            }
+                            
+                            {/* no data found */}
+                            { 
+                                !isbestSellingLoading && !hasBestSelling  && 
+                                <div className="col-12 text-center">
+                                    No items
+                                </div>
+                            }
+
+                            {/* outputing accessores from useFetch */}
+                            { 
+                                !isbestSellingLoading && hasBestSelling &&
+                                bestSelling.products.map((productDetails) => {
+                                    return (
+                                        <div key={ productDetails.id } className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                            <ProductCard details = { productDetails } />
+                                        </div>
+                                    );
+                                })
+                            }
                         </div>
                     </div>
 

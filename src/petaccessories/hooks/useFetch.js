@@ -30,6 +30,37 @@ const useFetchAll = (url, category, type) => {
     return { data, isLoading, hasData }
 }
 
+const useFetchBest = (url) => {
+    const [ data, setData ] = useState(null);
+    const [ isLoading, setIsLoading ] = useState(true);
+    const [ hasData, setHasData ] = useState(true);
+    console.log("Fetch");
+    // sending get request from server
+    useEffect(() => {
+
+        (async () => {
+ 
+            await fetch(`${ url }`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                // no data
+                if (data.products.length === 0) {
+                    setHasData(false);
+                }
+                
+                // data
+                setData(data);
+                setIsLoading(false);
+            })
+            .catch(error => console.error(error));
+        })();
+    }, [url]);
+    return { data, isLoading, hasData }
+}
+
+
 const useFetchWithFilter = (url, category, type, filters={}) => {
     const [ data, setData ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(true);
@@ -101,4 +132,4 @@ const useFetchOne = (url, id, userId) => {
     return { data, related, isLoading , offer, hasOffer}
 }
 
-export { useFetchAll, useFetchOne, useFetchWithFilter };
+export { useFetchAll, useFetchOne, useFetchWithFilter, useFetchBest };
