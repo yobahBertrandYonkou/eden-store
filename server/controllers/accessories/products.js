@@ -71,51 +71,39 @@ router.post('/:category/:type/:filters', async (req, res) => {
     console.log(filters);
 
     var conditions;
-    
-    if(req.params.category === "all"){
-        conditions = firestore.collection("products")
-        .where("type", "==", req.params.type.toLowerCase());
-    }else{
-        
-        if (Object.keys(filters).length === 0){
+    // general checks
+    if(Object.keys(filters).length !== 0){
+        // contains brands and sellers
+        if(Object.keys(filters).includes("brands") && Object.keys(filters).includes("sellers")){
             conditions = firestore.collection("products")
-            .where("category", "array-contains", req.params.category)
-            .where("type" , "==", req.params.type.toLowerCase() )
-        } else {
-            // contains brands and sellers
-            if(Object.keys(filters).includes("brands") && Object.keys(filters).includes("sellers")){
-                conditions = firestore.collection("products")
-                .where("category", "array-contains", req.params.category)
-                .where("type" , "==", req.params.type.toLowerCase() )
-                .where("sellerId", "in", filters.sellers)
-                .where("brand", "in", filters.brands)
-                .where("price", ">=", filters.prices[0])
-                .where("price", "<=", filters.prices[1]);
-            } else if(Object.keys(filters).includes("brands")){
-                conditions = firestore.collection("products")
-                .where("category", "array-contains", req.params.category)
-                .where("type" , "==", req.params.type.toLowerCase() )
-                .where("brand", "in", filters.brands)
-                .where("price", ">=", filters.prices[0])
-                .where("price", "<=", filters.prices[1]);
-            }else if(Object.keys(filters).includes("sellers")){
-                conditions = firestore.collection("products")
-                .where("category", "array-contains", req.params.category)
-                .where("type" , "==", req.params.type.toLowerCase() )
-                .where("sellerId", "in", filters.sellers)
-                .where("price", ">=", filters.prices[0])
-                .where("price", "<=", filters.prices[1]);
-            }else{
-                conditions = firestore.collection("products")
-                .where("category", "array-contains", req.params.category)
-                .where("type" , "==", req.params.type.toLowerCase() )
-                .where("price", ">=", filters.prices[0])
-                .where("price", "<=", filters.prices[1]);
-            }
+            .where("sellerId", "in", filters.sellers)
+            .where("brand", "in", filters.brands)
+            .where("price", ">=", filters.prices[0])
+            .where("price", "<=", filters.prices[1]);
+        } else if(Object.keys(filters).includes("brands")){
+            conditions = firestore.collection("products")
+            .where("brand", "in", filters.brands)
+            .where("price", ">=", filters.prices[0])
+            .where("price", "<=", filters.prices[1]);
+        }else if(Object.keys(filters).includes("sellers")){
+            conditions = firestore.collection("products")
+            .where("sellerId", "in", filters.sellers)
+            .where("price", ">=", filters.prices[0])
+            .where("price", "<=", filters.prices[1]);
+        }else{
+            conditions = firestore.collection("products")
+            .where("price", ">=", filters.prices[0])
+            .where("price", "<=", filters.prices[1]);
         }
+    }else{
+        conditions = firestore.collection("products");
+    }
 
-        
-        
+    if(req.params.category === "all"){
+        conditions = conditions.where("type", "==", req.params.type.toLowerCase());
+    }else{
+        conditions = conditions.where("category", "array-contains", req.params.category)
+        .where("type" , "==", req.params.type.toLowerCase())
     }
     
     // fetching data
@@ -137,14 +125,14 @@ router.post('/:category/:type/:filters', async (req, res) => {
 
             // discount and rating filtering
             if(Object.keys(filters).length !== 0){
-                var hasVaidRating = false;
-                for(var key = filters.rates[0]; key <= filters.rates[1]; key++ ){
-                    if(details.rating[key] > 0){
-                        hasVaidRating = true;
-                    }
-                }
-                console.log(hasVaidRating)
-                if(details.discount >= filters.discounts[0] && details.discount <= filters.discounts[1] && hasVaidRating){
+                // var hasVaidRating = false;
+                // for(var key = filters.rates[0]; key <= filters.rates[1]; key++ ){
+                //     if(details.rating[key] > 0){
+                //         hasVaidRating = true;
+                //     }
+                // }
+                // console.log(hasVaidRating)
+                if(details.discount >= filters.discounts[0] && details.discount <= filters.discounts[1]){
                     data.push(details);
                 }
             }else{
@@ -152,9 +140,8 @@ router.post('/:category/:type/:filters', async (req, res) => {
             }
         });
         // console.log(data)
-         res.json({ products: data});
-    })
-    .catch( error => console.error(error));
+        res.json({ products: data});
+    }).catch( error => console.error(error));
 
 });
 

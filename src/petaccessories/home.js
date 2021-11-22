@@ -4,7 +4,7 @@ import './css/home.css'
 import CategoryCard from "./category";
 import ProductCard from "./productcard";
 import Footer from "./footer";
-import { useFetchAll, useFetchBest } from "./hooks/useFetch";
+import { useFetchAll, useFetchBest, useFetchWithFilter } from "./hooks/useFetch";
 import Cats from "./images/cats.jpg"
 import Dogs from "./images/dogs.jpg"
 import Birds from "./images/birds.jpg"
@@ -23,20 +23,16 @@ import { useSelector } from "react-redux";
 
 var HomePage = ()=>{
     // fetching data for accessories
-    const { data: accessories, isLoading, hasData: hasAccessories } = useFetchAll("http://localhost:9000/products", "all", "accessories");
-    const { data: grooming, isLoading: isGroomingLoading, hasData: hasGrooming } = useFetchAll("http://localhost:9000/products", "all", "grooming");
+    const filters = useSelector( state => state.filters);
+    const { data: accessories, isLoading, hasData: hasAccessories } = useFetchWithFilter("http://localhost:9000/products", "all", "accessories", filters);
+    const { data: grooming, isLoading: isGroomingLoading, hasData: hasGrooming } = useFetchWithFilter("http://localhost:9000/products", "all", "grooming", filters);
     const { data: bestSelling, isLoading: isbestSellingLoading, hasData: hasBestSelling } = useFetchBest("http://localhost:9000/products/best");
-    const filters = useSelector( (state) => {
-        console.log("State");
-        console.log(state);
-        return 0;
-    } );
+    
     useEffect( () => {
         // doc title
         document.title = "EDEN - Home";
 
         const parsed = querystring.parse(window.location.search);
-        console.log(filters);
 
         if (Object.keys(parsed).length === 2){
             fetch(`http://localhost:9000/user/accessories/login`, {
@@ -60,7 +56,7 @@ var HomePage = ()=>{
             })
             .catch( error => console.log(error));
         }
-    }, [filters]);
+    });
     return (
         <div className="homepage-container">
             <Header />
