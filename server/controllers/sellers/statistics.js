@@ -50,9 +50,10 @@ router.get('/totals', async (req, res) => {
     .catch( error => console.log(error));
 });
 
-router.get('/recent/orders', async (req, res) => {
+router.get('/recent/orders/:sellerId', async (req, res) => {
     await firestore.collection("orders")
     .doc("CompletedAndPending").collection("PendingOrders")
+    .where("sellerId", "==", req.params.sellerId)
     .orderBy("timeStamp", "desc")
     .limit(10)
     .get().then((response) => {
@@ -61,7 +62,23 @@ router.get('/recent/orders', async (req, res) => {
         response.docs.forEach(order => {
             orders.push(order.data());
         });
-         res.json({ orders: orders });
+        res.json({ orders: orders });
+    })
+    .catch( error => console.log(error));
+});
+
+router.get('/products/topselling/:sellerId', async (req, res) => {
+    await firestore.collection("products")
+    .where("sellerId", "==", req.params.sellerId)
+    .orderBy("purchases")
+    .limit(10)
+    .get().then((response) => {
+        var products = [];
+
+        response.docs.forEach(product => {
+            products.push(product.data());
+        });
+         res.json({ products: products });
     })
     .catch( error => console.log(error));
 });

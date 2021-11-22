@@ -27,7 +27,7 @@ var Dashboard= ()=>{
         .catch( error => console.log(error));
 
         // recent orders
-        fetch("http://localhost:9000/stats/recent/orders")
+        fetch("http://localhost:9000/stats/recent/orders/" + localStorage.getItem("eden-sl-user-uid"))
         .then( response => response.json())
         .then( orders => {
             console.log(orders);
@@ -52,6 +52,33 @@ var Dashboard= ()=>{
                         ${ priceHTML }
                         <div style="font-size: 12px;" class="item-category">${ productDetails.category } accessories</div>
                         <div style="font-size: 12px;" class="item-quantity">Quantity: ${ productDetails.quantityNeeded } <br>Date: ${new Date(productDetails.timeStamp._seconds * 1000).toDateString()} ${new Date(productDetails.timeStamp._seconds * 1000).toLocaleTimeString()}</div>
+                    </div>
+                </div>
+                `);
+            
+            });
+        })
+        .catch( error => console.log(error));
+
+        // top 10 selling items
+        fetch("http://localhost:9000/stats/products/topselling/" + localStorage.getItem("eden-sl-user-uid"))
+        .then( response => response.json())
+        .then( products => {
+            console.log(products);
+            if(products.products.length === 0){
+                document.querySelector(".top-selling-items").insertAdjacentHTML("afterbegin", 
+                `<div style="display: flex; justify-content: center; align-items: center;" className="recent-item">No Orders</div>`)
+            }
+            products.products.forEach(productDetails => {
+                document.querySelector(".top-selling-items").insertAdjacentHTML("afterbegin", 
+                `
+                <div style="display: flex; align-items: center; padding: 5px" class="col-12 recent-item" id=card-${ productDetails.id }>
+                    <img width="56px" height="56px" style="object-fit: contain; margin-right: 10px; margin-top: 7px" src="${ productDetails.photoUrls["photo-1"] }" alt="${ productDetails.id }" />
+                    <div class="item-details">
+                        <div style="font-size: 12px;" class="item-title">${ productDetails.name } (${ productDetails.quantity } ${ productDetails.unit })</div>
+                        <div style="font-size: 12px;" class="item-price">Price: Rs. ${ productDetails.price - (productDetails.price * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>(${ productDetails.discount }% off)</span></div>
+                        <div style="font-size: 12px;" class="item-category">${ productDetails.category } accessories</div>
+                        <div style="font-size: 12px;" class="item-category">Purchases: ${ productDetails.purchases }</div>
                     </div>
                 </div>
                 `);
@@ -315,7 +342,7 @@ var Dashboard= ()=>{
                                 </div>
                                 <div className="top-selling recent-card" >
                                     <div className="recent-title">Top 10 selling products</div>
-                                    <div className="recent-content">
+                                    <div className="recent-content top-selling-items">
                                         <div className="ts-item"></div>
                                         <div className="ts-item"></div>
                                         <div className="ts-item"></div>
