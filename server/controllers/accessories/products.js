@@ -14,7 +14,7 @@ router.get('/:category/:type', async (req, res) => {
 
     var conditions;
     
-    if(req.params.category == "all"){
+    if(req.params.category === "all"){
         conditions = firestore.collection("products")
         .where("type", "==", req.params.type.toLowerCase());
     }else{
@@ -41,6 +41,91 @@ router.get('/:category/:type', async (req, res) => {
             }
             details['topRating'] = rating;
             data.push(details);
+        });
+        // console.log(data)
+         res.json({ products: data});
+    })
+    .catch( error => console.error(error));
+
+});
+
+// filter data
+router.post('/:category/:type/:filters', async (req, res) => {
+    var filters = JSON.parse(req.params.filters);
+    console.log(filters);
+
+    var conditions;
+    
+    if(req.params.category === "all"){
+        conditions = firestore.collection("products")
+        .where("type", "==", req.params.type.toLowerCase());
+    }else{
+        
+        if (Object.keys(filters).length === 0){
+            conditions = firestore.collection("products")
+            .where("category", "array-contains", req.params.category)
+            .where("type" , "==", req.params.type.toLowerCase() )
+        } else {
+            // contains brands and sellers
+            if(Object.keys(filters).includes("brands") && Object.keys(filters).includes("sellers")){
+                conditions = firestore.collection("products")
+                .where("category", "array-contains", req.params.category)
+                .where("type" , "==", req.params.type.toLowerCase() )
+                .where("sellerId", "in", filters.sellers)
+                .where("brand", "in", filters.brands)
+                .where("price", ">=", filters.prices[0])
+                .where("price", "<=", filters.prices[1]);
+            } else if(Object.keys(filters).includes("brands")){
+                conditions = firestore.collection("products")
+                .where("category", "array-contains", req.params.category)
+                .where("type" , "==", req.params.type.toLowerCase() )
+                .where("brand", "in", filters.brands)
+                .where("price", ">=", filters.prices[0])
+                .where("price", "<=", filters.prices[1]);
+            }else if(Object.keys(filters).includes("sellers")){
+                conditions = firestore.collection("products")
+                .where("category", "array-contains", req.params.category)
+                .where("type" , "==", req.params.type.toLowerCase() )
+                .where("sellerId", "in", filters.sellers)
+                .where("price", ">=", filters.prices[0])
+                .where("price", "<=", filters.prices[1]);
+            }else{
+                conditions = firestore.collection("products")
+                .where("category", "array-contains", req.params.category)
+                .where("type" , "==", req.params.type.toLowerCase() )
+                .where("price", ">=", filters.prices[0])
+                .where("price", "<=", filters.prices[1]);
+            }
+        }
+
+        
+        
+    }
+    
+    // fetching data
+    await conditions.limit(2).get()
+    .then(docs => {
+        var data = [];
+
+        docs.docs.forEach(doc => {
+            var details = doc.data();
+            var value = 0;
+            var rating;
+            for(const key in details.rating){
+                if (details.rating[key] > value) {
+                    rating = key;
+                    value = details.rating[key];
+                };
+            }
+            details['topRating'] = rating;
+
+            if(Object.keys(filters).length !== 0){
+                if(details.discount >= filters.discounts[0] && details.discount <= filters.discounts[1]){
+                    data.push(details);
+                }
+            }else{
+                data.push(details);
+            }
         });
         // console.log(data)
          res.json({ products: data});
@@ -77,7 +162,7 @@ router.get('/details/:id/:userId', async (req, res) => {
             var hasOffer = false;
 
             // console.log(fDocs.docs)
-            if(fDocs.docs.length !=0){
+            if(fDocs.docs.length !== 0){
                 hasOffer = true;
             }
 
@@ -110,7 +195,7 @@ router.get('/details/:id/:userId', async (req, res) => {
 router.post('/search', (req, res) => {
     
     // for all categories
-    if (req.body.category == "all"){
+    if (req.body.category === "all"){
         algoliaIndex.search(req.body.searchText)
         .then( hits => {
             console.log(hits);
@@ -135,11 +220,11 @@ router.get('/filters', async (req, res) => {
         var maxPrice = response.docs[0].data().price;
         var sellerIds = [];
         var brands = [];
+        
         response.docs.forEach( doc => {
             var price = parseFloat(doc.data().price);
             if (minPrice > price) minPrice = price;
             if (maxPrice < price) maxPrice = price;
-            console.log(price)
             brands.push(doc.data().brand);
             sellerIds.push(doc.data().sellerId)
         });
@@ -185,4 +270,5 @@ router.post('/rating', async (req, res) => {
     .catch( error => console.log(error));
     
 });
+
 module.exports = router;

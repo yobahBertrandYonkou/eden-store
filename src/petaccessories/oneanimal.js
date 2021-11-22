@@ -4,9 +4,10 @@ import Header from "./header";
 import ProductCard from "./productcard";
 import Offers from "./images/offers.png";
 import './css/oneanimal.css'
-import { useFetchAll } from "./hooks/useFetch";
+import { useFetchAll, useFetchWithFilter } from "./hooks/useFetch";
 import { OfferCard } from "./offer";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 // import { useEffect } from "react";
 
 var OneAnimal = ({animal})=>{
@@ -18,16 +19,11 @@ var OneAnimal = ({animal})=>{
 
     // fetching data for accessories
     var filters = useSelector( state => state.filters);
-    const { data: accessories, isLoading, hasData: hasAccessories } = useFetchAll("http://localhost:9000/products", animal, "accessories", filters);
-    const { data: food, isLoading: isFoodLoading, hasData: hasFood } = useFetchAll("http://localhost:9000/products", animal, "food", filters);
+    const { data: accessories, isLoading, hasData: hasAccessories } = useFetchWithFilter("http://localhost:9000/products", animal, "accessories", filters);
+    const { data: food, isLoading: isFoodLoading, hasData: hasFood } = useFetchWithFilter("http://localhost:9000/products", animal, "food", filters);
     const { data: offerProductList, isLoading: isOfferLoading, hasData: offerHasData } = useFetchAll("http://localhost:9000", "offers", "products/" + animal);
-
-    // useEffect( () => {
-    //     console.log("Filters changeddddddddd");
-    //     document.querySelector(".offer-cards").innerHTML = "";
-    // }, [filters]);
     
-    // fetc
+    // fetch
     return(
         <div style={{ position: "relative" }} className="oneanimal-container">
             <Header />

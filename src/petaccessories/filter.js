@@ -65,6 +65,7 @@ var Filter = ()=>{
                     document.querySelector('.rate-high').textContent = 5;
                     document.querySelector('.dis-low').textContent = filters.discounts.min;
                     document.querySelector('.dis-high').textContent = filters.discounts.max;
+                    window.location.reload();
 
                 }} className="reset-filter">CLEAR ALL</div>
             </div>

@@ -153,6 +153,8 @@ router.post('/', async (req, res) => {
     data["id"] = `STK-${idCat}-${new Date().toJSON().substring(0, 10).split("-").reverse().join("")}-${new Date().toTimeString().substring(0,8).split(":").join("")}`;
     data['createdOn'] = new Date();
     data['updatedOn'] = new Date();
+    data["price"] = parseFloat(data["price"])
+    data["discount"] = parseFloat(data["discount"])
 
     data['rating'] = {
         "1": 0,

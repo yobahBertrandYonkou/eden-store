@@ -1,11 +1,10 @@
 import {useEffect, useState } from 'react';
 
-const useFetchAll = (url, category, type, filters={}) => {
+const useFetchAll = (url, category, type) => {
     const [ data, setData ] = useState(null);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ hasData, setHasData ] = useState(true);
-    console.log("Fetch")
-    console.log(filters)
+    console.log("Fetch");
     // sending get request from server
     useEffect(() => {
 
@@ -20,7 +19,7 @@ const useFetchAll = (url, category, type, filters={}) => {
                 if (data.products.length === 0) {
                     setHasData(false);
                 }
-
+                
                 // data
                 setData(data);
                 setIsLoading(false);
@@ -30,6 +29,41 @@ const useFetchAll = (url, category, type, filters={}) => {
     }, [category, type, url]);
     return { data, isLoading, hasData }
 }
+
+const useFetchWithFilter = (url, category, type, filters={}) => {
+    const [ data, setData ] = useState(null);
+    const [ isLoading, setIsLoading ] = useState(true);
+    const [ hasData, setHasData ] = useState(true);
+    console.log("Fetch with filter");
+    // sending get request from server
+    useEffect(() => {
+
+        (async () => {
+            console.log("Filters")
+            console.log(JSON.stringify({ filters: filters}));
+            await fetch(`${ url }/${ category }/${ type }/${ JSON.stringify(filters) }`, {
+                method: "POST",
+                body: JSON.stringify({ filters: filters})
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                // no data
+                if (data.products.length === 0) {
+                    setHasData(false);
+                }
+                
+                // data
+                setData(data);
+                setIsLoading(false);
+            })
+            .catch(error => console.error(error));
+        })();
+    }, [category, type, url, filters]);
+    return { data, isLoading, hasData }
+}
+
 
 const useFetchOne = (url, id, userId) => {
     const [ data, setData ] = useState(null);
@@ -67,4 +101,4 @@ const useFetchOne = (url, id, userId) => {
     return { data, related, isLoading , offer, hasOffer}
 }
 
-export { useFetchAll, useFetchOne };
+export { useFetchAll, useFetchOne, useFetchWithFilter };
