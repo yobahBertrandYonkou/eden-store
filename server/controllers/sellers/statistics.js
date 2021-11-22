@@ -83,5 +83,39 @@ router.get('/products/topselling/:sellerId', async (req, res) => {
     .catch( error => console.log(error));
 });
 
+router.get('/daily/:sellerId', async (req, res) => {
+    var startDate = new Date(`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} 00:00:00`);
+    var endDate = new Date(`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${new Date().getDate()} 00:00:00`);
+    console.log("Daily")
+    console.log(startDate)
+    // total orders
+    await firestore.collection("orders").doc("CompletedAndPending")
+    .collection("OrderSummaries")
+    .where("timeStamp", ">=", startDate)
+    .where("timeStamp", "<", endDate)
+    .get().then( async orders => {
+        var totalOrders = orders.docs.length;
+
+        // total deliveries
+        await firestore.collection("orders").doc("CompletedAndPending")
+        .collection("CompletedOrders")
+        .where("timeStamp", ">=", startDate)
+        .where("timeStamp", "<", endDate)
+        .get().then( deliveries => {
+            var totalDeliveries = deliveries.docs.length;
+            var totalSales = 0;
+
+            if(totalDeliveries != 0){
+                deliveries.forEach(delivery => {
+                    totalSales += delivery.totalAmount;
+                });
+            }
+
+            res.json({ totalOrders: totalOrders, totalDeliveries: totalDeliveries, totalSales: totalSales });
+
+        }).catch( error => console.log(error));
+
+    }).catch( error => console.log(error));
+});
 module.exports = router;
 

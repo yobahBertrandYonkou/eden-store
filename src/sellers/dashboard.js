@@ -12,6 +12,16 @@ var Dashboard= ()=>{
         var bodyContainer = document.getElementById("body-container");
         var actionBar = document.getElementById('action-bar-id');
 
+        // get daily stats
+        fetch("http://localhost:9000/stats/daily/" + localStorage.getItem("eden-sl-user-uid"))
+        .then( response => response.json())
+        .then( totals => {
+            console.log(totals);
+            document.querySelector(".daily-order").textContent = totals.totalOrders;
+            document.querySelector(".daily-sales").textContent = totals.totalSales;
+            document.querySelector(".daily-delivery").textContent = totals.totalDeliveries;
+        }).catch( error => console.log(error));
+
         // get totals
         fetch("http://localhost:9000/stats/totals")
         .then( response => response.json())
@@ -283,23 +293,23 @@ var Dashboard= ()=>{
                                 <div className="daily-stats">
                                     <div className="daily-stats-header">
                                         <div className="daily-stats-title">Daily Statistics</div>
-                                        <div className="daily-stats-title">12-09-2021</div>
+                                        <div className="daily-stats-title">{ new Date().toDateString() }</div>
                                     </div>
                                     <div className="stats-content">
                                         {/* today stats card */}
                                         <div className="stats-card today-stats-card">
-                                            <div className="stats-name today-stats-name">Total sales for today</div>
-                                            <div className="stats-value today-stats-value">00</div>
+                                            <div className="stats-name today-stats-name">Total orders for today</div>
+                                            <div className="stats-value today-stats-value daily-order">00</div>
+                                        </div>
+                                        {/* today stats card */}
+                                        <div className="stats-card today-stats-card">
+                                            <div className="stats-name today-stats-name">Total deliveries for today</div>
+                                            <div className="stats-value today-stats-value daily-delivery">00</div>
                                         </div>
                                         {/* today stats card */}
                                         <div className="stats-card today-stats-card">
                                             <div className="stats-name today-stats-name">Total sales for today</div>
-                                            <div className="stats-value today-stats-value">00</div>
-                                        </div>
-                                        {/* today stats card */}
-                                        <div className="stats-card today-stats-card">
-                                            <div className="stats-name today-stats-name">Total sales for today</div>
-                                            <div className="stats-value today-stats-value">00</div>
+                                            <div className="stats-value today-stats-value daily-sales">00</div>
                                         </div>
                                     </div>
                                 </div>
@@ -308,10 +318,10 @@ var Dashboard= ()=>{
                                     <div className="daily-stats-header">
                                         <div className="daily-stats-title">Sales graphs</div>
                                         <div className="daily-stats-title">
-                                            <select className="select-duration" name="sales" id="">
+                                            {/* <select className="select-duration" name="sales" id="">
                                                 <option value="">Monthly</option>
                                                 <option value="">Weekly</option>
-                                            </select>
+                                            </select> */}
                                         </div>
                                     </div>
                                     <div className="stats-content sales-graph">
@@ -323,10 +333,10 @@ var Dashboard= ()=>{
                                     <div className="daily-stats-header">
                                         <div className="daily-stats-title">Top selling categories</div>
                                         <div className="daily-stats-title">
-                                            <select className="select-duration" name="sales" id="">
+                                            {/* <select className="select-duration" name="sales" id="">
                                                 <option value="">Monthly</option>
                                                 <option value="">Weekly</option>
-                                            </select>
+                                            </select> */}
                                         </div>
                                     </div>
                                     <div className="stats-content sales-graph">
