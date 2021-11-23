@@ -7,7 +7,6 @@ import './css/oneanimal.css'
 import { useFetchAll, useFetchWithFilter } from "./hooks/useFetch";
 import { OfferCard } from "./offer";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 // import { useEffect } from "react";
 
 var OneAnimal = ({animal})=>{

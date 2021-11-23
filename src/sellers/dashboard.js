@@ -33,8 +33,54 @@ var Dashboard= ()=>{
             document.querySelector(".total-stocks").textContent = totals.stocks;
             document.querySelector(".active-offers").textContent = totals.activeOffers;
             document.querySelector(".total-sales").textContent = totals.totalSales;
-        })
-        .catch( error => console.log(error));
+
+            // graphs
+            var percentageStocksContext = document.getElementById("percentage-stocks").getContext("2d");
+            var percentageStocksChart = new window.Chart(percentageStocksContext, {
+            type: "doughnut",
+            data: {
+                labels: Object.keys(totals.frequecies),
+                datasets: [{
+                    label: "Proportions of each animal category in total sales",
+                    data: Object.values(totals.frequecies),
+                    backgroundColor: ['rgb(51,122,183)', 'rgb(226,142,65)', 'rgb(0,169,157)', 'rgb(217,83,79)']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+            
+        });
+        percentageStocksChart.draw();
+
+        var percentageSalesContext = document.getElementById("percentage-sales").getContext("2d");
+        var percentageSalesChart = new window.Chart(percentageSalesContext, {
+            type: "doughnut",
+            data: {
+                labels: Object.keys(totals.orderPercentages),
+                datasets: [{
+                    label: "Proportions of each animal category in total sales",
+                    data: Object.values(totals.orderPercentages),
+                    backgroundColor: ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    datalabels:{
+                        display: true,
+                        color: "black",
+                        formatter: (value) => {
+                            return value + " %";
+                        }
+                    },
+                }
+            }
+        });
+        percentageSalesChart.draw();
+        }).catch( error => console.log(error));
 
         // recent orders
         fetch("http://localhost:9000/stats/recent/orders/" + localStorage.getItem("eden-sl-user-uid"))
@@ -153,6 +199,44 @@ var Dashboard= ()=>{
             }
         }
         initSideNav();
+
+
+        // chart.js library
+        // var chartLibrary = document.createElement("script");
+        // chartLibrary.setAttribute("src", "https://cdn.jsdelivr.net/npm/chart.js");
+        // window.document.body.appendChild( chartLibrary );
+        
+        // handling chart
+        var salesChartContext = document.getElementById("sales-canvas").getContext("2d");
+
+        var salesChart = new window.Chart(salesChartContext, {
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                datasets: [{
+                    type: "line",
+                    label: "Sales",
+                    data: [36781.0905, 58374.74, 22815.2085, 32766.216, 42503.3595, 42050.3055, 11573.982, 52101.782, 42074.672, 71178.514,51749.46, 99057.364],
+                    borderColor: 'rgb(0,169,157)',
+                    fill: false,
+                    tension: 0.5
+                },{
+                type: "bar",
+                label: "Orders",
+                data: [1466, 1864, 2330, 1398,  5699, 1398, 2097, 2330,  7932, 10466, 19830, 40876],
+                backgroundColor: 'rgb(51,122,183)',
+            }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales:{
+                    y:{
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        salesChart.draw();
     },[]);
     return (
         <div className="main-container">
@@ -325,22 +409,44 @@ var Dashboard= ()=>{
                                         </div>
                                     </div>
                                     <div className="stats-content sales-graph">
-                                        
+                                        <canvas height="400"  id="sales-canvas"></canvas>
                                     </div>
                                 </div>
                                 {/* top selling categeries */}
-                                <div className="daily-stats">
-                                    <div className="daily-stats-header">
-                                        <div className="daily-stats-title">Top selling categories</div>
-                                        <div className="daily-stats-title">
-                                            {/* <select className="select-duration" name="sales" id="">
-                                                <option value="">Monthly</option>
-                                                <option value="">Weekly</option>
-                                            </select> */}
+                                <div className="container-fluid">
+                                    <div className="row">
+                                        <div style={{ paddingLeft: 0 }} className="col-md-6">
+                                            <div className="daily-stats">
+                                                <div className="daily-stats-header">
+                                                    <div className="daily-stats-title">Percentage sale per category</div>
+                                                    <div className="daily-stats-title">
+                                                        {/* <select className="select-duration" name="sales" id="">
+                                                            <option value="">Monthly</option>
+                                                            <option value="">Weekly</option>
+                                                        </select> */}
+                                                    </div>
+                                                </div>
+                                                <div className="stats-content sales-graph">
+                                                    <canvas height="400" id="percentage-sales"></canvas>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="stats-content sales-graph">
-                                        
+                                        <div style={{ paddingRight: 0 }} className="col-md-6">
+                                            <div className="daily-stats">
+                                                <div className="daily-stats-header">
+                                                    <div className="daily-stats-title">Percentage stocked per category</div>
+                                                    <div className="daily-stats-title">
+                                                        {/* <select className="select-duration" name="sales" id="">
+                                                            <option value="">Monthly</option>
+                                                            <option value="">Weekly</option>
+                                                        </select> */}
+                                                    </div>
+                                                </div>
+                                                <div className="stats-content sales-graph">
+                                                    <canvas height="400" id="percentage-stocks"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -353,9 +459,9 @@ var Dashboard= ()=>{
                                 <div className="top-selling recent-card" >
                                     <div className="recent-title">Top 10 selling products</div>
                                     <div className="recent-content top-selling-items">
+                                        {/* <div className="ts-item"></div>
                                         <div className="ts-item"></div>
-                                        <div className="ts-item"></div>
-                                        <div className="ts-item"></div>
+                                        <div className="ts-item"></div> */}
                                     </div>
                                 </div>
                             </div>

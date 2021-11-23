@@ -273,7 +273,7 @@ hr {
     display: flex;
     justify-content: space-evenly;
     padding: 20px;
-    padding-bottom: 0;
+    /* padding-bottom: 0; */
 }
 
 .today-stats-card{
@@ -291,7 +291,11 @@ hr {
 }
 
 .sales-graph{
-    height: 300px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #2F2F5F; */
 }
 
 .select-duration{
@@ -318,7 +322,8 @@ hr {
 .recent-content{
     padding: 20px 0 20px 0;
     margin-bottom: 15px;
-    height: 400px;
+    height: 550px;
+    border-radius: 10px;
     overflow: auto;
 }
 

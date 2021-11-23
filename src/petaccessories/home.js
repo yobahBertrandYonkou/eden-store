@@ -4,7 +4,7 @@ import './css/home.css'
 import CategoryCard from "./category";
 import ProductCard from "./productcard";
 import Footer from "./footer";
-import { useFetchAll, useFetchBest, useFetchWithFilter } from "./hooks/useFetch";
+import { useFetchBest, useFetchWithFilter } from "./hooks/useFetch";
 import Cats from "./images/cats.jpg"
 import Dogs from "./images/dogs.jpg"
 import Birds from "./images/birds.jpg"

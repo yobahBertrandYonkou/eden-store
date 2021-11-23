@@ -7,6 +7,15 @@ router.get('/totals', async (req, res) => {
     await firestore.collection("products").get()
     .then( async docs => {
         var stocks = docs.docs.length;
+
+        // category frequecies
+        var frequecies = { Cats: 0, Dogs: 0, Birds: 0, Hamsters: 0 };
+        docs.docs.forEach(doc => {
+            if(doc.data().category.includes("Cats")) frequecies.Cats += 1
+            if(doc.data().category.includes("Dogs")) frequecies.Dogs += 1
+            if(doc.data().category.includes("Birds")) frequecies.Birds += 1
+            if(doc.data().category.includes("Hamsters")) frequecies.Hamsters += 1
+        });
         // offers stocks
         await firestore.collection("offers")
         .get()
@@ -25,6 +34,15 @@ router.get('/totals', async (req, res) => {
             .get()
             .then( async docs => {
                 var orders = docs.docs.length;
+
+                var orderPercentages = { Cats: 0, Dogs: 0, Birds: 0, Hamsters: 0 };
+                docs.docs.forEach(doc => {
+                    if(doc.data().category.includes("Cats")) orderPercentages.Cats += parseFloat(doc.data().price.toString());
+                    if(doc.data().category.includes("Dogs")) orderPercentages.Dogs += parseFloat(doc.data().price.toString());
+                    if(doc.data().category.includes("Birds")) orderPercentages.Birds += parseFloat(doc.data().price.toString());
+                    if(doc.data().category.includes("Hamsters")) orderPercentages.Hamsters += parseFloat(doc.data().price.toString());
+                });
+                console.log(orderPercentages);
                 // deliveries stocks
                 await firestore.collection("orders")
                 .doc("CompletedAndPending").collection("CompletedOrders").get()
@@ -39,7 +57,8 @@ router.get('/totals', async (req, res) => {
                             totalSales += (delivery.price * delivery.quantityNeeded) - (delivery.price * delivery.quantityNeeded * delivery.discount / 100).toFixed(2);
                         }
                     });
-                    res.json({ stocks: stocks, offers: offers, deliveries: deliveries, activeOffers: activeOffers, orders: orders, totalSales: totalSales });
+                    console.log(frequecies)
+                    res.json({ stocks: stocks, offers: offers, deliveries: deliveries, activeOffers: activeOffers, orders: orders, totalSales: totalSales, frequecies: frequecies, orderPercentages: orderPercentages });
                 })
                 .catch( error => console.log(error));
             })
