@@ -4,7 +4,7 @@ var Reports= ()=>{
 
     useEffect(()=>{
         // doc title
-        document.title = "EDEN - Dashboard";
+        document.title = "EDEN - Reports";
 
         var switcher = document.getElementById("drawer-switch");
         var closeDrawer = document.getElementById("close-drawer");

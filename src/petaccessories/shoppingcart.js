@@ -178,7 +178,7 @@ var ShoppingCart = ()=>{
                         {/* outputing accessores from useFetch */}
                         { !isLoading && userCart.related.length !== 0 && userCart.related.map((productDetails) => {
                             return (
-                                <div key={ productDetails.id } className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                <div key={ productDetails.id } className="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                     <ProductCard details = { productDetails } />
                                 </div>
                             );

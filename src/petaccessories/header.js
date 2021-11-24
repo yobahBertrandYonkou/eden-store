@@ -5,6 +5,10 @@ import { FaGooglePlay } from '@react-icons/all-files/fa/FaGooglePlay'
 import { useEffect, useState } from 'react';
 // Header component
 var Header = ()=>{
+    // handling small screen
+    var isSmallDevice = false;
+    if (window.innerWidth <= 740) isSmallDevice = true;
+    else isSmallDevice = false;
 
     const [numberOfItemsInCart, setNumberOfItemsInCart ] = useState(0);
     var searchAlgolia = async () => {
@@ -154,6 +158,13 @@ var Header = ()=>{
                                 searchResult.innerHTML= "";
                                 document.querySelector(".search-result-container").style.display = "block";
                             }
+
+                            if(window.innerWidth <= 450){
+                                console.log("yes")
+                                document.querySelector(".search-result-container").style.marginTop = "30px";
+                            }else{
+                                document.querySelector(".search-result-container").style.marginTop = "auto";
+                            }
                         }} onChange = { searchAlgolia } id="product-search" type="search" className="search-box"  placeholder="Search for products" />
                     </div>
                     </div>
@@ -189,6 +200,7 @@ var Header = ()=>{
                         <a href="/accessories/hamsters" className="hamsters"><FontAwesomeIcon icon={faCheese} className="top-nav-icons"/>Hamsters</a>
                         <a href="/accessories/offers" className="offers"><FontAwesomeIcon icon={faGift} className="top-nav-icons"/>Offers</a>
                         { localStorage.getItem("eden-pa-user-uid") && <a href="/accessories/orders" className="orders"><FontAwesomeIcon icon={faTruck} className="top-nav-icons"/>Orders</a> }
+                        { isSmallDevice && <a href="/accessories/orders" className="orders"><FontAwesomeIcon icon={ faShoppingCart } className="top-nav-icons"/>Cart ({numberOfItemsInCart})</a> }
                     </div>
                     <div className="cut-maker"></div>
                 </div>

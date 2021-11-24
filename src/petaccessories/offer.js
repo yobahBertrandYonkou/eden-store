@@ -13,13 +13,13 @@ var OfferCard = () => {
         <div className="carousel slide" data-bs-ride="carousel" id="offer-display-card">
             <div className="carousel-inner" role="listbox">
                 <div className="offer-card-container carousel-item active">
-                    <img src= { photo } alt="" />
+                    <img style={{ objectFit: "cover" }}  src= { photo } alt="" />
                 </div>
                 <div className="offer-card-container carousel-item">
-                    <img src= { photo1 } alt="" />
+                    <img style={{ objectFit: "cover" }}  src= { photo1 } alt="" />
                 </div>
                 <div className="offer-card-container carousel-item">
-                    <img src= { photo2 } alt="" />
+                    <img style={{ objectFit: "cover" }}  src= { photo2 } alt="" />
                 </div>
             </div>
             <button className="carousel-control-prev" data-bs-target="#offer-display-card" data-bs-slide="prev">
@@ -92,7 +92,7 @@ var Offers = () => {
                             {/* outputing accessores from useFetch */}
                             { !isOfferLoading && offerHasData && offerProductList.products.map((productDetails) => {
                                 return (
-                                    <div key={ productDetails.id } style={{ marginBottom: "20px"}} className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                    <div key={ productDetails.id } style={{ marginBottom: "20px"}} className="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                         <a className="card" href={`/accessories/offers/products/${ productDetails.id }`}>
                                             <div style={{height: "200px", display: "flex", justifyContent: "center"}} className="card-img-top">
                                             <img height="200px" width="80%" style={{ objectFit: "contain"}} src={ productDetails.photoUrls['photo-1'] } alt="" />

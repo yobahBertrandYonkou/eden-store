@@ -7,7 +7,7 @@ const now= require('nano-time');
 const razorpayKeys = require('../credentials/razorpay.json');
 
 
-const { firestore, firebaseAuth, razorpay, insights } = require('../initializers');
+const { firestore, razorpay, insights } = require('../initializers');
 require("dotenv").config();
 
 
@@ -258,8 +258,11 @@ router.post('/accessories/login', (req, res) => {
         .doc(user.uid).get()
         .then( data => {
             console.log(data.data());
-            var userData = data.data();
-            userData['uid'] = user.uid;
+            var userData = {
+                ...data.data(),
+                "uid": user.uid
+            }
+            // userData['uid'] = user.uid;
             res.json(userData);
         })
         .catch( error => console.log(error));

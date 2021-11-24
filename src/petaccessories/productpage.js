@@ -197,7 +197,7 @@ var ProdudctPage = ()=>{
                             </div>
                             <div className="product-detail-item buy-add-to-cart-btns">
                                 <div className="product-add-to-cart-btn">Add to cart</div>
-                                <div className="buy-now-btn">Buy now</div>
+                                {/* <div className="buy-now-btn">Buy now</div> */}
                             </div>
                             <div className="product-detail-item return-policy-section">
                                 <div className="return-policy-title">Return policy</div>
@@ -268,7 +268,7 @@ var ProdudctPage = ()=>{
                                 !isLoading && related.length != 0 &&
                                 related.map((productDetails) => {
                                     return (
-                                        <div key={ productDetails.id } className="col-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                        <div key={ productDetails.id } className="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
                                             <ProductCard details = { productDetails } />
                                         </div>
                                     );
