@@ -18,6 +18,7 @@ import React from "react";
 import { createStore } from "redux"
 import { Provider } from "react-redux";
 import { filterApp } from "./store/filter";
+import Reports from "./sellers/reports";
 
 var store = createStore(filterApp);
 
@@ -47,7 +48,8 @@ ReactDOM.render(
                     <Route exact path="/seller/orders" component={ sOrders }/>
                     <Route exact path="/seller/signup" component={ SignUp }/>
                     <Route exact path="/seller/signin" component={ sSignIn }/>
-                    <Route exact path="/accessories/signin" component={SignIn} />
+                    <Route exact path="/seller/reports" component={ Reports }/>
+                    <Route exact path="/accessories/signin" component={SignIn}/>
                     <Route exact path={["/accessories/home", "/accessories"]} component={HomePage} />
                     <Route exact path="/accessories/cats">
                         <OneAnimal animal="Cats" />

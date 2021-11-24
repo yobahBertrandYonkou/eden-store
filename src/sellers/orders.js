@@ -32,7 +32,7 @@ var Orders= ()=>{
                     });
 
                     if(!event.target.checked){
-                        catView.textContent = "..."
+                        catView.textContent = "...";
                     }
                 }else{
                     var allCat = document.getElementById("all");

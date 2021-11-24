@@ -257,7 +257,7 @@ var Dashboard= ()=>{
                 <div id="action-bar-id" className="action-bar">
                     <div id="drawer-switch" style={{width: "fit-content"}}><i className="fa fa-bars"></i></div>
                     <div className="title-profile">
-                        <div className="page-title">Dashboard </div>
+                        <div className="page-title">Reports </div>
                         <div className="profile-photo">
                             <div className="logout-seller fa fa-shopping-cart" onClick = { () => window.open("/accessories/home", "_blank")}></div>
                             <div title="Log out of your account" className="logout-seller fa fa-sign-out-alt" onClick = { () => {

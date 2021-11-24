@@ -26,8 +26,7 @@ router.post('/signup', (req, res) => {
         })
         .catch( error => console.log(error));
         
-   })
-   .catch( error => {
+   }).catch( error => {
        console.log(error.response.data)
         res.json({
             status: error.response.data.error.code,
