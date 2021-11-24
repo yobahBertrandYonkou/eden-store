@@ -59,7 +59,9 @@ var SignIn = ()=>{
                                     localStorage.setItem("eden-pa-user-uid", response.uid);
                                     localStorage.setItem("eden-pa-user-photo", response.photoURL);
                                     localStorage.setItem("eden-pa-user-logged-in", "true");
-                                    window.location = "/accessories/home";
+
+                                    if(window.location.search.includes("?next=")) window.location = window.location.search.replace("?next=", "")
+                                    else window.location = "/accessories/home";
                                 })
                                 .catch( error => console.log(error));
                             }

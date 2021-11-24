@@ -392,6 +392,17 @@ router.post('/orders/save', async (req, res) => {
     console.log("Event registered")
 
     res.json({ status: 200, message: "Order completed" });
+
+    // send order saved notification to user
+    await firestore.collection("mobile").doc("notifications")
+    .collection('recentlySent').add({
+        content: "Your order has been successfully placed. " + new Date().toDateString(),
+        header: "Order successfully placed!!",
+        type: "orders",
+        uid: req.body.userId,
+        urlString: "?next=/accessories/orders"
+    })
+    .then( (response) => console.log("Notification sent")).catch( error => console.log(error));
 });
 
 

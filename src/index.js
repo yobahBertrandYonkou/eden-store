@@ -19,6 +19,7 @@ import { createStore } from "redux"
 import { Provider } from "react-redux";
 import { filterApp } from "./store/filter";
 import Reports from "./sellers/reports";
+import LandingPage from "./LandingPage";
 
 var store = createStore(filterApp);
 
@@ -42,6 +43,7 @@ ReactDOM.render(
         <Provider store={ store }>
             <BrowserRouter>
                 <Switch>
+                    <Route exact path="/" component={ LandingPage }/>
                     <Route exact path={["/seller/", "/seller/dashboard"]} component={Dashboard} />
                     <Route exact path="/seller/stocks" component={Stocks} />
                     <Route exact path="/seller/offers" component={Offers} />
