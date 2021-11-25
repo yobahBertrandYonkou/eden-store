@@ -405,6 +405,4 @@ router.post('/orders/save', async (req, res) => {
     .then( (response) => console.log("Notification sent")).catch( error => console.log(error));
 });
 
-
-
 module.exports = router;

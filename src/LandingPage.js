@@ -12,7 +12,7 @@ var LandingPage = () => {
                         <ul id="nav-links">
                             <button id="get-app"><i className="fab fa-google-play"></i> Get the app</button>
                             <li class="nav-item"><a href="/">Home</a></li>
-                            <li class="nav-item"><a href="/NGOs">NGOs</a></li>
+                            <li class="nav-item"><a href="http://localhost:3000/login">NGOs</a></li>
                             <li class="nav-item"><a href="/Groomers">Groomers</a></li>
                             <li class="nav-item"><a href="/Veterinarians">Veterinarians</a></li>
                             <li class="nav-item"><a href="/accessories/home">Shop</a></li>

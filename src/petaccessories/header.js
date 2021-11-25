@@ -121,28 +121,33 @@ var Header = ()=>{
                             <option value="english"> English</option>
                         </select>
                     </div>
-                    {localStorage.getItem('eden-pa-user-logged-in') !== "true" && <a href="/accessories/signin" className="signin-btn">Sign in</a> }
-                    {localStorage.getItem('eden-pa-user-logged-in') === "true" && <div>Hello, {localStorage.getItem("eden-pa-user-name").split(' ')[0] }  <button onClick = { () => {
-                        localStorage.removeItem("eden-pa-user-name");
-                        localStorage.removeItem("eden-pa-user-email");
-                        localStorage.removeItem("eden-pa-user-uid");
-                        localStorage.removeItem("eden-pa-user-photo");
-                        localStorage.setItem("eden-pa-user-logged-in", "false");
+                    <div>
+                        
+                        {localStorage.getItem('eden-pa-user-logged-in') !== "true" && <a href="/accessories/signin" className="signin-btn">User Sign in</a> }
+                        {localStorage.getItem('eden-pa-user-logged-in') === "true" && <div>Hello, {localStorage.getItem("eden-pa-user-name").split(' ')[0] }  <button onClick = { () => {
+                            localStorage.removeItem("eden-pa-user-name");
+                            localStorage.removeItem("eden-pa-user-email");
+                            localStorage.removeItem("eden-pa-user-uid");
+                            localStorage.removeItem("eden-pa-user-photo");
+                            localStorage.setItem("eden-pa-user-logged-in", "false");
 
-                        if(localStorage.getItem("eden-sl-user-logged-in") === "true"){
-                            localStorage.removeItem("eden-sl-user-store");
-                            localStorage.removeItem("eden-sl-user-email");
-                            localStorage.removeItem("eden-sl-user-uid");
-                            localStorage.setItem("eden-sl-user-logged-in", "false");
-                        }
-                        window.location = "/accessories/home";
-                    }} className="signin-btn">Sign Out</button> </div> }
+                            if(localStorage.getItem("eden-sl-user-logged-in") === "true"){
+                                localStorage.removeItem("eden-sl-user-store");
+                                localStorage.removeItem("eden-sl-user-email");
+                                localStorage.removeItem("eden-sl-user-uid");
+                                localStorage.setItem("eden-sl-user-logged-in", "false");
+                            }
+                            window.location = "/accessories/home";
+                        }} className="signin-btn">Sign Out</button> </div> }
+                        {localStorage.getItem('eden-pa-user-logged-in') !== "true" && <a style={{ marginLeft: "5px"}} href="/seller/signin" className="signin-btn">Seller Sign In</a> }
+
+                    </div>
                 </div>
                 {/* Top row with language and signin btn ends  */}
                 {/* Middle row */}
                 <div className="middle-row">
                     <div className="middle-row-left">
-                    <div className="logo"><FontAwesomeIcon icon={faBars} id="menu-toggler" className="menu-toggler"/>EDEN</div>
+                    <div onClick= { () => window.location = "/" } className="logo"><FontAwesomeIcon icon={faBars}  id="menu-toggler" className="menu-toggler"/>EDEN</div>
                     <div className="search">
                         <select onChange = { searchAlgolia } name="search-categories" defaultValue="all" id="search-categories" className="search-categories">
                             <option value="all">All Categories</option>

@@ -95,6 +95,10 @@
     font-size: 36px;
 }
 
+.logo:hover{
+    cursor: pointer;
+}
+
 .menu-toggler{
     display: none;
 }
