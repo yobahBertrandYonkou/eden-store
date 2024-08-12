@@ -1,70 +1,8 @@
-# Getting Started with Create React App
+# ABSTRACT
+While observing websites offering sales care/grooming, adoption and reporting injured or stray pets, it can be noticed that most websites only provide proper subsets of the features mentioned above. Very few sites offer a single solution containing all these features thus pet owners will have to maintain different accounts to use the services above. The proposed solution, ‘EDEN’ provides a one stop solution where people and pet owners can adopt pets, book grooming facilities for pets, and report stray or injured animals thus making it easy for pet owners to manage services related to pets and thus contribute to the care for animals be it strays or owned.
+This project will deal with helping domestic animals. It will allow a user to report any animal abuse to the nearest NGO, and contact a veterinarian for a check-up or an emergency. A user can also adopt an animal using this and can see all the events organized by different NGOs. It will also have different modules for NGOs, veterinarians, accessories and grooming sections.
+The NGO module will maintain the records of all the animals present for adoption and organize different events. The veterinarians and grooming module will be used for scheduling appointments from NGOs as well as from users. To make sure that a user attends the selected slot they will make an initial payment. The accessories module will have all the basic requirements that are needed to take care of the animals starting from foods to shampoos.
+This project aims to help the animals, stray or owned and provide adequate treatment if needed in case of an emergency. This will also promote the concept of adopting a pet from an NGO which in return would help the NGOs to grow and have funding. Additionally, NGOs will have opportunities to collaborate and organize events. The veterinarians and grooming modules will allow the user to contact the vet in case of emergency or schedule a regular appointment with them.
+The project will thus focus at developing a web and mobile application that will work towards users assisting domestic animals especially strays through providing them a means to get in contact with a local NGO and avail services for animals wherein they will be taken care of, and recuperate.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> Please refer to the [project report](https://github.com/yobahBertrandYonkou/eden/blob/master/1941146%20-%20Group%206%20-%20EDEN%20Final%20Documentation.pdf) for more information.
