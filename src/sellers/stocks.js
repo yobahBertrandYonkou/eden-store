@@ -128,8 +128,8 @@ var Stocks= ()=>{
                 }
 
                 // gets item id
-                // console.log(itemEvent.path[1])
-                var selectedItem = itemEvent.path[1];
+                // console.log(itemEvent.composedPath())
+                var selectedItem = itemEvent.composedPath()[1];
                 selectedItem.style.backgroundColor = "rgba(106,121,183, 0.3)";
                 selectedItemForProcessing = selectedItem;
                 // ref to c-menu
