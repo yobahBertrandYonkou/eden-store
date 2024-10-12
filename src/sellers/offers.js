@@ -53,7 +53,7 @@ var Offers= ()=>{
             productList.products.forEach( product => {
                 list.insertAdjacentHTML("beforeend", 
                 `
-                    <li class = "dpd-item" ><input data-item-name=${ product.name } type="checkbox" class="product-item" key="${ product.id }" id="${ product.id }" value="${ product.id }" /> <label for="${ product.id }"> ${ product.name }</label></li>
+                    <li class = "dpd-item" ><input data-item-name=${ product.name } type="checkbox" className="product-item" key="${ product.id }" id="${ product.id }" value="${ product.id }" /> <label for="${ product.id }"> ${ product.name }</label></li>
                 `);
             });
         }
@@ -205,9 +205,9 @@ var Offers= ()=>{
                         .then(response => {
                             console.log(response)
                             document.querySelector('.show-notification').innerHTML = (
-                                `<div class="alert alert-danger alert-dismissible" role="alert">
+                                `<div className="alert alert-danger alert-dismissible" role="alert">
                                 Item deleted Successfully.
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                                 </div>`
                             );
             
@@ -306,7 +306,7 @@ var Offers= ()=>{
 
                             //changing save/cancle btns
                             detailsContainer.querySelector(".add-item-buttons").innerHTML = 
-                            `<button type="button" onclick="document.body.removeChild(document.getElementById('pdt-details-container'));" style="width: 100%; background-color: #d1d1d5; color: black;" class="add-item-save">Close</button>`;
+                            `<button type="button" onclick="document.body.removeChild(document.getElementById('pdt-details-container'));" style="width: 100%; background-color: #d1d1d5; color: black;" className="add-item-save">Close</button>`;
                             
                             // loading data for input controls
                             for (var field in fields){
@@ -517,9 +517,9 @@ var Offers= ()=>{
             ]
             if (moment( new Date(document.getElementById("end-date").value.trim()) ).diff(document.getElementById("start-date").value.trim()) <= 0){
                 document.querySelector('.show-notification').innerHTML = (
-                    `<div class="alert alert-danger alert-dismissible" role="alert">
+                    `<div className="alert alert-danger alert-dismissible" role="alert">
                     Start date must be less than End date.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     </div>`
                 );
 
@@ -531,9 +531,9 @@ var Offers= ()=>{
 
             if (temp.includes("") || catView.textContent == '...'){
                 document.querySelector('.show-notification').innerHTML = (
-                    `<div class="alert alert-danger alert-dismissible" role="alert">
+                    `<div className="alert alert-danger alert-dismissible" role="alert">
                     All fields required.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     </div>`
                 );
 
@@ -588,9 +588,9 @@ var Offers= ()=>{
             .then(response=>{
                 console.log(response);
                 document.querySelector('.show-notification').innerHTML = (
-                    `<div class="alert alert-success alert-dismissible" role="alert">
+                    `<div className="alert alert-success alert-dismissible" role="alert">
                         ${data.title} has been successfully added.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     </div>`
                 );
                 clearForm();

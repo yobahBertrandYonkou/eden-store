@@ -184,9 +184,9 @@ var Stocks= ()=>{
                         .then(response => {
                             console.log(response)
                             document.querySelector('.show-notification').innerHTML = (
-                                `<div class="alert alert-danger alert-dismissible" role="alert">
+                                `<div className="alert alert-danger alert-dismissible" role="alert">
                                 Item deleted Successfully.
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                                 </div>`
                             );
             
@@ -284,7 +284,7 @@ var Stocks= ()=>{
 
                             //changing save/cancle btns
                             detailsContainer.querySelector(".add-item-buttons").innerHTML = 
-                            `<button type="button" onclick="document.body.removeChild(document.getElementById('pdt-details-container'));" style="width: 100%; background-color: #d1d1d5; color: black;" class="add-item-save">Close</button>`;
+                            `<button type="button" onclick="document.body.removeChild(document.getElementById('pdt-details-container'));" style="width: 100%; background-color: #d1d1d5; color: black;" className="add-item-save">Close</button>`;
                             
                             // loading data for input controls
                             for (var field in fields){
@@ -494,9 +494,9 @@ var Stocks= ()=>{
 
             if (temp.includes("") || catView.textContent == '...'){
                 document.querySelector('.show-notification').innerHTML = (
-                    `<div class="alert alert-danger alert-dismissible" role="alert">
+                    `<div className="alert alert-danger alert-dismissible" role="alert">
                     All fields required.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     </div>`
                 );
 
@@ -559,9 +559,9 @@ var Stocks= ()=>{
                     message = "added";
                 }
                 document.querySelector('.show-notification').innerHTML = (
-                    `<div class="alert alert-success alert-dismissible" role="alert">
+                    `<div className="alert alert-success alert-dismissible" role="alert">
                         ${data.name} has been successfully ${ message }.
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                     </div>`
                 );
                 clearForm();

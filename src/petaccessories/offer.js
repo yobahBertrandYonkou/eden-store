@@ -46,9 +46,9 @@ var Offers = () => {
             offerList.products.forEach( offer => {
                 availableOffers.insertAdjacentHTML("beforeend", 
                 `
-                    <div class="from-group brand-option">
+                    <div className="from-group brand-option">
                         <label for="${ offer.id }">
-                            <input class="offer-controls" id="${ offer.id }" name="${ offer.id }" type="checkbox" /> ${ offer.title }
+                            <input className="offer-controls" id="${ offer.id }" name="${ offer.id }" type="checkbox" /> ${ offer.title }
                         </label>
                     </div>
                 `);

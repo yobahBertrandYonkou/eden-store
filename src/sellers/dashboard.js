@@ -94,20 +94,20 @@ var Dashboard= ()=>{
             orders.orders.forEach(productDetails => {
                 var priceHTML;
                 if(productDetails.hasOffer){
-                    priceHTML = `<div style="font-size: 12px;" class="item-price">Price: Rs. ${ productDetails.offerPrice.toFixed(2) }</div>`;
+                    priceHTML = `<div style="font-size: 12px;" className="item-price">Price: Rs. ${ productDetails.offerPrice.toFixed(2) }</div>`;
                 }else{
-                    priceHTML = `<div style="font-size: 12px;" class="item-price">Price: Rs. ${ (productDetails.price * productDetails.quantityNeeded) - (productDetails.price * productDetails.quantityNeeded * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>(${ productDetails.discount }% off)</span></div>`;
+                    priceHTML = `<div style="font-size: 12px;" className="item-price">Price: Rs. ${ (productDetails.price * productDetails.quantityNeeded) - (productDetails.price * productDetails.quantityNeeded * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>(${ productDetails.discount }% off)</span></div>`;
                 }
 
                 document.querySelector(".recent-orders").insertAdjacentHTML("afterbegin", 
                 `
-                <div style="display: flex; align-items: center; padding: 5px" class="col-12 recent-item" id=card-${ productDetails.id }>
+                <div style="display: flex; align-items: center; padding: 5px" className="col-12 recent-item" id=card-${ productDetails.id }>
                     <img width="56px" height="56px" style="object-fit: contain; margin-right: 10px; margin-top: 7px" src="${ productDetails.photoUrl }" alt="${ productDetails.id }" />
-                    <div class="item-details">
-                        <div style="font-size: 12px;" class="item-title">${ productDetails.name } (${ productDetails.quantity } ${ productDetails.unit })</div>
+                    <div className="item-details">
+                        <div style="font-size: 12px;" className="item-title">${ productDetails.name } (${ productDetails.quantity } ${ productDetails.unit })</div>
                         ${ priceHTML }
-                        <div style="font-size: 12px;" class="item-category">${ productDetails.category } accessories</div>
-                        <div style="font-size: 12px;" class="item-quantity">Quantity: ${ productDetails.quantityNeeded } <br>Date: ${new Date(productDetails.timeStamp._seconds * 1000).toDateString()} ${new Date(productDetails.timeStamp._seconds * 1000).toLocaleTimeString()}</div>
+                        <div style="font-size: 12px;" className="item-category">${ productDetails.category } accessories</div>
+                        <div style="font-size: 12px;" className="item-quantity">Quantity: ${ productDetails.quantityNeeded } <br>Date: ${new Date(productDetails.timeStamp._seconds * 1000).toDateString()} ${new Date(productDetails.timeStamp._seconds * 1000).toLocaleTimeString()}</div>
                     </div>
                 </div>
                 `);
@@ -128,13 +128,13 @@ var Dashboard= ()=>{
             products.products.forEach(productDetails => {
                 document.querySelector(".top-selling-items").insertAdjacentHTML("afterbegin", 
                 `
-                <div style="display: flex; align-items: center; padding: 5px" class="col-12 recent-item" id=card-${ productDetails.id }>
+                <div style="display: flex; align-items: center; padding: 5px" className="col-12 recent-item" id=card-${ productDetails.id }>
                     <img width="56px" height="56px" style="object-fit: contain; margin-right: 10px; margin-top: 7px" src="${ productDetails.photoUrls["photo-1"] }" alt="${ productDetails.id }" />
-                    <div class="item-details">
-                        <div style="font-size: 12px;" class="item-title">${ productDetails.name } (${ productDetails.quantity } ${ productDetails.unit })</div>
-                        <div style="font-size: 12px;" class="item-price">Price: Rs. ${ productDetails.price - (productDetails.price * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>(${ productDetails.discount }% off)</span></div>
-                        <div style="font-size: 12px;" class="item-category">${ productDetails.category } accessories</div>
-                        <div style="font-size: 12px;" class="item-category">Purchases: ${ productDetails.purchases }</div>
+                    <div className="item-details">
+                        <div style="font-size: 12px;" className="item-title">${ productDetails.name } (${ productDetails.quantity } ${ productDetails.unit })</div>
+                        <div style="font-size: 12px;" className="item-price">Price: Rs. ${ productDetails.price - (productDetails.price * productDetails.discount / 100)} <span style={{fontSize: "11px"}}>(${ productDetails.discount }% off)</span></div>
+                        <div style="font-size: 12px;" className="item-category">${ productDetails.category } accessories</div>
+                        <div style="font-size: 12px;" className="item-category">Purchases: ${ productDetails.purchases }</div>
                     </div>
                 </div>
                 `);

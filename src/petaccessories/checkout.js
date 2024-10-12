@@ -19,9 +19,9 @@ var CheckOut = ()=>{
 
         if(localStorage.getItem("recent-action") === "delete"){
             document.querySelector('.show-notification').innerHTML = (
-                `<div class="alert alert-success alert-dismissible" role="alert">
+                `<div className="alert alert-success alert-dismissible" role="alert">
                     ${localStorage.getItem("recent-delete")} has been successfully deleted.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                 </div>`
             );
             localStorage.removeItem("recent-action");
@@ -247,9 +247,9 @@ var CheckOut = ()=>{
                                                             console.log(res);
                                                             
                                                             document.querySelector('.show-notification').innerHTML = (
-                                                                `<div class="alert alert-info alert-dismissible" role="alert">
+                                                                `<div className="alert alert-info alert-dismissible" role="alert">
                                                                     Please <button style="border: none;, background-color: white;" onclick="window.location.reload()" style="color: blue">reload</button> to reflect changes. Thank you.
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                                                                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                                                                 </div>`
                                                             );
                                                         })

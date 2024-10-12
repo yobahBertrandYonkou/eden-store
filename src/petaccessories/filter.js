@@ -1,5 +1,5 @@
 import "./css/filter.css"
-import Slider from '@mui/material/Slider';
+import { Slider } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useEffect, useState } from "react";
 import { useFilters } from "./hooks/useFilters";

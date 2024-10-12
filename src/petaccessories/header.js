@@ -44,13 +44,13 @@ var Header = ()=>{
                     if (hit.name === undefined){
                         resultCardHolder.insertAdjacentHTML('beforeend', 
                         `
-                        <div style="margin-bottom: 20px" class="col-xs-6 col-sm-5 col-md-4 col-lg-4 col-xl-3">
-                            <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }" class="card">
-                                <div class="card-photo card-img-top">
+                        <div style="margin-bottom: 20px" className="col-xs-6 col-sm-5 col-md-4 col-lg-4 col-xl-3">
+                            <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }" className="card">
+                                <div className="card-photo card-img-top">
                                     <img style="object-fit: contain;" height="200px; width: 70%" src="https://storage.googleapis.com/login-371ec.appspot.com/EDEN/accessories/stocks/STK-ALL-20102021-145535/photo-1.jpg" alt="" />
                                 </div>
-                                <div class="card-body">
-                                    <div class="card-title">${ hit.title }</div>
+                                <div className="card-body">
+                                    <div className="card-title">${ hit.title }</div>
                                 </div>
                             </a>
                         </div>
@@ -62,14 +62,14 @@ var Header = ()=>{
                         }
                         resultCardHolder.insertAdjacentHTML('beforeend', 
                         `
-                        <div style="margin-bottom: 20px" class="col-xs-6 col-sm-5 col-md-4 col-lg-4 col-xl-3">
-                            <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }" class="card">
-                                <div class="card-photo card-img-top">
+                        <div style="margin-bottom: 20px" className="col-xs-6 col-sm-5 col-md-4 col-lg-4 col-xl-3">
+                            <a href="/accessories/${ hit.category }/products/${ hit.objectID.trim() }" className="card">
+                                <div className="card-photo card-img-top">
                                     <img style="object-fit: contain;" height="200px; width: 70%" src="${ hit.photoUrl }" alt="" />
                                 </div>
-                                <div class="card-body">
-                                    <div class="card-title">${ name }</div>
-                                    <div class="card-price">Rs ${ hit.price }</div>
+                                <div className="card-body">
+                                    <div className="card-title">${ name }</div>
+                                    <div className="card-price">Rs ${ hit.price }</div>
                                 </div>
                             </a>
                         </div>

@@ -95,9 +95,9 @@ var ProdudctPage = ()=>{
                             status = "updated in";
                         }
                         document.querySelector('.product-overview-container').insertAdjacentHTML('afterbegin',
-                            `<div class="alert alert-success alert-dismissible" role="alert">
+                            `<div className="alert alert-success alert-dismissible" role="alert">
                                 ${ data.name.substring(0, 25) }... successfully ${ status } cart.
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
                             </div>`
                         );
                     })
