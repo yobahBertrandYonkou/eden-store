@@ -15,10 +15,14 @@ var ShoppingCart = ()=>{
 
         if(localStorage.getItem("recent-action") === "delete"){
             document.querySelector('.show-notification').innerHTML = (
-                `<div className="alert alert-success alert-dismissible" role="alert">
-                    ${localStorage.getItem("recent-delete")} has been successfully deleted.
-                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                </div>`
+                `
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>${localStorage.getItem("recent-delete")}</strong> has been successfully deleted.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                `
             );
             localStorage.removeItem("recent-action");
             localStorage.removeItem("recent-delete");
@@ -126,10 +130,14 @@ var ShoppingCart = ()=>{
                                                             console.log(res);
                                                             
                                                             document.querySelector('.show-notification').innerHTML = (
-                                                                `<div className="alert alert-info alert-dismissible" role="alert">
-                                                                    Please <button style="border: none;, background-color: white;" onclick="window.location.reload()" style="color: blue">reload</button> to reflect changes. Thank you.
-                                                                    <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                                                                </div>`
+                                                                `
+                                                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                                    Please <button class='btn' style="border: none;, background-color: white;" onclick="window.location.reload()" style="color: blue">reload</button> to reflect changes. Thank you.
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                               `
                                                             );
                                                         })
                                                         .catch(error => console.error(error)); 

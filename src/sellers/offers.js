@@ -53,7 +53,7 @@ var Offers= ()=>{
             productList.products.forEach( product => {
                 list.insertAdjacentHTML("beforeend", 
                 `
-                    <li class = "dpd-item" ><input data-item-name=${ product.name } type="checkbox" className="product-item" key="${ product.id }" id="${ product.id }" value="${ product.id }" /> <label for="${ product.id }"> ${ product.name }</label></li>
+                    <li class = "dpd-item" ><input data-item-name=${ product.name } type="checkbox" className="product-item" key="${ product.id }" id="${ product.id }" value="${ product.id }" /> <label htmlFor="${ product.id }"> ${ product.name }</label></li>
                 `);
             });
         }
@@ -588,10 +588,14 @@ var Offers= ()=>{
             .then(response=>{
                 console.log(response);
                 document.querySelector('.show-notification').innerHTML = (
-                    `<div className="alert alert-success alert-dismissible" role="alert">
-                        ${data.title} has been successfully added.
-                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                    </div>`
+                    `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>${data.title}</strong> has been successfully added.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>  
+                    `
                 );
                 clearForm();
                 addItemContainer.style.display = "none";

@@ -4,6 +4,7 @@ import Footer from './footer';
 import Header from './header';
 import RatingStars from "react-rating-stars-component";
 import { useFetchAll } from './hooks/useFetch';
+import { Rating } from '@mui/material';
 
 var Orders = ()=>{
     
@@ -109,7 +110,12 @@ var Orders = ()=>{
                         {reviewProduct != null && <img src={ reviewProduct.photoUrl }  className="item-photo" alt="" />}
                     </div>
                     <div className="review-control rating-stars">
-                        <RatingStars
+                    <Rating 
+                        value={reviewProductStars} 
+                        size='large' 
+                        onChange= { (event, newRating) => setReviewProductStars(newRating) } 
+                    />
+                        {/* <RatingStars
                         value= { 1 }
                             count={ 5 }
                             size={ 50 }
@@ -117,7 +123,7 @@ var Orders = ()=>{
                             activeColor="#2F2F5F"
                             emptyIcon={<i className="far fa-star"></i>}
                             onChange= { (newRating) => setReviewProductStars(newRating) }
-                        />
+                        /> */}
                     </div>
                     <textarea placeholder={"Comment if any..."} rows={5} className="review-control review-comment-box form-control">
                     

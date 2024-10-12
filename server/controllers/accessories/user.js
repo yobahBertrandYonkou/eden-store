@@ -251,6 +251,8 @@ router.post('/authentication', async (req, res) => {
 
 // login in users
 router.post('/accessories/login', (req, res) => {
+    console.log("Entered here");
+    
     jwt.verify(req.body.token, req.body.key, async (error, user) => {
         if (error) throw error;
 
@@ -265,7 +267,11 @@ router.post('/accessories/login', (req, res) => {
             // userData['uid'] = user.uid;
             res.json(userData);
         })
-        .catch( error => console.log(error));
+        .catch( (error) => {
+            console.log("Here");
+            console.log(error);
+            
+        });
         
     });
     

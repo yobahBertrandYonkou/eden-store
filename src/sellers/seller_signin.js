@@ -8,7 +8,7 @@ var sSignIn = ()=>{
                 <input id="email" className="text-box" type="email" placeholder="Email" required />
                 <input id="password" className= "text-box" type="password" placeholder="Password" required />
                 <div id="login-opts">
-                    <label for="remember-me"><input name="remember-me" id="remember-me" type="checkbox" /> Remember me</label>
+                    <label htmlFor="remember-me"><input name="remember-me" id="remember-me" type="checkbox" /> Remember me</label>
                     <div id="change-pass">Change password?</div>
                 </div>
                 <div onClick = { async () => {

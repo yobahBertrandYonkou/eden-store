@@ -11,9 +11,9 @@ import ShoppingCart from "./petaccessories/shoppingcart";
 import SignIn from "./petaccessories/signin";
 import CheckOut from "./petaccessories/checkout";
 import Orders from "./petaccessories/orders";
-import sOrders from "./sellers/orders"
+import SOrders from "./sellers/orders"
 import SignUp from "./sellers/seller_signup";
-import sSignIn from "./sellers/seller_signin";
+import SSignIn from "./sellers/seller_signin";
 import React from "react";
 import { createStore } from "redux"
 import { Provider } from "react-redux";
@@ -50,9 +50,9 @@ root.render(
                     <Route exact path="/seller/dashboard" element={<Dashboard/>} />
                     <Route exact path="/seller/stocks" element={<Stocks/>} />
                     <Route exact path="/seller/offers" element={<Offers/>} />
-                    <Route exact path="/seller/orders" element={ <sOrders/> }/>
+                    <Route exact path="/seller/orders" element={ <SOrders/> }/>
                     <Route exact path="/seller/signup" element={ <SignUp/> }/>
-                    <Route exact path="/seller/signin" element={ <sSignIn/> }/>
+                    <Route exact path="/seller/signin" element={ <SSignIn/> }/>
                     <Route exact path="/seller/reports" element={ <Reports/> }/>
                     <Route exact path="/accessories/signin" element={<SignIn/> }/>
                     <Route exact path="/accessories/home" element={<HomePage/>} />

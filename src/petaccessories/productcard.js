@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './css/productcard.css'
-import RatingStars from "react-rating-stars-component";
+import { Rating } from '@mui/material';
 
 var ProductCard = ({ details })=>{
     
@@ -32,10 +32,14 @@ var ProductCard = ({ details })=>{
                     .then(res => {
                         console.log(res);
                         document.querySelector('.show-notification').innerHTML = (
-                            `<div className="alert alert-success alert-dismissible" role="alert">
-                                ${ event.target.getAttribute('data-pdt-name').substring(0, 25) }... successfully added to cart.
-                                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                            </div>`
+                            `
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>${ event.target.getAttribute('data-pdt-name').substring(0, 25) }...</strong> successfully added to cart.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>   
+                           `
                         );
                     })
                     .catch(error => console.error(error));
@@ -54,14 +58,13 @@ var ProductCard = ({ details })=>{
                     <div className="card-title">{ details.name.substring(0, 15) } <span style={{ color: "blueviolet"}}>More...</span></div>
                     <div className="pdt-seller-name">by { details.brand.toUpperCase() }</div>
                     <div style={{ display: "flex", alignItems: "center" }} className="rating">
-                        <RatingStars
-                            edit={false}
-                            value= { parseInt(details.topRating) }
+                        <Rating value={parseInt(details.topRating)} size='small' readOnly/>
+                        {/* edit={false}
+                            value= {  }
                             count={ 5 }
-                            activeColor="orange"
-                            color="#d1d1d5"
-                         />
-                         <span style={{marginLeft: "5px", fontSize: "12px"}}> ({ details.rating[details.topRating] }) </span>
+                            activeColor="orange" 
+                            color="#d1d1d5" */}
+                         <span style={{marginLeft: "5px", fontSize: "12px"}}>  { details.rating[details.topRating] > 0 ? `(${details.rating[details.topRating]})` : "" } </span>
                     </div>
                     {details.discount !== 0 && <div className="card-price"><strike>₹ { details.price }</strike> <br /><span>₹ { (details.price - details.price * details.discount / 100).toFixed(2) } ({ details.discount }% off)</span></div>}
                     {details.discount === 0 && <div className="card-price"><strike>₹ { details.price }</strike></div>}

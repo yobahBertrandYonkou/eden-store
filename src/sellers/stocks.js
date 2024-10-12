@@ -559,10 +559,14 @@ var Stocks= ()=>{
                     message = "added";
                 }
                 document.querySelector('.show-notification').innerHTML = (
-                    `<div className="alert alert-success alert-dismissible" role="alert">
-                        ${data.name} has been successfully ${ message }.
-                        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
-                    </div>`
+                    `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>${data.name}</strong> has been successfully ${ message }.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>  
+                    `
                 );
                 clearForm();
                 addItemContainer.style.display = "none";
