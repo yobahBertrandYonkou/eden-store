@@ -172,7 +172,7 @@ router.post('/', async (req, res) => {
     var files = req.files;
     var filePath;
     // creates a dir for the current stock
-    fs.mkdirSync(path.join(__dirname, `temp/${data.id}`));
+    fs.mkdirSync(path.join(__dirname, `temp/${data.id}`), { recursive: true });
 
     for (var file in files) {
 
@@ -235,7 +235,7 @@ router.post('/', async (req, res) => {
                         console.log(error);
                     });
                 // deleteing temp folder
-                fs.rmdir(path.join(__dirname, `temp/${folderName}/`), { recursive: true, force: true }, (error) => {
+                fs.rm(path.join(__dirname, `temp/${folderName}/`), { recursive: true, force: true }, (error) => {
                     if (error) throw error;
 
                     console.log("Successfully deleted");
@@ -266,7 +266,7 @@ router.put('/', async (req, res) => {
                 fs.mkdirSync(path.join(__dirname, `temp/${data.id}`));
             } catch (e) {
                 if (e.code == "EEXIST") {
-                    fs.rmdir(path.join(__dirname, `temp/${data.id}/`), { recursive: true, force: true }, (error) => {
+                    fs.rm(path.join(__dirname, `temp/${data.id}/`), { recursive: true, force: true }, (error) => {
                         if (error) throw error;
 
                         console.log("Successfully deleted");
@@ -329,7 +329,7 @@ router.put('/', async (req, res) => {
                             .catch(error => console.log(error))
 
                         // deleteing temp folder
-                        fs.rmdir(path.join(__dirname, `temp/${tempFolder}/`), { recursive: true, force: true }, (error) => {
+                        fs.rm(path.join(__dirname, `temp/${tempFolder}/`), { recursive: true, force: true }, (error) => {
                             if (error) throw error;
 
                             console.log("Successfully deleted");
