@@ -106,7 +106,7 @@ router.get('/cart/:userId', async (req, res) => {
     await firestore.collection("users")
     .doc(req.params.userId).collection("cart")
     .orderBy('updatedOn', 'desc')
-    // .orderBy('updatedOn', 'desc').limit(2)
+    // .orderBy('updatedOn', 'desc')
     .get()
     .then(async docs => {
         var data = [];
@@ -145,7 +145,7 @@ router.get('/orders/:type/:userId', async (req, res) => {
     var conditions;
     if(req.params.type == "pending"){
         conditions = firestore.collection("orders/CompletedAndPending/PendingOrders")
-        .where("userId", "==", req.params.userId).limit(2)
+        .where("userId", "==", req.params.userId)
         
     }else{
         conditions = firestore.collection("orders/CompletedAndPending/CompletedOrders")

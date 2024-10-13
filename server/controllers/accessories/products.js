@@ -41,7 +41,7 @@ router.get('/:category/:type', async (req, res) => {
     }
     
     // fetching data
-    await conditions.limit(2).get()
+    await conditions.get()
     .then(docs => {
         var data = [];
 
@@ -107,7 +107,7 @@ router.post('/:category/:type/:filters', async (req, res) => {
     }
     
     // fetching data
-    await conditions.limit(2).get()
+    await conditions.get()
     .then(docs => {
         var data = [];
 

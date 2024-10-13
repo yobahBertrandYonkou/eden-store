@@ -221,7 +221,7 @@ var HomePage = ()=>{
                                 !isGroomingLoading && hasGrooming &&
                                 grooming.products.map((productDetails) => {
                                     return (
-                                        <div key={ productDetails.id } className="col-6 col-md-4 col-lg-3 col-xl-2 grooming-card-container">
+                                        <div key={ productDetails.id } className="col-6 col-md-4 col-lg-3 grooming-card-container">
                                             <ProductCard details = { productDetails } />
                                         </div>
                                     );
