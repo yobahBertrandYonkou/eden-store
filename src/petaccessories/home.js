@@ -153,7 +153,7 @@ var HomePage = ()=>{
                                 !isbestSellingLoading && hasBestSelling &&
                                 bestSelling.products.map((productDetails) => {
                                     return (
-                                        <div key={ productDetails.id } className="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                        <div key={ productDetails.id } className="col-12 col-sm-6 col-md-4 col-lg-3 accessories-card-container">
                                             <ProductCard details = { productDetails } />
                                         </div>
                                     );
@@ -193,7 +193,7 @@ var HomePage = ()=>{
                                 !isLoading && hasAccessories &&
                                 accessories.products.map((productDetails) => {
                                     return (
-                                        <div key={ productDetails.id } className="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                        <div key={ productDetails.id } className="col-12 col-sm-6 col-md-4 col-lg-3 accessories-card-container">
                                             <ProductCard details = { productDetails } />
                                         </div>
                                     );

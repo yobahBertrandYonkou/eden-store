@@ -103,3 +103,8 @@
         width: 100px;
     }
 }
+
+.carousel-control-prev, .carousel-control-next {
+    background-color: transparent !important;
+    border: none;
+}

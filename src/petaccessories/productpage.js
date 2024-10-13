@@ -84,8 +84,8 @@ var ProdudctPage = () => {
                         `
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             <strong>${data.name.substring(0, 25)}...</strong> successfully ${status} cart.
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                
                             </button>
                         </div>  
                        `
@@ -276,7 +276,7 @@ var ProdudctPage = () => {
                             !isLoading && related.length != 0 &&
                             related.map((productDetails) => {
                                 return (
-                                    <div key={productDetails.id} className="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                    <div key={productDetails.id} className="col-12 col-sm-6 col-md-4 col-lg-3 accessories-card-container">
                                         <ProductCard details={productDetails} />
                                     </div>
                                 );

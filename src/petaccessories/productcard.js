@@ -35,8 +35,8 @@ var ProductCard = ({ details })=>{
                             `
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 <strong>${ event.target.getAttribute('data-pdt-name').substring(0, 25) }...</strong> successfully added to cart.
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    
                                 </button>
                             </div>   
                            `

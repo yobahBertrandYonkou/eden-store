@@ -562,8 +562,8 @@ var Stocks= ()=>{
                     `
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong>${data.name}</strong> has been successfully ${ message }.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            
                         </button>
                     </div>  
                     `

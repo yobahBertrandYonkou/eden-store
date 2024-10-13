@@ -18,9 +18,8 @@ var ShoppingCart = ()=>{
                 `
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>${localStorage.getItem("recent-delete")}</strong> has been successfully deleted.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+</button>
                 </div>
                 `
             );
@@ -133,8 +132,8 @@ var ShoppingCart = ()=>{
                                                                 `
                                                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                                                     Please <button class='btn' style="border: none;, background-color: white;" onclick="window.location.reload()" style="color: blue">reload</button> to reflect changes. Thank you.
-                                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                                                        
                                                                     </button>
                                                                 </div>
                                                                `
@@ -186,7 +185,7 @@ var ShoppingCart = ()=>{
                         {/* outputing accessores from useFetch */}
                         { !isLoading && userCart.related.length !== 0 && userCart.related.map((productDetails) => {
                             return (
-                                <div key={ productDetails.id } className="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 accessories-card-container">
+                                <div key={ productDetails.id } className="col-12 col-sm-6 col-md-4 col-lg-3 accessories-card-container">
                                     <ProductCard details = { productDetails } />
                                 </div>
                             );

@@ -22,8 +22,7 @@ var CheckOut = () => {
                 `
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>${localStorage.getItem("recent-delete")}</strong> has been successfully deleted.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                     </button>
                 </div>
                 `
@@ -254,8 +253,8 @@ var CheckOut = () => {
                                                                         `
                                                                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                                                                             Please <button style="border: none;, background-color: white;" onclick="window.location.reload()" style="color: blue">reload</button> to reflect changes. Thank you.
-                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                                                                
                                                                             </button>
                                                                         </div>
                                                                         `
