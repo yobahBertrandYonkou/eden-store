@@ -19,7 +19,7 @@ var ShoppingCart = ()=>{
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>${localStorage.getItem("recent-delete")}</strong> has been successfully deleted.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-</button>
+                    </button>
                 </div>
                 `
             );
