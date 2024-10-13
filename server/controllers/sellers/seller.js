@@ -50,10 +50,10 @@ router.post('/signin', async (req, res) => {
     })
    .then( async response => {
        console.log(response.data)
-       await firestore.collection("sellers").doc(response.data.localId).get()
+       await firestore.collection("sellers").where('email', '==', response.data.email).get()
        .then( userData => {
-            console.log(userData.data())
-            res.json({ status: 200, data: userData.data(), uid: response.data.localId });
+            console.log(userData.docs[0].data())
+            res.json({ status: 200, data: userData.docs[0].data(), uid: userData.docs[0].data()['id'] });
        })
        .catch( error => console.log(error) );
    })

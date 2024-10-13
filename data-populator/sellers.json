@@ -1,0 +1,37 @@
+[
+    {
+      "id": "dbg13XwXLBc7GmWTQLQK",
+      "contact": "1234567890",
+      "email": "alice@test.com",
+      "password": "password123",
+      "store": "Paws & Claws"
+    },
+    {
+      "id": "8MEaRRaCsDTUW0fohiqV",
+      "contact": "2345678901",
+      "email": "bob@test.com",
+      "password": "securePass456",
+      "store": "Furry Friends"
+    },
+    {
+      "id": "hYxegs6dXQmwkQBVpZsy",
+      "contact": "3456789012",
+      "email": "charlie@test.com",
+      "password": "mypet789",
+      "store": "Happy Pets"
+    },
+    {
+      "id": "Qx6HfjZtWXPLNmevqRoT",
+      "contact": "4567890123",
+      "email": "dave@test.com",
+      "password": "davesecure123",
+      "store": "Cat Kingdom"
+    },
+    {
+      "id": "NxtufkRpSQ7amLz8YrHw",
+      "contact": "5678901234",
+      "email": "george@test.com",
+      "password": "yobah11111",
+      "store": "B.M.B Shops"
+    }
+  ]  

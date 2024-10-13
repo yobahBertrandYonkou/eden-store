@@ -3,24 +3,32 @@ let { firestore } = require('../server/controllers/initializers');
 let fs = require('fs');
 
 // read json file
-let products = JSON.parse(fs.readFileSync("data.json", "utf-8"));
+let items = JSON.parse(fs.readFileSync("products1.json", "utf-8"));
+
+// collection
+let collectionName = "products";
 
 // loop through data
-products.forEach(async product => {
+items.forEach(async item => {
     // temp
-    let temp = product;
-
-    // change time to Date
-    temp['createdOn'] = Date(temp['createdOn']);
-    temp['updatedOn'] = Date(temp['createdOn']);
-
-    // cast numbers to float
-    temp['price'] = parseFloat(temp['price']);
-    temp['discount'] = parseFloat(temp['discount']);
-
+    let temp = item;
     try {
+
+        if (collectionName === "products") {
+            // cast numbers to float
+            temp['price'] = parseFloat(temp['price']);
+            temp['discount'] = parseFloat(temp['discount']);
+        }else {
+            // change time to Date
+            temp['startDate'] = new Date(Date(temp['startDate']));
+            temp['endDate'] = new Date(Date(temp['endDate']));
+        }
+        // change time to Date
+        temp['createdOn'] = new Date(Date(temp['createdOn']));
+        temp['updatedOn'] = new Date(Date(temp['updatedOn']));
+
         // create document
-        let result = await firestore.collection('products').add(product);
+        let result = await firestore.collection(collectionName).add(item);
 
         console.log(result['id']);
 
@@ -28,4 +36,5 @@ products.forEach(async product => {
         console.log(error);
     }
 });
+
 

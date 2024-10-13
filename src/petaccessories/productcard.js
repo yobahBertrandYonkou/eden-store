@@ -52,7 +52,7 @@ var ProductCard = ({ details })=>{
         <div className="card-container card">
             <a href={`/accessories/${ details.category }/products/${ details.id }`} className="card-link">
                 <div className="card-photo card-img-top">
-                    <img width="100%" height="200px" style={{objectFit: "contain"}} src={details.photoUrls['photo-1']} alt="" />
+                    <img width="100%" height="200px" style={{objectFit: "cover", borderRadius: '5px'}} src={details.photoUrls['photo-1']} alt="" />
                 </div>
                 <div className="card-info ">
                     <div className="card-title">{ details.name.substring(0, 15) } <span style={{ color: "blueviolet"}}>More...</span></div>

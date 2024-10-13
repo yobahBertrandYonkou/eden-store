@@ -61,13 +61,13 @@ var OneAnimal = ({animal})=>{
                             }
 
                             {/* outputing accessores from useFetch */}
-                            { !isOfferLoading && offerHasData && offerProductList.products.map((productDetails) => {
+                            { !isOfferLoading && offerHasData && offerProductList.products.slice(0, 4).map((productDetails) => {
                                 
                                 return (
                                     <div key={ productDetails.id } className="col-12 col-sm-6 col-md-4 col-lg-3 accessories-card-container">
                                         <a className="card" href={`/accessories/offers/products/${ productDetails.id }`}>
                                             <div style={{height: "200px", display: "flex", justifyContent: "center"}} className="card-img-top">
-                                                <img style={{objectFit: "contain"}} height="200px" width="80%" src={ productDetails.photoUrls['photo-1'] } alt="" />
+                                                <img style={{objectFit: "cover", borderRadius: '5px', borderTopLeftRadius: 0, borderTopRightRadius: 0}} height="200px" width="80%" src={ productDetails.photoUrls['photo-1'] } alt="" />
                                             </div>
                                             <div className="card-body">
                                                 <div className="card-title"> { productDetails.name.substring(0, 25) }... </div>

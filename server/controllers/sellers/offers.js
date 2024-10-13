@@ -23,64 +23,69 @@ router.ws('/', (ws, req) => {
         console.log("New Socket created");
         // receiving search filters
         ws.on("message", async (message) => {
-            var msg = JSON.parse(message);
-            console.log(snapShotTracker)
-            console.log(msg)
-            // unsubscribe old data
-            if (snapShotTracker != null) {
-                snapShotTracker();
-                console.log("Unsubscribed");
-            }
-
-            // defining filter condition
-            var conditions;
-            if (msg.from == "" && msg.to == "") {
-                conditions = firestore.collection("offers").where("sellerId", "==", msg.uid).orderBy("updatedOn")
-            } else {
-                conditions = firestore.collection("offers")
-                    .where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM"))
-                    .where("sellerId", "==", msg.uid).orderBy("updatedOn")
-            }
-
-            // fetching all stocks according to filter condition
-            snapShotTracker = conditions.onSnapshot((docs) => {
-                // console.log(docs.docs);
-
-                // .where("condition", "==", msg.condition)
-                var data = [];
-                if (msg.condition == "all") {
-                    docs.docs.forEach(doc => {
-                        // filter condition here
-                        if (msg.search != "") {
-                            if (doc.data().title.toLowerCase().includes(msg.search.toLowerCase())) {
-                                data.unshift(doc.data());
-                            }
-                        } else {
-
-                            data.unshift(doc.data());
-                        }
-
-                    });
-                } else {
-                    docs.docs.forEach(doc => {
-                        // filter condtion here
-                        if (msg.search != "") {
-                            if (Object.keys(doc.data().condition).includes(msg.condition) && doc.data().title.toLowerCase().includes(msg.search.toLowerCase())) {
-                                data.unshift(doc.data());
-                            }
-                        } else {
-                            if (Object.keys(doc.data().condition).includes(msg.condition)) {
-                                data.unshift(doc.data());
-                            }
-                        }
-
-                    });
+            try {
+                var msg = JSON.parse(message);
+                console.log(snapShotTracker)
+                console.log(msg)
+                // unsubscribe old data
+                if (snapShotTracker != null) {
+                    snapShotTracker();
+                    console.log("Unsubscribed");
                 }
-                ws.send(JSON.stringify({ "data": data }));
-                // console.log(data);
-                // ws.send({"data": data});
-            });
-            // console.log(snapShotTracker)
+
+                // defining filter condition
+                var conditions;
+                if (msg.from == "" && msg.to == "") {
+                    conditions = firestore.collection("offers").where("sellerId", "==", msg.uid).orderBy("updatedOn")
+                } else {
+                    conditions = firestore.collection("offers")
+                        .where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM"))
+                        .where("sellerId", "==", msg.uid).orderBy("updatedOn")
+                }
+
+                // fetching all stocks according to filter condition
+                snapShotTracker = conditions.onSnapshot((docs) => {
+                    // console.log(docs.docs);
+
+                    // .where("condition", "==", msg.condition)
+                    var data = [];
+                    if (msg.condition == "all") {
+                        docs.docs.forEach(doc => {
+                            // filter condition here
+                            if (msg.search != "") {
+                                if (doc.data().title.toLowerCase().includes(msg.search.toLowerCase())) {
+                                    data.unshift(doc.data());
+                                }
+                            } else {
+
+                                data.unshift(doc.data());
+                            }
+
+                        });
+                    } else {
+                        docs.docs.forEach(doc => {
+                            // filter condtion here
+                            if (msg.search != "") {
+                                if (Object.keys(doc.data().condition).includes(msg.condition) && doc.data().title.toLowerCase().includes(msg.search.toLowerCase())) {
+                                    data.unshift(doc.data());
+                                }
+                            } else {
+                                if (Object.keys(doc.data().condition).includes(msg.condition)) {
+                                    data.unshift(doc.data());
+                                }
+                            }
+
+                        });
+                    }
+                    ws.send(JSON.stringify({ "data": data }));
+                    // console.log(data);
+                    // ws.send({"data": data});
+                });
+                // console.log(snapShotTracker)
+            } catch (error) {
+                console.log(error);
+
+            }
         });
 
         // logging socket closed
@@ -89,7 +94,6 @@ router.ws('/', (ws, req) => {
         })
     } catch (e) {
         console.error(e);
-
     }
 });
 
@@ -104,11 +108,11 @@ router.get('/stocks', async (req, res) => {
             // existing offer ids
             var existingProductIds = [];
             docs.docs.forEach(doc => existingProductIds.push(...doc.data().products));
-
+            console.log(Array.from(new Set(existingProductIds)));
+            
             // products that do not have any offer associated with them
-
             await firestore.collection("products")
-                .where("id", "not-in", existingProductIds).get()
+                .where("id", "not-in", Array.from(new Set(existingProductIds))).get()
                 .then(docs => {
                     // console.log(response);
                     var data = [];

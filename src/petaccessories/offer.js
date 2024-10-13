@@ -95,7 +95,7 @@ var Offers = () => {
                                     <div key={ productDetails.id } style={{ marginBottom: "20px"}} className="col-12 col-sm-6 col-md-4 col-lg-3 accessories-card-container">
                                         <a className="card" href={`/accessories/offers/products/${ productDetails.id }`}>
                                             <div style={{height: "200px", display: "flex", justifyContent: "center"}} className="card-img-top">
-                                            <img height="200px" width="80%" style={{ objectFit: "contain"}} src={ productDetails.photoUrls['photo-1'] } alt="" />
+                                            <img height="200px" width="80%" style={{objectFit: "cover", borderRadius: '5px', borderTopLeftRadius: 0, borderTopRightRadius: 0}} src={ productDetails.photoUrls['photo-2'] } alt="" />
                                             </div>
                                             <div className="card-body">
                                                 <div className="card-title"> { productDetails.name.substring(0, 38) } <span style={{color: "blueviolet"}}>More...</span> </div>

@@ -24,72 +24,77 @@ router.ws('/', (ws, req) => {
         console.log("New Socket created");
         // receiving search filters
         ws.on("message", async (message) => {
-            var msg = JSON.parse(message);
-            console.log(snapShotTracker)
-            console.log(msg)
-            // unsubscribe old data
-            if (snapShotTracker != null) {
-                snapShotTracker();
-                console.log("Unsubscribed");
-            }
-
-            // defining filter condition
-            var conditions;
-            if (msg.from == "" && msg.to == "") {
-                conditions = firestore.collection("products").where("sellerId", "==", msg.uid).orderBy("updatedOn")
-            } else {
-                conditions = firestore.collection("products")
-                    .where("sellerId", "==", msg.uid).where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM"))
-                    .where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).orderBy("updatedOn")
-            }
-
-            // else if(msg.from != "" && msg.to == ""){
-            //     conditions = firestore.collection("products")
-            //     .where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).where("sellerId", "==", msg.uid)
-            // }else if (msg.from == "" && msg.to != ""){
-            //     conditions = firestore.collection("products")
-            //     .where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).where("sellerId", "==", msg.uid)
-            // }else if(msg.from != "" && msg.to != "")
-
-            // fetching all stocks according to filter condition
-            snapShotTracker = conditions.onSnapshot((docs) => {
-                // console.log(docs.docs);
-
-                // .where("category", "==", msg.category)
-                var data = [];
-                if (msg.category == "all") {
-                    docs.docs.forEach(doc => {
-                        // filter category here
-                        if (msg.search != "") {
-                            if (doc.data().name.toLowerCase().includes(msg.search.toLowerCase())) {
-                                data.push(doc.data());
-                            }
-                        } else {
-
-                            data.push(doc.data());
-                        }
-
-                    });
-                } else {
-                    docs.docs.forEach(doc => {
-                        // filter category here
-                        if (msg.search != "") {
-                            if (doc.data().category.includes(msg.category.substring(0, 1).toUpperCase() + msg.category.slice(1)) && doc.data().name.toLowerCase().includes(msg.search.toLowerCase())) {
-                                data.push(doc.data());
-                            }
-                        } else {
-                            if (doc.data().category.includes(msg.category.substring(0, 1).toUpperCase() + msg.category.slice(1))) {
-                                data.push(doc.data());
-                            }
-                        }
-
-                    });
+            try {
+                var msg = JSON.parse(message);
+                console.log(snapShotTracker)
+                console.log(msg)
+                // unsubscribe old data
+                if (snapShotTracker != null) {
+                    snapShotTracker();
+                    console.log("Unsubscribed -");
                 }
-                ws.send(JSON.stringify({ "data": data }));
-                // console.log(data);
-                // ws.send({"data": data});
-            });
-            // console.log(snapShotTracker)
+
+                // defining filter condition
+                var conditions;
+                if (msg.from == "" && msg.to == "") {
+                    conditions = firestore.collection("products").where("sellerId", "==", msg.uid).orderBy("updatedOn")
+                } else {
+                    conditions = firestore.collection("products")
+                        .where("sellerId", "==", msg.uid).where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM"))
+                        .where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).orderBy("updatedOn")
+                }
+
+                // else if(msg.from != "" && msg.to == ""){
+                //     conditions = firestore.collection("products")
+                //     .where("updatedOn", ">=", new Date(msg.from + " 12:00:00 AM")).where("sellerId", "==", msg.uid)
+                // }else if (msg.from == "" && msg.to != ""){
+                //     conditions = firestore.collection("products")
+                //     .where("updatedOn", "<=", new Date(msg.to + " 11:59:00 PM")).where("sellerId", "==", msg.uid)
+                // }else if(msg.from != "" && msg.to != "")
+
+                // fetching all stocks according to filter condition
+                snapShotTracker = conditions.onSnapshot((docs) => {
+                    // console.log(docs.docs);
+
+                    // .where("category", "==", msg.category)
+                    var data = [];
+                    if (msg.category == "all") {
+                        docs.docs.forEach(doc => {
+                            // filter category here
+                            if (msg.search != "") {
+                                if (doc.data().name.toLowerCase().includes(msg.search.toLowerCase())) {
+                                    data.push(doc.data());
+                                }
+                            } else {
+
+                                data.push(doc.data());
+                            }
+
+                        });
+                    } else {
+                        docs.docs.forEach(doc => {
+                            // filter category here
+                            if (msg.search != "") {
+                                if (doc.data().category.includes(msg.category.substring(0, 1).toUpperCase() + msg.category.slice(1)) && doc.data().name.toLowerCase().includes(msg.search.toLowerCase())) {
+                                    data.push(doc.data());
+                                }
+                            } else {
+                                if (doc.data().category.includes(msg.category.substring(0, 1).toUpperCase() + msg.category.slice(1))) {
+                                    data.push(doc.data());
+                                }
+                            }
+
+                        });
+                    }
+                    ws.send(JSON.stringify({ "data": data }));
+                    // console.log(data);
+                    // ws.send({"data": data});
+                });
+                // console.log(snapShotTracker)
+            } catch (error) {
+                console.log(error);
+
+            }
         });
 
         // logging socket closed
